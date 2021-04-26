@@ -153,21 +153,6 @@ class UserController {
         } else return res.status(400).send({ success: false, message: 'E-mail não cadastrado!' });
     }
 
-    static async confirmEmail(req, res) {
-        const token = req.query.token;
-        const user = await ConfirmationToken.findUserIdByToken(token);
-
-        if (!user.success)
-            res.status(400).send(user);
-
-        if (user.user && user.user.id) {
-            const result = await User.confirmUser(user.user.id);
-            if (result.success) {
-                await ConfirmationToken.delete(user.user.id);
-                return res.send({ success: true, message: 'Usuário confirmado!' });
-            } else return res.status(400).send({ success: false, message: 'Falha ao confirmar usuário!' });
-        } else return res.status(400).send({ success: false, message: 'Email não cadastrado!' });
-    }
 
     static async recoverPassword(req, res) {
         const email = req.body.email;
@@ -207,25 +192,6 @@ class UserController {
         const result = await User.changePassword(newPassword, user.user.id);
         await RecoverToken.delete(user.user.id);
         return result.success ? res.send(result) : res.status(400).send(result);
-    }
-
-    static async resendConfirm(req, res) {
-        const id_user = req.body.id_user;
-
-        const user = await User.findOne(id_user);
-        if (!user.success)
-            return res.status(400).send({ success: false, message: 'Usuário inexistente!' });
-
-        if (user.user.is_verified)
-            return res.status(400).send({ success: false, message: 'Usuário já é verificado!' });
-
-        const token = await ConfirmationToken.create(user.user.id, user.user.email);
-
-        if (!token.success)
-            return res.status(400).send({ success: false, message: 'Falha ao criar token!' });
-
-        await Email.confirmAccount(user.user.name, user.user.email, token.token)
-        return res.send({ success: true, message: 'Email de confirmação enviado!' });
     }
 
 };
