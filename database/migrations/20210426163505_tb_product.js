@@ -13,6 +13,7 @@ exports.up = async function (knex) {
         table.boolean('is_deleted').defaultTo(false).notNullable();
         table.string('url_image', 200).notNullable();
         table.string('key_image', 70).notNullable();
+        table.integer('quantity').unsigned().notNullable();
         table.integer('id_category').notNullable().references('id').inTable('tb_category');
         table.integer('id_market').notNullable().references('id').inTable('tb_market');
         table.integer('id_discount').notNullable().references('id').inTable('tb_discount');
