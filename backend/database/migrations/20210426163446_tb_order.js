@@ -4,9 +4,9 @@ exports.up = async function (knex) {
     await knex.schema.createTable(tableName, function (table) {
         table.increments('id').primary().notNullable();
         table.boolean('is_delivered').defaultTo(false).notNullable();
-        table.decimal('order_total', 2, 8).notNullable();
-        table.decimal('tip', 2, 8);
-        table.decimal('shipping', 2, 8);
+        table.decimal('order_total', 8, 2).notNullable();
+        table.decimal('tip', 8, 2);
+        table.decimal('shipping', 8, 2);
         table.string('status', 1).notNullable();
         table.timestamps(false, true);
         table.integer('id_deliveryman').unsigned().notNullable().references('id').inTable('tb_user');

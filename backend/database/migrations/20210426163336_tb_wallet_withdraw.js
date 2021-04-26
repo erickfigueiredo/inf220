@@ -1,11 +1,11 @@
 
-const tableName = 'tb_product_discount';
+const tableName = 'tb_wallet_withdraw';
 
 exports.up = async function (knex) {
-    await knex.schema.raw('CREATE IF NOT EXISTS EXTENSION UNACCENT').createTable(tableName, function (table) {
+    await knex.schema.createTable(tableName, function (table) {
         table.increments('id').primary().notNullable();
-        table.string('value', 2).notNullable();
-        table.boolean('is_deleted').notNullable.defaultTo(false);
+        table.decimal('value', 8, 2).notNullable();
+        table.integer('id_wallet').unsigned().notNullable().references('id').inTable('tb_wallet');
         table.timestamps(false, true);
     });
 

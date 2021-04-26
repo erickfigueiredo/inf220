@@ -1,6 +1,6 @@
 
-const tabelName = 'tb_wallet';
-exports.up = function(knex) {
+const tableName = 'tb_wallet';
+exports.up = async function(knex) {
     await knex.schema.createTable(tableName, function (table) {
         table.increments('id').primary().notNullable();
         table.decimal('total', 8, 2).notNullable();

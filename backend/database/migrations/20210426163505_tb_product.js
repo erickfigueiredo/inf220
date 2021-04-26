@@ -5,7 +5,7 @@ exports.up = async function (knex) {
         table.increments('id').primary().notNullable();
         table.string('title', 50).notNullable();
         table.string('desc', 500).notNullable();
-        table.decimal('price', 2, 8).notNullable();
+        table.decimal('price', 8, 2).notNullable();
         table.string('unt', 10).notNullable();
         table.string('brand', 50).notNullable();
         table.date('validate', { precision: 6 }).notNullable();
@@ -16,7 +16,7 @@ exports.up = async function (knex) {
         table.integer('quantity').unsigned().notNullable();
         table.integer('id_category').notNullable().references('id').inTable('tb_category');
         table.integer('id_market').notNullable().references('id').inTable('tb_market');
-        table.integer('id_discount').notNullable().references('id').inTable('tb_discount');
+        table.integer('id_discount').notNullable().references('id').inTable('tb_product_discount');
         table.string('bar_code', 13).notNullable();
         table.timestamps(false, true);
     });
