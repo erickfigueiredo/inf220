@@ -4,10 +4,7 @@ const bcrypt = require('bcrypt');
 const secret = process.env.JWT_SECRET;
 const saltRounds = parseInt(process.env.BCRYPT_SALT);
 const jwt = require('jsonwebtoken');
-const ConfirmationToken = require('../models/ConfirmationToken');
 const RecoverTokenSchema = require('../schemas/RecoverTokenSchema');
-const RecoverToken = require('../models/RecoverToken');
-const Email = require('../models/Email');
 
 class UserController {
     static async index(req, res) {
