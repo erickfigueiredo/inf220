@@ -3,7 +3,7 @@ const tabelName = 'tb_wallet';
 exports.up = function(knex) {
     await knex.schema.createTable(tableName, function (table) {
         table.increments('id').primary().notNullable();
-        table.decimal('total', 2, 8).notNullable();
+        table.decimal('total', 8, 2).notNullable();
         table.string('pix_key', 100).unique().notNullable();
         table.timestamps(false, true); //created_at/updated_at
     });
