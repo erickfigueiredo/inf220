@@ -1,5 +1,4 @@
 const router = require('express').Router();
-const Auth = require('../middleware/Auth');
 
 
 // User routes
@@ -77,15 +76,6 @@ router.post('/discount', DiscountController.create);
 router.put('/discount', DiscountController.update);
 router.delete('/discount/:id', DiscountController.delete);
 
-// Salesman Avaliation routes
-const SalesmanAvaliationController = require('../controllers/SalesmanAvaliationController');
-
-router.get('/salesman_avaliation/all/:id_salesman', SalesmanAvaliationController.index);
-router.get('/salesman_avaliation/:id', SalesmanAvaliationController.show);
-router.post('/salesman_avaliation', SalesmanAvaliationController.create);
-router.put('/salesman_valiation', SalesmanAvaliationController.update);
-router.delete('/salesman_avaliation/:id', SalesmanAvaliationController.delete);
-
 // Product routes
 const ProductController = require('../controllers/ProductController');
 
@@ -102,13 +92,6 @@ router.get('/confirm', UserController.confirmEmail); //query param token needed
 router.post('/recover-password', UserController.recoverPassword);
 router.post('/resend-confirm', UserController.resendConfirm)
 router.post('/change-password', UserController.changePassword); //query param token needed
-
-//Chat Routes
-const ChatRoomController = require('../controllers/ChatRoomController');
-router.post('/room/initiate', Auth.auth, ChatRoomController.initiate);
-router.post('/room/message', Auth.auth, ChatRoomController.postMessage);
-router.get('/room/message/:id_room', Auth.auth, ChatRoomController.getConversationByRoom);
-router.get('/room/chat/:id_user', Auth.auth, ChatRoomController.getUserChats);
 
 //Cart Routes
 const CartController = require('../controllers/CartController');
