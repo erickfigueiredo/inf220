@@ -1,6 +1,7 @@
 const Address = require('../models/Address');
 const AddressSchema = require('../schemas/AddressSchema');
 const User = require('../models/User');
+const Market = require('../models/Market');
 
 class AddressController {
     static async index(req, res) {
@@ -38,14 +39,18 @@ class AddressController {
             return res.status(400).send({ success: false, message: error.details[0].message });
             
 
-        const { id_user, alias } = req.body;
+        const { id, alias, street, neigh, complement, num, zipcode, city, state, country, latitude, longitude, type } = req.body;
 
-        const user = await User.findOne(id_user);
-        if (!user.success) 
-            return res.status(404).send(user);
-        
+        let user;
+        if(type == 'M'){
+            user = await User.findOne(id);
+            if(!user.success) return res.status(400).send({success: false, message: 'Id inválido!'});
+        }else{
+            user = await Market.findOne(id);
+            if(!user.success) return res.status(400).send({success: false, message: 'Id inválido!'});
+        }
 
-        if (user.user.type == 'V') {
+        if (user.user.type == 'M') {
             const address = await Address.findAll(id_user, 1);
 
             if (!address.success || (address.success && Object.keys(address.address.data).length))
@@ -58,7 +63,6 @@ class AddressController {
         }
 
         const result = await Address.create(req.body, user.user.type);
-
         return result.success ? res.send(result) : res.status(400).send(result);
     }
 
