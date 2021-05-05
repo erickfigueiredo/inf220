@@ -41,6 +41,20 @@ class AddressController {
 
         const { id, alias, street, neigh, complement, num, zipcode, city, state, country, latitude, longitude, type } = req.body;
 
+        const data = {
+            alias,
+            street,
+            neigh,
+            complement,
+            num,
+            zipcode,
+            city,
+            state,
+            country,
+            latitude,
+            longitude
+        }
+
         let user;
         if(type == 'M'){
             user = await Market.findOne(id);
@@ -59,7 +73,7 @@ class AddressController {
                 return res.status(409).send({ success: false, message: 'Apelido já cadastrado!' });
         }
 
-        const result = await Address.create(req.body, type);
+        const result = await Address.create(data, type);
         return result.success ? res.send(result) : res.status(400).send(result);
     }
 
