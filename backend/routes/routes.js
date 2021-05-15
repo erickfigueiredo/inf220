@@ -1,18 +1,6 @@
 const router = require('express').Router();
 
 
-// User routes
-const UserController = require('../controllers/UserController');
-
-// -> Login
-router.post('/login', UserController.login);
-
-router.get('/user/all', UserController.index);
-router.get('/user/:id', UserController.show);
-router.post('/user', UserController.create);
-router.put('/user', UserController.update);
-router.delete('/user/:id', UserController.delete);
-
 // Address routes
 const AddressController = require('../controllers/AddressController');
 

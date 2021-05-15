@@ -1,5 +1,4 @@
 const Address = require('../models/Address');
-const AddressSchema = require('../schemas/AddressSchema');
 const User = require('../models/User');
 const Market = require('../models/Market');
 
