@@ -105,38 +105,8 @@ class AddressController {
         const address = await Address.findOne(form.id);
         
         if (address.success && Object.keys(address.address).length) {
-
-            const toUpdate = {};
-
-            if (form.alias && address.alias != form.alias) toUpdate.alias = form.alias;
-
-            if (form.street && address.street != form.street) toUpdate.street = form.street;
-
-            if (form.neigh && address.neigh != form.neigh) toUpdate.neigh = form.neigh;
-
-            if (form.num && address.num != form.num) toUpdate.num = form.num
-
-            if (address.complement != form.complement) toUpdate.complement = toUpdate.complement;
-
-            if (form.city && address.city != form.city) toUpdate.city = form.city;
-
-            if (form.state && address.state != form.state) toUpdate.state = form.state;
-
-            if (form.country && address.country != form.country) toUpdate.country = form.country;
-
-            if (form.zipcode && address.zipcode != form.zipcode) toUpdate.zipcode = form.zipcode;
-
-            if (form.latitude && address.latitude != form.latitude) toUpdate.latitude = form.latitude;
-
-            if (form.longitude && address.longitude != form.longitude) toUpdate.longitude = form.longitude;
-
-            if (Object.keys(toUpdate).length) {
-                toUpdate.id = form.id;
-
-                const result = await Address.update(toUpdate);
-                return result.success ? res.send(result) : res.status(400).send(result);
-            }
-            return res.send(address);
+            const result = await Address.update(form);
+            return result.success ? res.send(result) : res.status(400).send(result);
         }else {
             return res.status(404).send({success: false, message: 'Não foi possível encontrar o endereço!'});
         } 
