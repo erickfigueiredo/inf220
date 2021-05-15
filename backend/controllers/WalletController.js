@@ -2,7 +2,7 @@ const Wallet = require('../models/Wallet');
 
 class WalletController {
     static async index(req, res) {
-        const wallets = await Wallet.findAll(id_market, page);
+        const wallets = await Wallet.findAll(id_market);
         return wallets.success ? res.send(wallets) : res.status(404).send(wallets);
     }
 

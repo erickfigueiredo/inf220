@@ -24,7 +24,7 @@ class Wallet {
 
     static async update(id, data) {
         try {
-            let wallet = await trx('tb_wallet').update(data).where({ id }).returning('*');
+            let wallet = await knex.table('tb_wallet').update(data).where({ id }).returning('*');
             return wallet[0] ? { success: true, wallet: wallet[0] } : { success: false, message: 'Não foi possível atualizar a carteira!' };
         } catch (error) {
             Message.warning(error);
@@ -32,9 +32,9 @@ class Wallet {
         }
     }
 
-    static async changeTotalInWallet(id_wallet, value){
+    static async changeTotalInWallet(id_wallet, total){
         try {
-            let wallet = await trx('tb_wallet').update({total}).where({ id }).returning('*');
+            let wallet = await knex.table('tb_wallet').update({total}).where({ id_wallet }).returning('*');
             return wallet[0] ? { success: true, wallet: wallet[0] } : { success: false, message: 'Não foi possível atualizar o total da carteira!' };
         } catch (error) {
             Message.warning(error);

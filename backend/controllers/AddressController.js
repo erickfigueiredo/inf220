@@ -31,13 +31,6 @@ class AddressController {
     }
 
     static async create(req, res) {
-        const schema = AddressSchema.createValidate();
-        const { error } = schema.validate(req.body);
-
-        if (error) 
-            return res.status(400).send({ success: false, message: error.details[0].message });
-            
-
         const { id, alias, street, neigh, complement, num, zipcode, city, state, country, latitude, longitude, type } = req.body;
 
         const data = {
