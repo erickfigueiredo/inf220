@@ -1,5 +1,5 @@
 const Market = require('../models/Market');
-const MarletSchema = require('../schemas/AddressSchema');
+const AddressSchema = require('../schemas/AddressSchema');
 const User = require('../models/User');
 
 class MarketController {
