@@ -1,8 +1,5 @@
 const Vehicle = require('../models/Vehicle')
-const VehicleSchema = require('../schemas/VehicleSchema')
-const multer = require('multer')
-const multerConfig = require('../config/multerVehicle')
-const User = require('../models/User');
+const Deliveryman = require('../models/Deliveryman');
 
 class VehicleController {
     static async index(req, res) {
