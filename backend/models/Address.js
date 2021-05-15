@@ -51,8 +51,7 @@ class Address {
         try {
             return await knex.transaction(async trx => {
                 const address = await trx('tb_address').insert(data).returning('*');
-                if (type == 'V') await trx('tb_salesman').update({ id_address: address[0].id });
-
+                if (type == 'M') await trx('tb_market').update({ id_address: address[0].id });
                 return { success: true, address: address[0] };
             })
         } catch (error) {

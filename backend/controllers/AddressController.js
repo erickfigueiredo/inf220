@@ -1,5 +1,6 @@
 const Address = require('../models/Address');
 const User = require('../models/User');
+const Market = require('../models/Market');
 
 class AddressController {
     static async index(req, res) {
@@ -37,27 +38,41 @@ class AddressController {
             return res.status(400).send({ success: false, message: error.details[0].message });
             
 
-        const { id_user, alias } = req.body;
+        const { id, alias, street, neigh, complement, num, zipcode, city, state, country, latitude, longitude, type } = req.body;
 
-        const user = await User.findOne(id_user);
-        if (!user.success) 
-            return res.status(404).send(user);
-        
+        const data = {
+            alias,
+            street,
+            neigh,
+            complement,
+            num,
+            zipcode,
+            city,
+            state,
+            country,
+            latitude,
+            longitude
+        }
 
-        if (user.user.type == 'V') {
-            const address = await Address.findAll(id_user, 1);
+        let user;
+        if(type == 'M'){
+            user = await Market.findOne(id);
+            if(!user.success) return res.status(400).send({success: false, message: 'Id inválido!'});
+        }else{
+            user = await User.findOne(id);
+            if(!user.success) return res.status(400).send({success: false, message: 'Id inválido!'});
+        }
 
-            if (!address.success || (address.success && Object.keys(address.address.data).length))
-                return res.status(409).send({ success: false, message: 'Vendedor já possui um endereço cadastrado!' });
-                
+        if (type == 'M') {
+            if (user.id_address)
+                return res.status(409).send({ success: false, message: 'Mercado já possui um endereço cadastrado!' }); 
         } else {
-            const existAlias = await Address.findByUserAlias(id_user, alias);
+            const existAlias = await Address.findByUserAlias(id, alias);
             if (existAlias.address && Object.keys(existAlias.address).length) 
                 return res.status(409).send({ success: false, message: 'Apelido já cadastrado!' });
         }
 
-        const result = await Address.create(req.body, user.user.type);
-
+        const result = await Address.create(data, type);
         return result.success ? res.send(result) : res.status(400).send(result);
     }
 
@@ -69,7 +84,7 @@ class AddressController {
             return res.status(400).send({ success: false, message: error.details[0].message });
     
 
-        const { id, alias, street, neigh, complement, num, zipcode, city, state, country } = req.body;
+        const { id, alias, street, neigh, complement, num, zipcode, city, state, country, latitude, longitude } = req.body;
 
         const form = {
             id,
@@ -81,7 +96,9 @@ class AddressController {
             zipcode,
             city,
             state,
-            country
+            country,
+            latitude,
+            longitude
         };
 
         const address = await Address.findOne(form.id);
@@ -105,6 +122,12 @@ class AddressController {
             if (form.state && address.state != form.state) toUpdate.state = form.state;
 
             if (form.country && address.country != form.country) toUpdate.country = form.country;
+
+            if (form.zipcode && address.zipcode != form.zipcode) toUpdate.zipcode = form.zipcode;
+
+            if (form.latitude && address.latitude != form.latitude) toUpdate.latitude = form.latitude;
+
+            if (form.longitude && address.longitude != form.longitude) toUpdate.longitude = form.longitude;
 
             if (Object.keys(toUpdate).length) {
                 toUpdate.id = form.id;
