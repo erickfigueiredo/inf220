@@ -1,13 +1,14 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const saltRounds = parseInt(process.env.BCRYPT_SALT);
-class ClientController {
+
+class DeliverymanController {
     static async index(req, res) {
         let page = req.query.page;
 
         if (isNaN(parseInt(page))) page = 1;
 
-        const client = await User.index('C', page);
+        const client = await User.index('D', page);
         return client.success ? res.send(client) : res.status(404).send(client);
     }
 
@@ -17,7 +18,7 @@ class ClientController {
         if (isNaN(parseInt(id)))
             return res.status(400).send({ success: false, message: 'Id inválido!' });
 
-        const client = await User.findOne(id, 'C');
+        const client = await User.findOne(id, 'D');
         return client.success ? res.send(client) : res.status(404).send(client);
     }
 
@@ -30,17 +31,17 @@ class ClientController {
 
         const salt = bcrypt.genSaltSync(saltRounds);
         form.password = bcrypt.hashSync(form.password, salt);
-        
-        form.type = 'C';
 
-        const client = await User.create(form);
+        form.type = 'D';
+
+        const client = await User.create(form, true);
         return client.success ? res.send(client) : res.status(400).send(client);
     }
 
     static async update(req, res) {
         const form = req.body;
 
-        const existClient = User.findOne(id, 'C');
+        const existClient = User.findOne(id, 'D');
         if (existClient.success) {
 
             const existEmail = User.findBy('email', { email: form.email });
@@ -59,7 +60,7 @@ class ClientController {
         if (isNaN(parseInt(id)))
             res.status(400).send({ success: false, message: 'Id inválido!' });
 
-        const existClient = User.findOne(id, 'C');
+        const existClient = User.findOne(id, 'D');
         if (existClient.success) {
             const result = await User.delete(id);
 
@@ -68,4 +69,4 @@ class ClientController {
     }
 };
 
-module.exports = ClientController;
+module.exports = DeliverymanController;

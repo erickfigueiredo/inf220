@@ -15,12 +15,13 @@ class User {
         }
     }
 
-    static async findBy(column) {
+    static async findBy(value) {
         try {
-            const user = await knex.select(column)
-                .from('tb_user');
+            const user = await knex.select('*')
+                .from('tb_user')
+                .where(value);
 
-            
+
             return user[0] ? { success: true, user: user[0] } : { success: false, message: 'Não foi possível recuperar o usuário / Usuário inexistente!' };
         } catch (e) {
             Message.warning(e);
@@ -46,8 +47,21 @@ class User {
         }
     }
 
-    static async create(data) {
+    static async create(data, isDeliveryman = false) {
         try {
+            if (isDeliveryman) {
+                return await knex.transaction(async trx => {
+
+                    const idWallet = await trx('tb_wallet')
+                        .insert({total: 0}, id);
+
+                    data.id_wallet = idWallet;
+                    const result = await trx('tb_user')
+                        .insert(data)
+                        .returning('*');
+                });
+            }
+
             const user = await knex('tb_user')
                 .insert(data)
                 .returning('*');
