@@ -1,8 +1,13 @@
 const router = require('express').Router();
 
+const AddressController = require('../controllers/AddressController');
+const ClientController = require('../controllers/ClientController');
+const DeliverymanController = require('../controllers/DeliverymanController');
+const MarketplaceController = require('../controllers/MarketplaceController');
+const ProductController = require('../controllers/ProductController');
+const WalletController = require('../controllers/WalletController');
 
 // Address routes
-const AddressController = require('../controllers/AddressController');
 
 router.get('/address/all/:id_user', AddressController.index);
 router.get('/address/:id', AddressController.show);
