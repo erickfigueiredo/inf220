@@ -105,22 +105,6 @@ class MarketController {
             return res.status(404).send({success: false, message: 'Não foi possível encontrar o mercado!'});
         } 
     }
-
-    static async delete(req, res) {
-        const id = req.params.id;
-
-        if (isNaN(parseInt(id)))
-            return res.status(400).send({ success: false, message: 'Id inválido' });
-            
-
-        const market = await Market.findOne(id);
-        if ((!market.success || (market.success && !Object.keys(market.market).length)) || (market.success && Object.keys(address.address).length && market.market.is_deleted)) 
-            return res.status(404).send({ success: false, message: 'Mercado inexistente' });
-
-
-        const result = await Market.delete(id);
-        return result.success ? res.send(result) : res.status(400).send(result);
-    }
 }
 
 module.exports = MarketController;
