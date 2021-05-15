@@ -13,7 +13,7 @@ exports.up = async function (knex) {
         table.date('birthdate').notNullable();
         table.string('type', 1).notNullable();
         table.boolean('is_deleted').defaultTo(false).notNullable();
-        table.integer('id_wallet').notNullable().unsigned().references('id').inTable('tb_wallet').onDelete('CASCADE');
+        table.integer('id_wallet').unsigned().references('id').inTable('tb_wallet');
         table.timestamps(false, true); //created_at/updated_at
     });
 
