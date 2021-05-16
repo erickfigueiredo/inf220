@@ -8,8 +8,8 @@ class DeliverymanController {
 
         if (isNaN(parseInt(page))) page = 1;
 
-        const client = await User.index('D', page);
-        return client.success ? res.send(client) : res.status(404).send(client);
+        const deliveryman = await User.index('D', page);
+        return deliveryman.success ? res.send(deliveryman) : res.status(404).send(deliveryman);
     }
 
     static async show(req, res) {
@@ -18,8 +18,8 @@ class DeliverymanController {
         if (isNaN(parseInt(id)))
             return res.status(400).send({ success: false, message: 'Id inválido!' });
 
-        const client = await User.findOne(id, 'D');
-        return client.success ? res.send(client) : res.status(404).send(client);
+        const deliveryman = await User.findOne(id, 'D');
+        return deliveryman.success ? res.send(deliveryman) : res.status(404).send(deliveryman);
     }
 
     static async create(req, res) {
@@ -34,23 +34,23 @@ class DeliverymanController {
 
         form.type = 'D';
 
-        const client = await User.create(form, true);
-        return client.success ? res.send(client) : res.status(400).send(client);
+        const deliveryman = await User.create(form, true);
+        return deliveryman.success ? res.send(deliveryman) : res.status(400).send(deliveryman);
     }
 
     static async update(req, res) {
         const form = req.body;
 
-        const existClient = User.findOne(id, 'D');
-        if (existClient.success) {
+        const existDeliveryman = User.findOne(id, 'D');
+        if (existDeliveryman.success) {
 
-            const existEmail = User.findBy('email', { email: form.email });
+            const existEmail = User.findBy({ email: form.email });
             if (existEmail.success)
                 return res.status(409).send({ success: false, message: 'Email já cadastrado!' });
 
 
-            const client = await User.update(form);
-            return client.success ? res.send(client) : res, status(400).send(client);
+            const deliveryman = await User.update(form);
+            return deliveryman.success ? res.send(deliveryman) : res, status(400).send(deliveryman);
         } else return res.status(404).send({ success: false, message: 'Usuário inexistente!' });
     }
 
@@ -60,12 +60,18 @@ class DeliverymanController {
         if (isNaN(parseInt(id)))
             res.status(400).send({ success: false, message: 'Id inválido!' });
 
-        const existClient = User.findOne(id, 'D');
-        if (existClient.success) {
+        const existDeliveryman = User.findOne(id, 'D');
+        if (existDeliveryman.success) {
             const result = await User.delete(id);
 
             return result.success ? res.send(result) : res.status(400).send(result);
         } else return res.status(404).send({ success: false, message: 'Usuário inexistente!' });
+    }
+
+    static async getAvailableToOrder(){
+        const result = await User.hasDeliverymanAvailable();
+
+        return result.success ? res.send(result) : res.status(400).send(result); 
     }
 };
 

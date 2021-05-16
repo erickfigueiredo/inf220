@@ -24,7 +24,7 @@ class ClientController {
     static async create(req, res) {
         const form = req.body;
 
-        const existEmail = User.findBy('email', { email: form.email });
+        const existEmail = User.findBy({ email: form.email });
         if (existEmail.success)
             return res.status(409).send({ success: false, message: 'Email já cadastrado!' });
 

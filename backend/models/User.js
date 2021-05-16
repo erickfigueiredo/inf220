@@ -103,6 +103,29 @@ class User {
             return { success: false, message: 'Houve um erro ao deletar o usuário!' };
         }
     }
+
+    static async hasDeliverymanAvailable(){
+        try {
+            const subquery = await knex.select('id_deliveryman')
+                .from('tb_order')
+                .where({status: 'P'});
+            
+            const available = await knex.select('id')
+                .from('tb_user')
+                .where({type: 'D'}).andWhere('id', 'not in', subquery);
+
+            switch (available.length) {
+                case 0: return res.send({success: false, message: 'Não há entregadores disponíveis!'});
+                case 1: return res.send({success: true, deliveryman: available[0].id});
+                default: 
+                    const index = Math.random()*(available.length-1, 0);
+                    return res.send({success: true, deliveryman: available[index].id});
+            }
+        } catch(e) {
+            Message.warning(e);
+            return {success: false, message: 'Houve um erro ao verificar os entregadores disponíveis'};
+        }
+    }
 }
 
 module.exports = User;
