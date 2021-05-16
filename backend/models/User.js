@@ -1,4 +1,4 @@
-const knex = require('../data/knex');
+const knex = require('knex');
 const Message = require('../utils/Message');
 
 class User {
