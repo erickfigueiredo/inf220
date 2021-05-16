@@ -1,5 +1,4 @@
 const Market = require('../models/Market');
-const AddressSchema = require('../schemas/AddressSchema');
 const User = require('../models/User');
 
 class MarketController {
@@ -9,11 +8,6 @@ class MarketController {
 
         if (isNaN(parseInt(id_market)))
             return res.status(400).send({ success: false, message: 'Id inválido' });
-            
-
-        let page = req.query.page;
-
-        if (isNaN(parseInt(page))) page = 1;
 
         const markets = await Market.findAll(id_market, page);
         return markets.success ? res.send(markets) : res.status(404).send(markets);
@@ -30,13 +24,6 @@ class MarketController {
     }
 
     static async create(req, res) {
-        const schema = MarketSchema.createValidate();
-        const { error } = schema.validate(req.body);
-
-        if (error) 
-            return res.status(400).send({ success: false, message: error.details[0].message });
-            
-
         const { business_name, cnpj, email, phone, password } = req.body;
 
         let market = {
@@ -70,13 +57,6 @@ class MarketController {
     }
 
     static async update(req, res) {
-        const schema = AddressSchema.updateValidate();
-        const { error } = schema.validate(req.body);
-
-        if (error) 
-            return res.status(400).send({ success: false, message: error.details[0].message });
-    
-
         const { id, business_name, email, phone } = req.body;
 
         const form = {

@@ -5,7 +5,7 @@ const CartController = require('../controllers/CartController');
 const CategoryController = require('../controllers/CategoryController');
 const ClientController = require('../controllers/ClientController');
 const DeliverymanController = require('../controllers/DeliverymanController');
-const MarketplaceController = require('../controllers/MarketplaceController');
+const MarketController = require('../controllers/MarketController');
 const ProductController = require('../controllers/ProductController');
 const WalletController = require('../controllers/WalletController');
 
@@ -21,7 +21,7 @@ router.get('/cart/all/:id_user', CartController.index);
 router.get('/cart/:id_item', CartController.show);
 router.get('/cart/quantity', CartController.quantity);
 router.post('/cart', CartController.create);
-router.update('/cart', CartController.update);
+router.put('/cart', CartController.update);
 router.delete('/cart', CartController.delete);
 
 // Category routes
