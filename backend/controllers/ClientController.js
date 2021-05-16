@@ -57,10 +57,9 @@ class ClientController {
         if (isNaN(parseInt(id)))
             res.status(400).send({ success: false, message: 'Id inválido!' });
 
-        const existClient = User.findOne(id, 'C');
+        const existClient = await User.findOne(id, 'C');
         if (existClient.success) {
             const result = await User.delete(id);
-
             return result.success ? res.send(result) : res.status(400).send(result);
         } else return res.status(404).send({ success: false, message: 'Usuário inexistente!' });
     }

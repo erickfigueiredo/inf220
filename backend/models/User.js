@@ -90,10 +90,10 @@ class User {
         try {
             const isActive = await knex('tb_user')
                 .update({ is_deleted: true })
-                .where('id')
+                .where({id})
                 .returning('is_deleted');
-
-            return !isActive ? { success: true, message: 'Usuário deletado com sucesso!' } : { success: false, message: 'Houve uma falha ao deletar o usuário!' };
+                console.log(isActive)
+            return isActive[0] ? { success: true, message: 'Usuário deletado com sucesso!' } : { success: false, message: 'Houve uma falha ao deletar o usuário!' };
         } catch (e) {
             Message.warning(e);
             return { success: false, message: 'Houve um erro ao deletar o usuário!' };
