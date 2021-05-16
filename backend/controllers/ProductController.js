@@ -18,7 +18,7 @@ class ProductController {
         return product.success ? res.send(product) : res.status(404).send(product);
     }
 
-    static async indexByMarket(req, res) {
+    static async index(req, res) {
         const id_market = req.params.id_market;
 
         if (isNaN(parseInt(id_market)))

@@ -1,6 +1,5 @@
 const knex = require('../database/knex');
 const Message = require('../utils/Message');
-const OrderProduct = require('../models/OrderProduct');
 
 class Order {
 
