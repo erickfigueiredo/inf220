@@ -16,7 +16,7 @@ router.post('/address', AddressController.create);
 router.put('/address', AddressController.update);
 router.delete('/address/:id', AddressController.delete);
 
-// Cart route
+// Cart routes
 router.get('/cart/all/:id_user', CartController.index);
 router.get('/cart/:id_item', CartController.show);
 router.get('/cart/quantity', CartController.quantity);
@@ -24,15 +24,25 @@ router.post('/cart', CartController.create);
 router.update('/cart', CartController.update);
 router.delete('/cart', CartController.delete);
 
-// Category route
+// Category routes
 router.get('/category/all', CategoryController.index);
+router.get('/category/:id', CategoryController.show);
+router.post('/category', CategoryController.create);
 
-// Client route
-router.get('/client/index', ClientController.index);
+// Client routes
+router.get('/client/all', ClientController.index);
 router.get('/client/:id', ClientController.show);
 router.post('/client', ClientController.create);
 router.put('/client', ClientController.update);
 router.delete('/client/:id', ClientController.delete);
+
+// Deliveryman routes
+router.get('/deliveryman/all', DeliverymanController.index);
+router.get('/deliveryman/:id', DeliverymanController.show);
+router.get('/deliveryman/available', DeliverymanController.getAvailableToOrder);
+router.post('/deliveryman', DeliverymanController.create);
+router.put('/deliveryman', DeliverymanController.update);
+router.delete('/deliveryman/:id', DeliverymanController.delete);
 
 // Erro 404
 router.get('/bermuda_triangle', (req, res) => {
