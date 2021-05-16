@@ -69,6 +69,15 @@ class Market {
         try {
             return await knex.transaction(async trx => {
                 const idWallet = await trx('tb_wallet')
+                    .insert({total: 0, pix_key: data.pix_key}).returning('id');
+                
+                data.id_wallet = idWallet[0];
+                delete data.pix_key
+                const result = await trx('tb_market')
+                    .insert(data)
+                    .returning('*');
+
+                    return { success: true, market: result[0] };
             });
         } catch (error) {
             Message.warning(error);

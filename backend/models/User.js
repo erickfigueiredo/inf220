@@ -48,15 +48,15 @@ class User {
                 return await knex.transaction(async trx => {
 
                     const idWallet = await trx('tb_wallet')
-                        .insert({total: 0, pix_key: data.pix_key}).returning('id');
-                    console.log(idWallet)
+                        .insert({ total: 0, pix_key: data.pix_key }).returning('id');
+
                     data.id_wallet = idWallet[0];
                     delete data.pix_key
                     const result = await trx('tb_user')
                         .insert(data)
                         .returning('*');
 
-                        return result[0] ? { success: true, user: result[0] } : { success: false, message: 'Falha ao inserir usuário!' };
+                    return { success: true, user: result[0] };
                 });
             }
 
@@ -80,7 +80,7 @@ class User {
 
             const user = await knex('tb_user')
                 .update(data)
-                .where({id})
+                .where({ id })
                 .returning('*');
 
             return user[0] ? { success: true, user: user[0] } : { success: false, message: 'Falha ao inserir usuário!' };
@@ -94,9 +94,9 @@ class User {
         try {
             const isActive = await knex('tb_user')
                 .update({ is_deleted: true })
-                .where({id})
+                .where({ id })
                 .returning('is_deleted');
-                console.log(isActive)
+            console.log(isActive)
             return isActive[0] ? { success: true, message: 'Usuário deletado com sucesso!' } : { success: false, message: 'Houve uma falha ao deletar o usuário!' };
         } catch (e) {
             Message.warning(e);
@@ -104,26 +104,26 @@ class User {
         }
     }
 
-    static async hasDeliverymanAvailable(){
+    static async hasDeliverymanAvailable() {
         try {
             const subquery = await knex.select('id_deliveryman')
                 .from('tb_order')
-                .where({status: 'P'});
-            
+                .where({ status: 'P' });
+
             const available = await knex.select('id')
                 .from('tb_user')
-                .where({type: 'D'}).andWhere('id', 'not in', subquery);
+                .where({ type: 'D' }).andWhere('id', 'not in', subquery);
 
             switch (available.length) {
-                case 0: return res.send({success: false, message: 'Não há entregadores disponíveis!'});
-                case 1: return res.send({success: true, deliveryman: available[0].id});
-                default: 
-                    const index = Math.random()*(available.length-1, 0);
-                    return res.send({success: true, deliveryman: available[index].id});
+                case 0: return res.send({ success: false, message: 'Não há entregadores disponíveis!' });
+                case 1: return res.send({ success: true, deliveryman: available[0].id });
+                default:
+                    const index = Math.random() * (available.length - 1, 0);
+                    return res.send({ success: true, deliveryman: available[index].id });
             }
-        } catch(e) {
+        } catch (e) {
             Message.warning(e);
-            return {success: false, message: 'Houve um erro ao verificar os entregadores disponíveis'};
+            return { success: false, message: 'Houve um erro ao verificar os entregadores disponíveis' };
         }
     }
 }
