@@ -54,7 +54,11 @@ router.get('/market/:id', MarketController.show);
 router.post('/market', MarketController.create);
 router.put('/market', MarketController.update);
 
-//
+// Order routes
+router.get('/order/all/:id_client', OrderController.index);
+router.get('/order/:id', OrderController.show);
+router.post('/order', OrderController.create);
+router.put('/order', OrderController.update);
 
 // Erro 404
 router.get('/bermuda_triangle', (req, res) => {

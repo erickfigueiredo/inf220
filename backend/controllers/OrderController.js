@@ -93,9 +93,10 @@ class OrderController {
         const marketAddress = await Address.findOne(market.market.id_address);
         const clientAddress = await Address.findOne(client.client.id_address);
 
-        const frete = Math.abs(marketAddress.address.zipcode - clientAddress.address.zipcode) * Math.E + 7;
+        data.delivery = Math.abs(marketAddress.address.zipcode - clientAddress.address.zipcode) * Math.E + 7;
 
         data.id_deliveryman = await Deliveryman.getAvaliabletoOrder();
+        
         const result = await Order.create(data, id_product, quantity, description);
 
         result.success ? res.send(result) : res.status(400).send(result);
@@ -110,24 +111,6 @@ class OrderController {
         }
         const result = await Order.update(data, id_order);
         result.success ? res.send(result) : res.status(400).send(result);
-    }
-
-    static async delete(req, res) {
-        const id = req.params.id;
-
-        if (isNaN(parseInt(id))) {
-            res.status(400).send({ success: false, message: 'Id inválido' });
-            return;
-        }
-
-        const order = await Order.findOne(id);
-        if ((!order.success || (order.success && !Object.keys(order.order).length)) || (order.success && Object.keys(order.order).length && order.order.is_deleted)) {
-            res.status(404).send({ success: false, message: 'Compra inexistente' });
-            return;
-        }
-
-        const result = await Order.delete(id);
-        return result.success ? res.send(result) : res.status(400).send(result);
     }
 }
 
