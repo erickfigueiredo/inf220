@@ -74,6 +74,13 @@ router.post('/product', ProductController.create);
 router.put('/product', ProductController.update);
 router.delete('/product', ProductController.delete);
 
+// Vehicle routes
+router.get('/vehicle/all', VehicleController.index);
+router.get('/vehicle/user/all/:id_user', VehicleController.indexByUser);
+router.get('/vehicle/:id', VehicleController.show);
+router.post('/vehicle', VehicleController.create);
+router.put('/vehicle', VehicleController.put);
+
 // Erro 404
 router.get('/bermuda_triangle', (req, res) => {
     res.status(404).send('ERRO 404 | What??? Maybe you should not be here... ¯\\_(ツ)_/¯');
