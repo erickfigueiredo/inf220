@@ -6,8 +6,12 @@ const CategoryController = require('../controllers/CategoryController');
 const ClientController = require('../controllers/ClientController');
 const DeliverymanController = require('../controllers/DeliverymanController');
 const MarketController = require('../controllers/MarketController');
+const OrderController = require('../controllers/OrderController');
+const PaymentMethodController = require('../controllers/PaymentMethodController');
 const ProductController = require('../controllers/ProductController');
+const VehicleController = require('../controllers/VehicleController');
 const WalletController = require('../controllers/WalletController');
+const WalletWithdrawController = require('../controllers/WalletWithdrawController');
 
 // Address routes
 router.get('/address/all/:id_user', AddressController.index);
@@ -43,6 +47,18 @@ router.get('/deliveryman/available', DeliverymanController.getAvailableToOrder);
 router.post('/deliveryman', DeliverymanController.create);
 router.put('/deliveryman', DeliverymanController.update);
 router.delete('/deliveryman/:id', DeliverymanController.delete);
+
+// Market routes
+router.get('/market/all', MarketController.index);
+router.get('/market/:id', MarketController.show);
+router.post('/market', MarketController.create);
+router.put('/market', MarketController.update);
+
+// Order routes
+router.get('/order/all/:id_client', OrderController.index);
+router.get('/order/:id', OrderController.show);
+router.post('/order', OrderController.create);
+router.put('/order', OrderController.update);
 
 // Erro 404
 router.get('/bermuda_triangle', (req, res) => {

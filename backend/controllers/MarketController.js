@@ -34,16 +34,10 @@ class MarketController {
             password
         }
 
-        if (!CNPJ.validate(cnpj))
-        return res.status(400).send({ success: false, message: 'CNPJ deve ser válido!' });
-
         const existEmail = await Market.findByEmail(email);
         if (existEmail.market && Object.keys(existEmail.market).length)
             return res.status(409).send({ success: false, message: 'Email já cadastrado!' });
 
-        const existCnpj = await Market.findByCnpj(cnpj);
-        if (existCnpj.market && Object.keys(existCnpj.market).length)
-            return res.status(409).send({ success: false, message: 'CNPJ já cadastrado!' });
 
         const existTel = await Market.findByTel(phone);
         if (existTel.market && Object.keys(existTel.market).length)
