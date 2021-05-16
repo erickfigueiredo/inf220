@@ -2,6 +2,7 @@ const knex = require('knex');
 const Message = require('../utils/Message');
 
 class User {
+
     static async findOne(id, type) {
         try {
             const user = await knex.select('*')
@@ -29,18 +30,14 @@ class User {
         }
     }
 
-    static async findAll(type, page) {
+    static async findAll(type) {
         try {
             const user = await knex.select('*')
                 .from('tb_user')
                 .where({ type, "is_deleted": false })
                 .orderBy('id')
-                .paginate({
-                    perPage: 20,
-                    currentPage: page
-                });
 
-            return user.data[0] ? { success: true, user } : { success: false, message: 'Não foi possível recuperar os usuários / Não existem usuários!' };
+            return user[0] ? { success: true, user: user[0] } : { success: false, message: 'Não foi possível recuperar os usuários / Não existem usuários!' };
         } catch (e) {
             Message.warning(e);
             return { success: false, message: 'Houve um erro ao recuperar os usuários!' };
