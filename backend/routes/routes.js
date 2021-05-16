@@ -44,6 +44,12 @@ router.post('/deliveryman', DeliverymanController.create);
 router.put('/deliveryman', DeliverymanController.update);
 router.delete('/deliveryman/:id', DeliverymanController.delete);
 
+// Market routes
+router.get('/market/all', MarketController.index);
+router.get('/market/:id', MarketController.show);
+router.post('/market', MarketController.create);
+router.put('/market', MarketController.update);
+
 // Erro 404
 router.get('/bermuda_triangle', (req, res) => {
     res.status(404).send('ERRO 404 | What??? Maybe you should not be here... ¯\\_(ツ)_/¯');
