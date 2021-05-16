@@ -6,8 +6,12 @@ const CategoryController = require('../controllers/CategoryController');
 const ClientController = require('../controllers/ClientController');
 const DeliverymanController = require('../controllers/DeliverymanController');
 const MarketController = require('../controllers/MarketController');
+const OrderController = require('../controllers/OrderController');
+const PaymentMethodController = require('../controllers/PaymentMethodController');
 const ProductController = require('../controllers/ProductController');
+const VehicleController = require('../controllers/VehicleController');
 const WalletController = require('../controllers/WalletController');
+const WalletWithdrawController = require('../controllers/WalletWithdrawController');
 
 // Address routes
 router.get('/address/all/:id_user', AddressController.index);
@@ -49,6 +53,8 @@ router.get('/market/all', MarketController.index);
 router.get('/market/:id', MarketController.show);
 router.post('/market', MarketController.create);
 router.put('/market', MarketController.update);
+
+//
 
 // Erro 404
 router.get('/bermuda_triangle', (req, res) => {
