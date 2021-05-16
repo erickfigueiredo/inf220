@@ -1,4 +1,5 @@
 const PaymentMethod = require('../models/PaymentMethod');
+const User = require('../models/User');
 
 class PaymentMethodController {
     static async index(req, res) {
