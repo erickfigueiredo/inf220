@@ -1,5 +1,5 @@
 const Cart = require('../models/Cart');
-const Client = require('../models/Client');
+const Client = require('../models/User');
 const Product = require('../models/Product');
 
 class CartController {
