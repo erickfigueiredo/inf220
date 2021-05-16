@@ -1,10 +1,7 @@
 const Order = require('../models/Order');
 const OrderProduct = require('../models/OrderProduct');
 const Product = require('../models/Product');
-const Deliveryman = require('../models/Deliveryman')
-const axios = require('axios');
-const { Client } = require('pg');
-const { MarketplaceCatalog } = require('aws-sdk');
+const Deliveryman = require('../models/User')
 
 class OrderController {
     static async index(req, res) {

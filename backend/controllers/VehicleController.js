@@ -1,21 +1,16 @@
 const Vehicle = require('../models/Vehicle')
-const Deliveryman = require('../models/Deliveryman');
+const Deliveryman = require('../models/User');
 
 class VehicleController {
     static async index(req, res) {
-        const vehicle = await Vehicle.findAll(page)
-        vehicle.success ? res.send(vehicle) : res.status(404).send(vehicle)
-    }
-
-    static async indexByUser(req, res) {
-        const id_user = req.params.id_user
-        if (isNaN(parseInt(id_user))) {
+        const id_user = req.params.id_client
+        if (isNaN(parseInt(id_client))) {
             res
                 .status(404)
                 .send({ success: false, message: 'id de usuário inválido!' })
             return
         }
-        const vehicle = await Vehicle.findAllUserVehicles(id_user)
+        const vehicle = await Vehicle.findAll(id_client)
         vehicle.success ? res.send(vehicle) : res.status(404).send(vehicle)
     }
 
@@ -37,7 +32,7 @@ class VehicleController {
         const deliveryman = await Deliveryman.findOne(id_deliveryman);
         if (!deliveryman.success) return res.status(400).send(deliveryman);
 
-        const result = await Vehicle.create({ alias, license_plate }, id_deliveryman);
+        const result = await Vehicle.create({ alias, license_plate, id_deliveryman});
         result.success ? res.send(result) : res.status(400).send(result)
     }
 
