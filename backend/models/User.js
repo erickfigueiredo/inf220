@@ -1,4 +1,4 @@
-const knex = require('knex');
+const knex = require('../database/knex');
 const Message = require('../utils/Message');
 
 class User {
@@ -21,8 +21,6 @@ class User {
             const user = await knex.select('*')
                 .from('tb_user')
                 .where(value);
-
-
             return user[0] ? { success: true, user: user[0] } : { success: false, message: 'Não foi possível recuperar o usuário / Usuário inexistente!' };
         } catch (e) {
             Message.warning(e);
@@ -72,12 +70,13 @@ class User {
 
     static async update(data) {
         try {
-            const id = data.id;
-            delete data['id'];
+            console.log(data)
+            const id = data.id_client;
+            delete data['id_client'];
 
             const user = await knex('tb_user')
                 .update(data)
-                .where(id)
+                .where({id})
                 .returning('*');
 
             return user[0] ? { success: true, user: user[0] } : { success: false, message: 'Falha ao inserir usuário!' };
@@ -91,10 +90,10 @@ class User {
         try {
             const isActive = await knex('tb_user')
                 .update({ is_deleted: true })
-                .where('id')
+                .where({id})
                 .returning('is_deleted');
-
-            return !isActive ? { success: true, message: 'Usuário deletado com sucesso!' } : { success: false, message: 'Houve uma falha ao deletar o usuário!' };
+                console.log(isActive)
+            return isActive[0] ? { success: true, message: 'Usuário deletado com sucesso!' } : { success: false, message: 'Houve uma falha ao deletar o usuário!' };
         } catch (e) {
             Message.warning(e);
             return { success: false, message: 'Houve um erro ao deletar o usuário!' };

@@ -35,8 +35,9 @@ class ClientController {
 
     static async update(req, res) {
         const form = req.body;
+        const id = req.body.id_client;
 
-        const existClient = User.findOne(id, 'C');
+        const existClient = await User.findOne(id, 'C');
         if (existClient.success) {
 
             const existEmail = User.findBy('email', { email: form.email });
@@ -45,7 +46,8 @@ class ClientController {
 
 
             const client = await User.update(form);
-            return client.success ? res.send(client) : res, status(400).send(client);
+            console.log(client)
+            return client.success ? res.send(client) : res.status(400).send(client);
         } else return res.status(404).send({ success: false, message: 'Usuário inexistente!' });
     }
 
@@ -55,10 +57,9 @@ class ClientController {
         if (isNaN(parseInt(id)))
             res.status(400).send({ success: false, message: 'Id inválido!' });
 
-        const existClient = User.findOne(id, 'C');
+        const existClient = await User.findOne(id, 'C');
         if (existClient.success) {
             const result = await User.delete(id);
-
             return result.success ? res.send(result) : res.status(400).send(result);
         } else return res.status(404).send({ success: false, message: 'Usuário inexistente!' });
     }
