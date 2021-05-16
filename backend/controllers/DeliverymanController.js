@@ -6,9 +6,7 @@ class DeliverymanController {
     static async index(req, res) {
         let page = req.query.page;
 
-        if (isNaN(parseInt(page))) page = 1;
-
-        const deliveryman = await User.index('D', page);
+        const deliveryman = await User.findAll('D');
         return deliveryman.success ? res.send(deliveryman) : res.status(404).send(deliveryman);
     }
 
@@ -35,22 +33,27 @@ class DeliverymanController {
         form.type = 'D';
 
         const deliveryman = await User.create(form, true);
+        console.log(deliveryman)
         return deliveryman.success ? res.send(deliveryman) : res.status(400).send(deliveryman);
     }
 
     static async update(req, res) {
         const form = req.body;
+        const id = form.id_deliveryman;
 
-        const existDeliveryman = User.findOne(id, 'D');
+        console.log(id)
+        const existDeliveryman = await User.findOne(id, 'D');
+
         if (existDeliveryman.success) {
 
-            const existEmail = User.findBy({ email: form.email });
-            if (existEmail.success)
-                return res.status(409).send({ success: false, message: 'Email já cadastrado!' });
-
+            if (form.email) {
+                const existEmail = User.findBy({ email: form.email });
+                if (existEmail.success)
+                    return res.status(409).send({ success: false, message: 'Email já cadastrado!' });
+            }
 
             const deliveryman = await User.update(form);
-            return deliveryman.success ? res.send(deliveryman) : res, status(400).send(deliveryman);
+            return deliveryman.success ? res.send(deliveryman) : res.status(400).send(deliveryman);
         } else return res.status(404).send({ success: false, message: 'Usuário inexistente!' });
     }
 
@@ -68,10 +71,10 @@ class DeliverymanController {
         } else return res.status(404).send({ success: false, message: 'Usuário inexistente!' });
     }
 
-    static async getAvailableToOrder(){
+    static async getAvailableToOrder() {
         const result = await User.hasDeliverymanAvailable();
 
-        return result.success ? res.send(result) : res.status(400).send(result); 
+        return result.success ? res.send(result) : res.status(400).send(result);
     }
 };
 

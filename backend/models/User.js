@@ -48,12 +48,15 @@ class User {
                 return await knex.transaction(async trx => {
 
                     const idWallet = await trx('tb_wallet')
-                        .insert({total: 0}, id);
-
-                    data.id_wallet = idWallet;
+                        .insert({total: 0, pix_key: data.pix_key}).returning('id');
+                    console.log(idWallet)
+                    data.id_wallet = idWallet[0];
+                    delete data.pix_key
                     const result = await trx('tb_user')
                         .insert(data)
                         .returning('*');
+
+                        return result[0] ? { success: true, user: result[0] } : { success: false, message: 'Falha ao inserir usuário!' };
                 });
             }
 
@@ -71,8 +74,9 @@ class User {
     static async update(data) {
         try {
             console.log(data)
-            const id = data.id_client;
+            const id = data.id_client || data.id_deliveryman;
             delete data['id_client'];
+            delete data['id_deliveryman'];
 
             const user = await knex('tb_user')
                 .update(data)

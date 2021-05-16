@@ -8,15 +8,12 @@ class CategoryController {
             return res.status(400).send({success: false, message: 'Id inválido!'});
         
         const category = await Category.findOne(id);
-        return category[0] ? res.send({success: true, category: category[0]}) : res.status(404).send();
+        return category[0] ? res.send({success: true, category: category[0]}) : res.status(404).send(category);
     }
 
     static async index (req, res) {
-        let page = req.query.page;
-        if (isNaN(parseInt(page))) page = 1;
-
-        const category = await Category.findAll(page);
-        return category.data[0] ? res.send({success: true, category}) : res.status(404).send();
+        const category = await Category.findAll();
+        return category[0] ? res.send({success: true, category}) : res.status(404).send(category);
     }
 
     static async create (req, res) {

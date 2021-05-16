@@ -75,11 +75,9 @@ router.put('/product', ProductController.update);
 router.delete('/product', ProductController.delete);
 
 // Vehicle routes
-router.get('/vehicle/all', VehicleController.index);
-router.get('/vehicle/user/all/:id_user', VehicleController.indexByUser);
+router.get('/vehicle/all/:id_user', VehicleController.index);
 router.get('/vehicle/:id', VehicleController.show);
 router.post('/vehicle', VehicleController.create);
-router.put('/vehicle', VehicleController.put);
 
 // Wallet routes
 route.get('/wallet/all', WalletController.index);
