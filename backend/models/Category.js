@@ -22,13 +22,11 @@ class Category {
         }
     }
 
-    static async findAll(page) {
+    static async findAll() {
         try {
             const category = await knex.select('*').from('tb_category')
-                .where({ id })
-                .paginate({ perPage: 20, currentPage: page });
 
-            return category.data[0] ? { success: true, category } : { success: false, message: 'Não foi possível recuperar as categorias / Categorias inexistentes!' };
+            return category[0] ? { success: true, category } : { success: false, message: 'Não foi possível recuperar as categorias / Categorias inexistentes!' };
         } catch (error) {
             Message.warning(error);
             return { success: false, message: 'Houve um erro ao recuperar as categorias!' };
