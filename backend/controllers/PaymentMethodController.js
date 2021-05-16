@@ -4,7 +4,7 @@ class PaymentMethodController {
     static async index(req, res) {
         const id = req.params.id_client;
         const payment = await PaymentMethod.findAll(id);
-        return discounts.success ? res.send(discounts) : res.status(404).send(discounts);
+        return payment.success ? res.send(payment) : res.status(404).send(payment);
     }
 
     static async show(req, res) {

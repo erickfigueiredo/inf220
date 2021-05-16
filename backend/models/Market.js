@@ -67,10 +67,9 @@ class Market {
 
     static async create(data) {
         try {
-            const market = await knex.insert(data).table('tb_market').returning('*')
-
-
-            return market[0] ? { success: true, market: market[0] } : { success: false, message: 'Não foi possível cadastrar o usuário!' };
+            return await knex.transaction(async trx => {
+                const idWallet = await trx('tb_wallet')
+            });
         } catch (error) {
             Message.warning(error);
             return { success: false, message: 'Falha ao inserir mercado!' }
