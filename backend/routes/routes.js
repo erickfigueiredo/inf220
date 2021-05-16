@@ -60,6 +60,20 @@ router.get('/order/:id', OrderController.show);
 router.post('/order', OrderController.create);
 router.put('/order', OrderController.update);
 
+// Payment routes
+router.get('/paymentmethod/all/:id_client', PaymentMethodController.index);
+router.get('/paymentmethod/:id', PaymentMethodController.show);
+router.post('/paymentmethod', PaymentMethodController.create);
+router.delete('/paymentmethod',PaymentMethodController.delete);
+
+// Product routes
+router.get('/product/all/:id_market', ProductController.index);
+router.get('/product/:id', ProductController.show);
+router.post('/product/search', ProductController.search);
+router.post('/product', ProductController.create);
+router.put('/product', ProductController.update);
+router.delete('/product', ProductController.delete);
+
 // Erro 404
 router.get('/bermuda_triangle', (req, res) => {
     res.status(404).send('ERRO 404 | What??? Maybe you should not be here... ¯\\_(ツ)_/¯');

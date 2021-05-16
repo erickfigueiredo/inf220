@@ -1,10 +1,9 @@
-const Discount = require("../models/Discount");
-const Product = require('../models/Product');
+const PaymentMethod = require('../models/PaymentMethod');
 
 class PaymentMethodController {
     static async index(req, res) {
-        const id = req.params.id;
-        const discounts = await Discount.findAll(id);
+        const id = req.params.id_client;
+        const payment = await PaymentMethod.findAll(id);
         return discounts.success ? res.send(discounts) : res.status(404).send(discounts);
     }
 
