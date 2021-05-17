@@ -26,7 +26,7 @@ class ClientController {
 
         const salt = bcrypt.genSaltSync(saltRounds);
         form.password = bcrypt.hashSync(form.password, salt);
-        
+
         form.type = 'C';
 
         const client = await User.create(form);
@@ -62,6 +62,29 @@ class ClientController {
             const result = await User.delete(id);
             return result.success ? res.send(result) : res.status(400).send(result);
         } else return res.status(404).send({ success: false, message: 'Usuário inexistente!' });
+    }
+
+    static async login(req, res) {
+        const { email, password } = req.body;
+
+        const existClient = Client.findBy({ email });
+        if (existClient.success) {
+            bcrypt.compare(password, existClient.password, (err, res) => {
+                if(err) return res.status(400).send({success: false, message: 'E-mail ou senha não conferem!'});
+                
+                return res.send(
+                    {
+                        id: existClient.id,
+                        name: existClient.name,
+                        email: existClient.email,
+                        type: existClient.type,
+                        idAddress: existClient.id_address,
+                        idWallet: existClient.id_wallet
+                    }
+                )
+            });
+        }
+        return res.status(404).send({ success: false, message: 'Cliente inexistente!' });
     }
 };
 

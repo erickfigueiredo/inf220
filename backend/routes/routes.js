@@ -39,6 +39,7 @@ router.get('/client/:id', ClientController.show);
 router.post('/client', ClientController.create);
 router.put('/client', ClientController.update);
 router.delete('/client/:id', ClientController.delete);
+router.post('/login', ClientController.login);
 
 // Deliveryman routes
 router.get('/deliveryman/all', DeliverymanController.index);
