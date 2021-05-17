@@ -87,7 +87,7 @@ router.put('/wallet', WalletController.update);
 router.put('/wallet/increment', WalletController.incrementTotal);
 
 // Wallet Withdraw routes
-router.get('/withdraw/all', WalletWithdrawController.index);
+router.get('/withdraw/all/:id_user', WalletWithdrawController.index);
 router.get('/withdraw/:id_withdraw', WalletWithdrawController.show);
 router.post('/withdraw', WalletWithdrawController.create);
 

@@ -12,9 +12,9 @@ class WalletWithdraw {
         }
     }
 
-    static async findAll() {
+    static async findAll(id_wallet) {
         try {
-            const withdraw = await knex.select("*").from('tb_wallet_withdraw')
+            const withdraw = await knex.select("*").from('tb_wallet_withdraw').where({id_wallet})
             return withdraw[0] ? { success: true, withdraw: withdraw[0] } : { success: false, message: 'Não foi possível recuperar os saques / Saques inexistentes!' };
         } catch (error) {
             Message.warning(error);
