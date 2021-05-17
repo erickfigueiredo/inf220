@@ -18,10 +18,11 @@ class Vehicle {
     static async findAll(id_deliveryman) {
         try {
             const vehicle = await knex.select('*')
-                .from('tb_user')
-                .where({ id: id_deliveryman })
-                .orderBy('id')
-            return vehicle[0] ? { success: true, vehicle: vehicle[0] } : { success: false, message: 'Não foi possível recuperar os veículos / Não existem veículos!' };
+                .from('tb_vehicle')
+                .where({ id_deliveryman, "is_deleted": false })
+                .orderBy('alias');
+
+            return vehicle[0] ? { success: true, vehicle } : { success: false, message: 'Não foi possível recuperar os veículos / Não existem veículos!' };
         } catch (e) {
             Message.warning(e);
             return { success: false, message: 'Houve um erro ao recuperar os veículos!' };
@@ -30,7 +31,7 @@ class Vehicle {
 
     static async create(data) {
         try {
-            const vehicle = await knex('tb_vehicle').insert(data);
+            const vehicle = await knex('tb_vehicle').insert(data, '*');
             return vehicle[0] ? { success: true, vehicle: vehicle[0] } : { success: false, message: 'Falha ao inserir veículo!' };
         } catch (e) {
             Message.warning(e);
@@ -42,7 +43,7 @@ class Vehicle {
         try {
             const vehicle = await knex('tb_vehicle')
                 .update(data)
-                .where({ id })
+                .where({ id, 'is_deleted': false })
                 .returning('*');
 
             return vehicle[0] ? { success: true, vehicle: vehicle[0] } : { success: false, message: 'Falha ao atulizar veículo!' };

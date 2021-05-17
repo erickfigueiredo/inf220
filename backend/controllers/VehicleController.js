@@ -3,26 +3,23 @@ const Deliveryman = require('../models/User');
 
 class VehicleController {
     static async index(req, res) {
-        const id_user = req.params.id_client
-        if (isNaN(parseInt(id_client))) {
-            res
-                .status(404)
-                .send({ success: false, message: 'id de usuário inválido!' })
-            return
+        const id_deliveryman = req.params.id_deliveryman;
+        if (isNaN(parseInt(id_deliveryman))) {
+            return res.status(404).send({ success: false, message: 'id de usuário inválido!' })
         }
-        const vehicle = await Vehicle.findAll(id_client)
+        const vehicle = await Vehicle.findAll(id_deliveryman)
         vehicle.success ? res.send(vehicle) : res.status(404).send(vehicle)
     }
 
     static async show(req, res) {
-        const id_vehicle = req.params.id_vehicle
+        const id = req.params.id
 
-        if (isNaN(parseInt(id_vehicle))) {
+        if (isNaN(parseInt(id))) {
             res.status(404).send({ success: false, message: 'id inválido!' })
             return
         }
 
-        const vehicle = await Vehicle.findOne(id_vehicle)
+        const vehicle = await Vehicle.findOne(id)
         vehicle.success ? res.send(vehicle) : res.status(404).send(vehicle)
     }
 
@@ -32,7 +29,10 @@ class VehicleController {
         const deliveryman = await Deliveryman.findOne(id_deliveryman);
         if (!deliveryman.success) return res.status(400).send(deliveryman);
 
-        const result = await Vehicle.create({ alias, license_plate, id_deliveryman});
+        const data = { alias, id_deliveryman};
+        if(license_plate) data.license_plate = license_plate;
+
+        const result = await Vehicle.create(data);
         result.success ? res.send(result) : res.status(400).send(result)
     }
 
@@ -40,14 +40,14 @@ class VehicleController {
         const {
             alias,
             license_plate,
-            id_vehicle
+            id
         } = req.body
 
-        const vehicle = await Vehicle.findOne(id_vehicle)
+        const vehicle = await Vehicle.findOne(id)
         if (vehicle.success) {
-            const vehicle = await Vehicle.update({alias, license_plate}, id_vehicle)
+            const vehicle = await Vehicle.update({alias, license_plate}, id)
             return vehicle.success ? res.send(vehicle) : res.status(400).send(vehicle)
-        } else res.status(400).send(vehicle)
+        } else res.status(404).send(vehicle)
     }
 }
 
