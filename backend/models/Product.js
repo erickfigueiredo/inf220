@@ -40,7 +40,6 @@ class Product {
 
     static async mostSalesByCategory(id_market, category) {
         try {
-            const product
 
         } catch(error) {
             Message.warning(error);
