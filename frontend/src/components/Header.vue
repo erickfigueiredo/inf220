@@ -34,17 +34,11 @@
     </div>
 
     <div class="flex items-center">
-      <button
-        class="flex mx-2 lg:mx-4 text-gray-500 focus:outline-none transition duration-300 hover:text-red-600"
-      >
-        <i class="far fa-bell"></i>
-      </button>
       <router-link
         to="/carrinho"
         v-if="userType != 'V'"
       >
         <span class="mx-2 lg:mx-4 text-gray-500 focus:outline-none transition duration-300 hover:text-red-600">
-          <span class="relative top-0 left-0 mr-1 text-right bg-gray-300 text-gray-600 text-xs px-2 rounded-full uppercase font-bold tracking-wide"> {{cartQuantity}} </span>
           <i class="fas fa-truck-loading"></i>
         </span>
       </router-link>
@@ -145,7 +139,6 @@ export default defineComponent({
       userType: '',
       name: "Usuário",
       search: "",
-      cartQuantity: 0,
 
       type: "none",
       title: "",
@@ -160,20 +153,10 @@ export default defineComponent({
   },
   async created() {
     if (this.login.login.isLogged) this.logged = this.login.login.isLogged;
-
-    if(this.login.login.isLogged && this.user.user.type != 'V'){
-      await this.loadCart(1)
-      const cartItems = await this.getItems();
-      const quantity = await this.getCartQuantity()
-      this.cardQuantity = quantity.items;
-    }
-
-    this.userType = this.$store.state.user.user.type || undefined;
-
   },
   methods: {
     ...mapMutations(['setSearch']),
-    ...mapActions(["logout", "getItems", 'loadCart', 'getCartQuantity']),
+    ...mapActions(["logout"]),
     log: async function () {
       const result = await this.$store.dispatch("logout");
     },
@@ -187,25 +170,12 @@ export default defineComponent({
         this.type = "info";
       } else {
         this.setSearch(this.search);
-        this.$router.push({ path: "/busca", query: { search: this.search, page: 1 }});
+        this.$router.push({ path: "/busca", query: { search: this.search }});
       }
       setTimeout(() => {
         this.type = "none";
       }, 3000);
     },
-  },
-  watch: {
-    async '$store.state.cart.cart'(value) {
-      if(this.$store.state.login.login.isLogged && this.$store.state.user.user.type != 'V' ){
-        const quantity = await this.getCartQuantity();
-        this.cartQuantity = parseInt(quantity.items) || 0;
-      }else if(!this.$store.state.login.login.isLogged){
-        console.log('tmao aqui')
-        let quantity = await this.getCartQuantity();
-        this.cartQuantity = parseInt(quantity.items) || 0;
-      }
-      this.$forceUpdate();
-    }
   },
   components: {
     MessageCard,

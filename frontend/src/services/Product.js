@@ -3,7 +3,8 @@ import { axios, apiURL } from './config.js';
 class Product {
     static async getAll() {
         try {
-            const response = await axios.get(`${apiURL}/product/all`);
+            const response = await axios.get(`${apiURL}/product/all/all`);
+            console.log(response)
             return response.data;
         } catch (error) {
             return error.response.data;
