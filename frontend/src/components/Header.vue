@@ -72,16 +72,6 @@
           >
           <div v-if="logged">
             <router-link
-              to="/perfil"
-              class="block px-4 py-2 text-sm text-gray-700 transition duration-300 hover:bg-gray-500 hover:text-white"
-              >Perfil</router-link
-            >
-            <a
-              href="#"
-              class="block px-4 py-2 text-sm text-gray-700 transition duration-300 hover:bg-gray-500 hover:text-white"
-              >Configurações</a
-            >
-            <router-link
               to="/login"
               @click="log"
               class="block px-4 py-2 text-red-600 text-sm transition duration-300 hover:bg-red-600 hover:text-white"
@@ -165,12 +155,10 @@ export default defineComponent({
   computed: {
     ...mapState(["login", "user"]),
     firstName() {
-      if (this.name == "Usuário") return "Tem uma conta? Faça login!";
-      else return `Olá, ${this.name[0].toUpperCase() + this.name.substr(1)}!`;
+      return `Olá, ${this.name[0].toUpperCase() + this.name.substr(1)}!`;
     },
   },
   async created() {
-    if (this.user.user.name) this.name = this.user.user.name;
     if (this.login.login.isLogged) this.logged = this.login.login.isLogged;
 
     if(this.login.login.isLogged && this.user.user.type != 'V'){

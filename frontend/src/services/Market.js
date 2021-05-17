@@ -1,17 +1,17 @@
 import { axios, apiURL } from './config.js';
 
-class Client {
-    static async getClientById(id) {
+class Market {
+    static async getAll() {
         try {
-            const response = await axios.get(`${apiURL}/client/${id}`);
+            const response = await axios.get(`${apiURL}/market/all`);
             return response.data;
         } catch (error) {
             return error.response.data;
         }
     }
-    static async create(data) {
+    static async getMarketById(id) {
         try {
-            const response = await axios.post(`${apiURL}/client`, data);
+            const response = await axios.get(`${apiURL}/market/${id}`);
             return response.data;
         } catch (error) {
             return error.response.data;
@@ -19,4 +19,4 @@ class Client {
     }
 }
 
-export default Client
+export default Market;

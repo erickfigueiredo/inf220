@@ -36,7 +36,6 @@ class ProductController {
     }
 
     static async indexAll(req, res) {
-
         const product = await Product.findAll();
         return product.success ? res.send(product) : res.status(400).send(product);
     }

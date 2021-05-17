@@ -1,17 +1,17 @@
 import { axios, apiURL } from './config.js';
 
-class Discount {
-    static async getAll() {
+class Bank {
+    static async getAll(id_client) {
         try {
-            const response = await axios.get(`${apiURL}/discount/all`);
+            const response = await axios.get(`${apiURL}/paymentmethod/all/${id_client}`);
             return response.data;
         } catch (error) {
             return error.response.data;
         }
     }
-    static async getDiscountById(id) {
+    static async getPayment(id) {
         try {
-            const response = await axios.get(`${apiURL}/discount/${id}`);
+            const response = await axios.get(`${apiURL}/paymentmethod/${id}`);
             return response.data;
         } catch (error) {
             return error.response.data;
@@ -19,7 +19,7 @@ class Discount {
     }
     static async create(data) {
         try {
-            const response = await axios.post(`${apiURL}/discount`, data);
+            const response = await axios.post(`${apiURL}/bank`, data);
             return response.data;
         } catch (error) {
             return error.response.data;
@@ -27,4 +27,4 @@ class Discount {
     }
 }
 
-export default Discount
+export default Bank;

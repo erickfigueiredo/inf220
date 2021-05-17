@@ -2,20 +2,13 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 import Login from './views/Login.vue';
 import Register from './views/Register.vue';
-import Retrieve from './views/Retrieve.vue';
-import NewPassword from './views/NewPassword.vue'
 
 import Home from './views/Home.vue';
 import ShoppingCart from './views/ShoppingCart.vue';
-import Profile from './views/Profile.vue';
-import HubMessage from './views/HubMessage.vue';
 
 import ProductSearch from './views/ProductSearch.vue';
 import ProductGeneral from './views/ProductGeneral.vue';
-import ProductRegistration from './views/ProductRegistration.vue';
-import ProductAlteration from './views/ProductAlteration.vue';
 
-import SalesmanMarket from './views/SalesmanMarket.vue';
 import NotFound from './views/NotFound.vue';
 
 // Não pertencem à aplicação final
@@ -26,8 +19,6 @@ import UIElements from './views/UIElements.vue';
 import Modal from './views/Modal.vue';
 import Card from './views/Card.vue';
 import Blank from './views/Blank.vue';
-import ResendConfirmAccount from './views/ResendConfirmAccount.vue';
-import ConfirmAccount from './views/ConfirmAccount.vue';
 
 const routes = [{
         path: '/login',
@@ -42,30 +33,6 @@ const routes = [{
         meta: { layout: 'empty' }
     },
     {
-        path: '/recuperar-senha',
-        name: 'RetrievePassword',
-        component: Retrieve,
-        meta: { layout: 'empty' }
-    },
-    {
-        path: '/nova-senha',
-        name: 'NewPassword',
-        component: NewPassword,
-        meta: { layout: 'empty' }
-    },
-    {
-        path: '/confirme',
-        name: 'Confirm',
-        component: ResendConfirmAccount,
-        meta: { layout: 'empty' }
-    },
-    {
-        path: '/confirmar-conta',
-        name: 'ConfirmAccount',
-        component: ConfirmAccount,
-        meta: { layout: 'empty' }
-    },
-    {
         path: '/',
         name: 'Home',
         component: Home
@@ -76,34 +43,9 @@ const routes = [{
         component: ProductSearch
     },
     {
-        path: '/perfil',
-        name: 'Profile',
-        component: Profile
-    },
-    {
-        path: '/central-mensagens',
-        name: 'HubMessage',
-        component: HubMessage
-    },
-    {
         path: '/produto/:id_product',
         name: 'ProductGeneral',
         component: ProductGeneral
-    },
-    {
-        path: '/loja/:id_salesman',
-        name: 'SalesmanMarket',
-        component: SalesmanMarket
-    },
-    {
-        path: '/produto/cadastrar',
-        name: 'ProductRegistration',
-        component: ProductRegistration
-    },
-    {
-        path: '/produto/editar/:id',
-        name: 'ProductAlteration',
-        component: ProductAlteration
     },
     {
         path: '/carrinho',
