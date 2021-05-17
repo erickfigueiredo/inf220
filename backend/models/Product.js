@@ -86,8 +86,8 @@ class Product {
 
     static async update(data) {
         try {
-            const id = data.id;
-            delete data[id];
+            const id = data.id_product;
+            delete data['id_product'];
 
             const product = await knex('tb_product').update(data, '*').where({ id });
             return product[0] ? { success: true, product: product[0] } : { success: true, message: 'Não foi possível atualizar o produto!' };

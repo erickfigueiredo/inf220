@@ -47,31 +47,32 @@ class Market {
         }
     }
 
-    static async findAll(page) {
+    static async findAll() {
         try {
-            const market = await knex.select('id', 'business_name', 'cnpj', 'email', 'phone')
+            const markets = await knex.select('id', 'business_name', 'cnpj', 'email', 'phone')
                 .from('tb_market')
                 .where({ 'is_deleted': false })
                 .orderBy(['business_name'])
-                .paginate({
-                    perPage: 20,
-                    currentPage: page
-                });
 
-            return market.data[0] ? { success: true, market } : { success: false, message: 'Não foi possível recuperar os mercados / Mercados inexistentes!' };
+            return markets[0] ? { success: true, markets } : { success: false, message: 'Não foi possível recuperar os mercados / Mercados inexistentes!' };
         } catch (error) {
             Message.warning(error);
             return { success: false, message: 'Houve um erro ao recuperar mercado!' };
         }
     }
 
-    static async create(data) {
+    static async create(data, address) {
         try {
+            address.type = 'M'
             return await knex.transaction(async trx => {
                 const idWallet = await trx('tb_wallet')
                     .insert({total: 0, pix_key: data.pix_key}).returning('id');
+
+                const idAddress = await trx('tb_address')
+                .insert(address).returning('id');
                 
                 data.id_wallet = idWallet[0];
+                data.id_address = idAddress[0];
                 delete data.pix_key
                 const result = await trx('tb_market')
                     .insert(data)
