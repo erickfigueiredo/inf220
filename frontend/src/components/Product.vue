@@ -14,16 +14,11 @@
           R$<span class="text-3xl">{{ product.price }}</span>
           <span class="text-gray-600 text-sm"> x{{ product.quantity }}</span>
         </div>
-        <span
-          class="mt-2 text-gray-600 text-xs uppercase font-semibold tracking-wide"
-        >
-          <span class="text-gray-500 transition duration-300 hover:text-red-600"><span class="mr-1"><i class="fas fa-store "></i></span><span style="cursor: pointer">{{ product.business_name }}</span></span> &bull; Tipo {{ product.quality }}
-        </span>
       </div>
       <div class="px-6 pt-4 pb-2 text-center">
         <span
           class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2 transition duration-300 hover:bg-gray-800 hover:text-white cursor-pointer"
-          >{{ product.material }}</span
+          >{{ product.category }}</span
         >
       </div>
     </div>

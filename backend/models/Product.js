@@ -4,7 +4,9 @@ const Message = require('../utils/Message');
 class Product {
     static async findOne(id) {
         try {
-            const product = await knex.select('*').from('tb_product').where({ id });
+            const product = await knex.select('*').from('tb_product')
+                                    .join('tb_category', 'tb_category.id', 'tb_product.id_category')
+                                    .where({ 'tb_product.id': id });
             return product[0] ? { success: true, product: product[0] } : { success: false, message: 'Não foi possível recuperar o produto / Produto inexistente!' };
         } catch (error) {
             Message.warning(error);
@@ -15,6 +17,7 @@ class Product {
     static async findAll() {
         try {
             const product = await knex.select('*').from('tb_product').where({is_deleted: false});
+            console.log(product)
             return product[0] ? { success: true, product } : { success: false, message: 'Não foi possível recuperar o produto / Produto inexistente!' };
         } catch (error) {
             Message.warning(error);

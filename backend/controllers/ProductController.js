@@ -74,6 +74,8 @@ class ProductController {
             
             console.log(req.file)
 
+            console.log(req.file)
+
             req.body = JSON.parse(req.body.data);
 
             const existMarket = await Market.findOne(req.body.id_market);

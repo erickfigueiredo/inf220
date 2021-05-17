@@ -32,14 +32,14 @@
                   <span
                     class="mr-1 bg-white text-gray-700 text-xs px-2 rounded-full uppercase font-bold tracking-wide"
                   >
-                    Tipo {{product.quality}}
+                    {{product.name}}
                   </span>
                 </div>
                 <div class="w-full lg:w-3/4">
                   <p>
                     R$
                     <span class="text-white text-3xl">{{ product.price }}</span
-                    ><span class="text-xs"> por unidade</span>
+                    ><span class="text-xs"> por unidade ({{product.unt}})</span>
                   </p>
                   <p class="text-xs">
                     Unidades disponíveis:
@@ -52,75 +52,19 @@
               <hr class="border-gray-700 my-2" />
               <div class="my-2">
                 <p class="text-sm">
-                  Material:
-                  <span class="mr-1 text-white font-bold">
-                    {{ product.name }}</span
-                  >
-                </p>
-                <p class="text-sm">
-                  Altura:
+                  Marca:
                   <span class="mr-1 text-white font-bold">{{
-                    product.height
+                    product.brand
                   }}</span>
-                  cm
                 </p>
                 <p class="text-sm">
-                  Comprimento:
+                  Validade:
                   <span class="mr-1 text-white font-bold">
-                    {{ product.width }}</span
+                    {{ new Date(product.validate).toLocaleString().substr(0,10) }}</span
                   >
-                  cm
-                </p>
-                <p class="text-sm">
-                  Espessura:
-                  <span class="mr-1 text-white font-bold">
-                    {{ product.depth}}</span
-                    > 
-                    cm
                 </p>
               </div>
               <hr class="border-gray-700 my-2" />
-              <div class="mt-4 mb-2">
-                <p class="text-xs text-left">
-                  Unidades vendidas:
-                  <span class="text-white font-bold">XX</span>
-                </p>
-                <div
-                  class="h-1 mx-auto relative max-w-xl w-full rounded-full overflow-hidden my-2"
-                >
-                  <div class="w-full h-full bg-green-500 absolute"></div>
-                  <div
-                    class="h-full bg-red-500 absolute"
-                    style="width: 25%"
-                  ></div>
-                </div>
-                <div class="my-2 flex justify-between px-2">
-                  <div class="text-xs text-center">
-                    <span class="text-xl"
-                      ><i class="fas fa-thumbs-down"></i
-                    ></span>
-                    <span class="text-white font-bold"> XX</span>
-                  </div>
-                  <div class="text-xs text-center">
-                    <span class="text-xl"
-                      ><i class="fas fa-thumbs-up"></i
-                    ></span>
-                    <span class="text-white font-bold"> XX</span>
-                  </div>
-                </div>
-              </div>
-              <div class="mb-2 mt-4">
-                <p class="text-xs">Vendido e entregue por:</p>
-                <p>
-                  <router-link
-                    class="text-gray-500 text-sm transition duration-300 hover:text-red-600 uppercase font-semibold tracking-wide cursor-pointer"
-                    :to="{path: '/loja/'+salesman.id_salesman}"
-                    ><i class="fas fa-store"></i>
-                    {{ salesman.business_name }}</router-link
-                  >
-                </p>
-              </div>
-              <hr class="border-gray-700 my-6" />
               <div v-if="status === true" class="my-2 justify-center">
                 <button
                   type="button"
@@ -175,7 +119,7 @@
       <div class="my-6 bg-white rounded-lg p-4 text-gray-700">
         <h2 class="font-bold text-base lg:text-xl">Descrição</h2>
         <hr class="border-gray-300 my-2" />
-        <p class="lg:mx-5 my-5">{{ product.description }}</p>
+        <p class="lg:mx-5 my-5">{{ product.desc }}</p>
       </div>
     </div>
 
@@ -225,7 +169,6 @@ import MessageCardFixed from "./MessageCardFixed.vue";
 export default {
   props: {
     product: Object,
-    salesman: Object,
     stock: Boolean
   },
   data() {
@@ -250,23 +193,18 @@ export default {
     MessageCardFixed,
   },
   methods: {
-    ...mapActions(["getItems", "setItem"]),
+
     redirectToSearch(search) {
       this.$router.push("/busca?search=" + search);
     },
     addToCart: async function () {
       this.loading = true;
-      if (this.quantity > this.product.quantity || this.quantity < 1) {
-        this.setMessage('Erro!', 'error', 'Quantidade maior que a disponível!', 3000);
-        return;
-      }
-      let data = {
-        id_product: this.product.id,
-        cart_quantity: parseInt(this.quantity),
-      };
-      this.setItem(data).then((result) => {
-        result.success ? this.setMessage("Sucesso!", 'success', result.message, 3000) : this.setMessage("Erro!", 'error', result.message, 3000);
-      });
+      
+      const result = await Cart.create({
+        id_user: this.$store.user.user.id,
+        id_product: this.$route.params.id_product,
+        quantity: this.quantity 
+      })
 
       this.loading = false;
     },
@@ -283,15 +221,14 @@ export default {
     showImg(index) {
         this.index = index
         this.visible = true
-      },
+    },
     handleHide() {
       this.visible = false
     }
   },
   created() {
-    for(let img of this.product.images) this.imgs.push(img.url);
-    if(this.$store.state.user.user.type == 'V') this.status = 'V';
-    else this.status = this.stock;
+    this.imgs.push(this.product.uri);
+    this.loading = false
   },
 };
 </script>
