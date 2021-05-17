@@ -72,7 +72,7 @@ router.get('/product/:id', ProductController.show);
 router.post('/product/search', ProductController.search);
 router.post('/product', ProductController.create);
 router.put('/product', ProductController.update);
-router.delete('/product', ProductController.delete);
+router.delete('/product/:id', ProductController.delete);
 
 // Vehicle routes
 router.get('/vehicle/all/:id_user', VehicleController.index);

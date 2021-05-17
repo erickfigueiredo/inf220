@@ -1,37 +1,47 @@
 const Market = require('../models/Market');
 const User = require('../models/User');
+const bcrypt = require('bcrypt');
+const saltRounds = parseInt(process.env.BCRYPT_SALT);
 
 class MarketController {
     static async index(req, res) {
-        
-        const id_market = req.params.id_market;
-
-        if (isNaN(parseInt(id_market)))
-            return res.status(400).send({ success: false, message: 'Id inválido' });
-
-        const markets = await Market.findAll(id_market, page);
+        const markets = await Market.findAll();
         return markets.success ? res.send(markets) : res.status(404).send(markets);
     }
 
     static async show(req, res) {
-        const id_market = req.params.id_market;
+        const id_market = req.params.id;
 
-        if (isNaN(parseInt(id_market))) 
+        if (isNaN(parseInt(id_market)))
             return res.status(400).send({ success: false, message: 'Id inválido' });
-            
+
         const market = await Market.findOne(id_market);
         return market.success ? res.send(market) : res.status(404).send(market);
     }
 
     static async create(req, res) {
-        const { business_name, cnpj, email, phone, password } = req.body;
+        const { alias, street, neigh, complement, num, zipcode, city, state, country, latitude, longitude, business_name, cnpj, email, phone, password } = req.body;
 
         let market = {
             business_name,
-            cnpj, 
+            cnpj,
             email,
             phone,
             password
+        }
+
+        let address = {
+            alias, 
+            street, 
+            neigh, 
+            complement, 
+            num, 
+            zipcode, 
+            city, 
+            state, 
+            country, 
+            latitude, 
+            longitude,
         }
 
         const existEmail = await Market.findByEmail(email);
@@ -46,22 +56,23 @@ class MarketController {
         const salt = bcrypt.genSaltSync(saltRounds);
         market.password = bcrypt.hashSync(password, salt);
 
-        const result = await Market.create(market);
+        const result = await Market.create(market, address);
         return result.success ? res.send(result) : res.status(404).send(result);
     }
 
     static async update(req, res) {
-        const { id, business_name, email, phone } = req.body;
+        const { id_market, business_name, email, phone, name } = req.body;
 
         const form = {
-            id,
-            business_name, 
+            id_market,
+            business_name,
             email,
-            phone
+            phone,
+            name
         };
 
-        const market = await Market.findOne(form.id);
-        
+        const market = await Market.findOne(form.id_market);
+        console.log(market)
         if (market.success && Object.keys(market.market).length) {
 
             const toUpdate = {};
@@ -75,9 +86,9 @@ class MarketController {
                 return result.success ? res.send(result) : res.status(400).send(result);
             }
             return res.send(market);
-        }else {
-            return res.status(404).send({success: false, message: 'Não foi possível encontrar o mercado!'});
-        } 
+        } else {
+            return res.status(404).send({ success: false, message: 'Não foi possível encontrar o mercado!' });
+        }
     }
 }
 

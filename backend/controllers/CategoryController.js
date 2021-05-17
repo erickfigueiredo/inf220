@@ -8,7 +8,7 @@ class CategoryController {
             return res.status(400).send({success: false, message: 'Id inválido!'});
         
         const category = await Category.findOne(id);
-        return category[0] ? res.send({success: true, category: category[0]}) : res.status(404).send(category);
+        return category.success ? res.send(category) : res.status(404).send(category);
     }
 
     static async index (req, res) {

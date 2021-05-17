@@ -5,7 +5,7 @@ class Category {
     static async findOne(id) {
         try {
             const category = await knex.select('*').from('tb_category').where({ id });
-            return category[0] ? { success: true, product: product[0] } : { success: false, message: 'Não foi possível recuperar a categoria / Categoria inexistente!' };
+            return category[0] ? { success: true, category: category[0] } : { success: false, message: 'Não foi possível recuperar a categoria / Categoria inexistente!' };
         } catch (error) {
             Message.warning(error);
             return { success: false, message: 'Houve um erro ao recuperar o produto!' };
