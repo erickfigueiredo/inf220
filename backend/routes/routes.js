@@ -75,14 +75,16 @@ router.put('/product', ProductController.update);
 router.delete('/product', ProductController.delete);
 
 // Vehicle routes
-router.get('/vehicle/all/:id_user', VehicleController.index);
+router.get('/vehicle/all/:id_deliveryman', VehicleController.index);
 router.get('/vehicle/:id', VehicleController.show);
 router.post('/vehicle', VehicleController.create);
+router.put('/vehicle', VehicleController.update);
 
 // Wallet routes
 router.get('/wallet/all', WalletController.index);
 router.get('/wallet/:id_wallet', WalletController.show);
 router.put('/wallet', WalletController.update);
+router.put('/wallet/increment', WalletController.incrementTotal);
 
 // Wallet Withdraw routes
 router.get('/withdraw/all', WalletWithdrawController.index);

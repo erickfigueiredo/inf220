@@ -9,14 +9,6 @@ exports.up = async function (knex) {
         table.boolean('is_deleted').defaultTo(false).notNullable();
         table.integer('id_deliveryman').unsigned().notNullable().references('id').inTable('tb_user');
     });
-
-    await knex.raw(`
-        CREATE TRIGGER update_timestamp
-        BEFORE UPDATE
-        ON ${tableName}
-        FOR EACH ROW
-        EXECUTE PROCEDURE update_timestamp();
-    `);
 };
 
 exports.down = function (knex) {

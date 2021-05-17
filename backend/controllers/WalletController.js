@@ -17,9 +17,16 @@ class WalletController {
     }
 
     static async update(req, res) {
-        const { id_wallet, pix_key } = req.body;
+        const { id, pix_key } = req.body;
 
-        const wallet = await Wallet.update(id_wallet, {pix_key});
+        const wallet = await Wallet.update(id, {pix_key});
+        return wallet.success ? res.send(wallet) : res.status(400).send(wallet);
+    }
+
+    static async incrementTotal(req, res) {
+        const {id, value} = req.body;
+
+        const wallet = await Wallet.changeTotalInWallet(id, value);
         return wallet.success ? res.send(wallet) : res.status(400).send(wallet);
     }
 }

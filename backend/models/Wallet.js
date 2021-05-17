@@ -32,9 +32,9 @@ class Wallet {
         }
     }
 
-    static async changeTotalInWallet(id_wallet, total){
+    static async changeTotalInWallet(id, value) {
         try {
-            let wallet = await knex.table('tb_wallet').update({total}).where({ id_wallet }).returning('*');
+            let wallet = await knex.table('tb_wallet').update({ total: knex.raw('?? + ' + value, ['total']) }).where({ id }).returning('*');
             return wallet[0] ? { success: true, wallet: wallet[0] } : { success: false, message: 'Não foi possível atualizar o total da carteira!' };
         } catch (error) {
             Message.warning(error);
