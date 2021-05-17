@@ -64,7 +64,7 @@ router.put('/order', OrderController.update);
 router.get('/paymentmethod/all/:id_client', PaymentMethodController.index);
 router.get('/paymentmethod/:id', PaymentMethodController.show);
 router.post('/paymentmethod', PaymentMethodController.create);
-router.delete('/paymentmethod',PaymentMethodController.delete);
+router.delete('/paymentmethod/:id',PaymentMethodController.delete);
 
 // Product routes
 router.get('/product/all/:id_market', ProductController.index);

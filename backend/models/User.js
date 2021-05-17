@@ -3,11 +3,11 @@ const Message = require('../utils/Message');
 
 class User {
 
-    static async findOne(id, type) {
+    static async findOne(id) {
         try {
             const user = await knex.select('*')
                 .from('tb_user')
-                .where({ id, type, "is_deleted": false });
+                .where({ id, "is_deleted": false });
 
             return user[0] ? { success: true, user: user[0] } : { success: false, message: 'Não foi possível recuperar o usuário / Usuário inexistente!' };
         } catch (e) {
