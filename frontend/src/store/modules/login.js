@@ -10,7 +10,7 @@ const actions = {
             Login.login(payload.email, payload.password).then(result => {
                 if (result.success) {
                     commit("setLogin", { isLogged: true });
-                    commit("setUser", result.data);
+                    commit("setUser", result.client);
                     window.localStorage.setItem('user', JSON.stringify(result.data));
                     resolve(result);
                 } else resolve(result);

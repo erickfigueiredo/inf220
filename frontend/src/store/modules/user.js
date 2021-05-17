@@ -29,6 +29,6 @@ export default {
     actions,
     mutations,
     state: {
-        user: window.localStorage.getItem('user') ? JSON.parse(window.localStorage.getItem('user')) : user
+        user: window.localStorage.getItem('user') || user
     }
 }

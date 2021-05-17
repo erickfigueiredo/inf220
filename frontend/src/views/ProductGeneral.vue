@@ -15,7 +15,6 @@ import ProductAvaliation from "../components/ProductAvaliation.vue";
 import ProductDetailsLoading from "../components/ProductDetailsLoading.vue";
 import Footer from "../components/Footer.vue";
 import Product from "../services/Product";
-import Salesman from "../services/Market";
 
 export default {
   components: {

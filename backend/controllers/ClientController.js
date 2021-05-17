@@ -77,12 +77,12 @@ class ClientController {
                     {
                         success: true,
                         client: {
-                            id: existClient.id,
-                            name: existClient.name,
-                            email: existClient.email,
-                            type: existClient.type,
-                            idAddress: existClient.id_address,
-                            idWallet: existClient.id_wallet
+                            id: existClient.user.id,
+                            name: existClient.user.name,
+                            email: existClient.user.email,
+                            type: existClient.user.type,
+                            idAddress: existClient.user.id_address,
+                            idWallet: existClient.user.id_wallet
                         }
                     }
                 )
