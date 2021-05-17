@@ -1,0 +1,5 @@
+#383F51: gray-800
+#5A6C82: dark-gray-700
+#7D98B3: gray-500
+#EDF2F5: alice-blue
+#F6222E: red-600

@@ -1,0 +1,36 @@
+{
+    "name": "tailwind-dashboard",
+    "version": "0.0.1",
+    "scripts": {
+        "dev": "vite",
+        "serve": "vue-cli-service serve",
+        "build": "cross-env NODE_ENV=production vite build"
+    },
+    "dependencies": {
+        "@fortawesome/fontawesome-free": "^5.15.2",
+        "@fortawesome/free-regular-svg-icons": "^5.15.2",
+        "@tailwindcss/ui": "^0.7.2",
+        "axios": "^0.21.1",
+        "chart.js": "^2.9.4",
+        "socket.io-client": "^4.0.0",
+        "tailwindcss": "^1.9.6",
+        "vue": "3.0.0",
+        "vue-chartjs": "^3.5.1",
+        "vue-easy-lightbox": "^1.0.0-rc.3",
+        "vue-router": "^4.0.0-beta.13",
+        "vue-socket.io-extended": "^5.0.0-alpha.4",
+        "vue3-carousel": "^0.1.11",
+        "vue3-smooth-scroll": "^0.8.0",
+        "vuex": "^4.0.0"
+    },
+    "devDependencies": {
+        "@tailwindcss/custom-forms": "^0.2.1",
+        "@vue/compiler-sfc": "3.0.0",
+        "cross-env": "^7.0.2",
+        "vite": "^1.0.0-rc.8"
+    },
+    "description": "Dashboard starter template built with Vite, Vue 3, Tailwind CSS and TypeScript.",
+    "main": "postcss.config.js",
+    "author": "",
+    "license": "ISC"
+}
