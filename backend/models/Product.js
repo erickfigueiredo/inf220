@@ -27,7 +27,51 @@ class Product {
     }
 
     static async searchProduct(filter, page) {
+        try {
+            const product = await knex('tb_product')
+                .join('tb_category', { 'tb_category.id': 'tb_product.id_category' })
+                .leftJoin('tb_product_discount', { 'tb_product.id': 'tb_product.id_discount' })
+                .join('tb_market', { 'tb_market.id': 'tb_product.id_market' })
+                .select(
+                    'tb_product.id',
+                    'tb_product.title',
+                    'tb_product.price',
+                    'tb_product.uri',
+                    'tb_product.quantity',
+                    'tb_product.brand',
+                    'tb_category.name as category',
+                    'tb_market.business_name as market',
+                    'tb_product_discount.value as discount'
+                )
+                .where(function () {
+                    this.whereRaw('unaccent(:productTitle:) ilike unaccent(:search) or ' +
+                        'unaccent(:categoryName:) ilike unaccent(:search) or ' +
+                        'unaccent(:productDesc:) ilike unaccent(:search) or ' +
+                        'unaccent(:marketName:) ilike unaccent(:search)', {
+                        productTitle: 'tb_product.title',
+                        productDesc: 'tb_product.description',
+                        categoryName: 'tb_category.name',
+                        marketName: 'tb_market.business_name',
+                        search: '%' + filter.search + '%'
+                    })
+                })
+                .andWhere(function () {
+                    if (filter.minPrice) this.andWhere('tb_product.price', '>=', filter.minPrice);
+                    if (filter.maxPrice) this.andWhere('tb_product.price', '<=', filter.maxPrice);
+                    if (filter.category) this.andWhere('unaccent( tb_category.name) ilike unaccent(' + filter.search + ')')
+                })
+                .andWhere({
+                    'tb_product.is_deleted': false,
+                    'tb_product.is_active': true
+                })
+                .orderBy('tb_product.created_at', 'DESC');
 
+            return product[0] ? { success: true, product } : { success: false, message: 'Não foi possível recuperar os produtos da pesquisa / Não existem produtos relacionados à pesquisa!' }
+
+        } catch (error) {
+            Message.warning(error);
+            return { success: false, message: 'Houve um erro ao recuperar o produto da pesquisa!' };
+        }
     }
 
     static async create(data) {
