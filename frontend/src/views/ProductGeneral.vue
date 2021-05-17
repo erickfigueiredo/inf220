@@ -4,7 +4,6 @@
       <ProductDetailsLoading v-if="loading" />
       <ProductDetails v-else :stock="inStock" :product="product" :salesman="salesman" />
       <ProductAvaliation />
-      <Chat :salesman="salesman" v-if="!loading && $store.state.user.user.id_client"/>
     </div>
     <Footer />
   </div>
@@ -16,16 +15,14 @@ import ProductAvaliation from "../components/ProductAvaliation.vue";
 import ProductDetailsLoading from "../components/ProductDetailsLoading.vue";
 import Footer from "../components/Footer.vue";
 import Product from "../services/Product";
-import Salesman from "../services/Salesman";
-import Chat from '../components/Chat.vue';
+import Salesman from "../services/Market";
 
 export default {
   components: {
     ProductDetailsLoading,
     ProductAvaliation,
     ProductDetails,
-    Footer,
-    Chat
+    Footer
   },
   data() {
     return {

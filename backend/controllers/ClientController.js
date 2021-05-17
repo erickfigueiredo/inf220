@@ -67,9 +67,10 @@ class ClientController {
     static async login(req, res) {
         const { email, password } = req.body;
 
-        const existClient = Client.findBy({ email });
+        const existClient = await User.findBy({ email });
+        console.log(existClient)
         if (existClient.success) {
-            bcrypt.compare(password, existClient.password, (err, res) => {
+            bcrypt.compare(password, existClient.user.password, (err) => {
                 if (err) return res.status(400).send({ success: false, message: 'E-mail ou senha não conferem!' });
 
                 return res.send(
@@ -86,8 +87,7 @@ class ClientController {
                     }
                 )
             });
-        }
-        return res.status(404).send({ success: false, message: 'Cliente inexistente!' });
+        } else return res.status(404).send({ success: false, message: 'Cliente inexistente!' });
     }
 };
 

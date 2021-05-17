@@ -294,7 +294,6 @@
 <script>
 import MessageCard from "../components/MessageCard.vue";
 import Client from "../services/Client.js";
-import Salesman from "../services/Salesman.js";
 
 export default {
   data() {
@@ -404,22 +403,6 @@ export default {
           this.$router.push({
             path: "/confirme",
             query: { id: result.client.id_user },
-          });
-        } else {
-          this.type = "error";
-          this.message = result.message;
-          this.title = "Erro!";
-        }
-      } else {
-        data["business_name"] = this.businessName;
-        let result = await Salesman.create(data);
-        if (result.success) {
-          this.type = "success";
-          this.message = "Cadastrado com sucesso!";
-          this.title = "Sucesso!";
-          this.$router.push({
-            path: "/confirme",
-            query: { id: result.salesman.id_user },
           });
         } else {
           this.type = "error";

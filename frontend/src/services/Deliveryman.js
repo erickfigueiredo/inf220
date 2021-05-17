@@ -1,17 +1,18 @@
 import { axios, apiURL } from './config.js';
 
-class Client {
-    static async getClientById(id) {
+class Deliveryman {
+    static async getAll() {
         try {
-            const response = await axios.get(`${apiURL}/client/${id}`);
+            const response = await axios.get(`${apiURL}/deliveryman/all`);
             return response.data;
         } catch (error) {
             return error.response.data;
         }
     }
-    static async create(data) {
+
+    static async getDeliverymanById(id){
         try {
-            const response = await axios.post(`${apiURL}/client`, data);
+            const response = await axios.get(`${apiURL}/deliveryman/${id}`);
             return response.data;
         } catch (error) {
             return error.response.data;
@@ -19,4 +20,4 @@ class Client {
     }
 }
 
-export default Client
+export default Deliveryman;

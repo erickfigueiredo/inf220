@@ -64,7 +64,6 @@ const actions = {
 
 let login = {
     isLogged: false,
-    token: window.localStorage.getItem('token')
 }
 
 const mutations = {

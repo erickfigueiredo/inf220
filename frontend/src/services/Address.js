@@ -33,26 +33,6 @@ class Address {
             return error.response.data;
         }
     }
-
-    static async destroy(id){
-        try {
-            const response = await axios.delete(`${apiURL}/address/${id}`);
-            return response.data;
-        } catch (error) {
-            return error.response.data;
-        }
-    }
-
-    static async getCEPInfo(cep){
-        try {
-            const response = await axios.get(`https://viacep.com.br/ws/${cep}/json/unicode/`);
-
-            return {success: true, cep: response.data};
-        } catch (error) {
-            console.log(error)
-            return {success: false, message: error.response.data};
-        }
-    }
 }
 
 export default Address;
