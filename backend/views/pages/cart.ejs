@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: "Lato", sans-serif;
+        }
+
+        .productName {
+
+            font-size: x-large;
+            font-weight: bold;
+        }
+
+        .productDescription {
+
+            font-size: medium;
+            color: #818181;
+        }
+
+        .productPrice {
+
+            font-size: large;
+            color: red;
+        }
+
+        .sidenav {
+            height: 100%;
+            width: 160px;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #111;
+            overflow-x: hidden;
+            padding-top: 20px;
+        }
+
+        .sidenav a {
+            padding: 6px 8px 6px 16px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #fff;
+            display: block;
+        }
+
+        .sidenav a:hover {
+            color: #f1f1f1;
+        }
+
+        .main {
+            margin-left: 160px;
+            font-size: 28px;
+            padding: 0px 10px;
+            margin-bottom: 100px;
+        }
+
+        .grid-container {
+            top: 0;
+            display: grid;
+            grid-template-columns: 5px;
+            padding: 10px;
+        }
+
+        .grid-item {
+            border-radius: 12px;
+            border: 1px solid rgba(0, 0, 0, 0.8);
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            text-align: center;
+            font-family: arial;
+            width: max-content;
+            margin: 5px;
+        }
+
+        .infoCart {
+            border-top-right-radius: 12px;
+            background-color: rgb(33, 98, 151);
+            width: 100vw;
+            height: fit-content;
+            color: #fff;
+            bottom: 0;
+            position: fixed;
+            height: 100px;
+        }
+
+        button {
+            background-color: #04AA6D;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 200px;
+            border-radius: 12px;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+        @media screen and (max-height: 450px) {
+            .sidenav {
+                padding-top: 15px;
+            }
+
+            .sidenav a {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="sidenav">
+        <a href="/">Home</a>
+        <a href="/login">Logout</a>
+        <a href="/product">Produto</a>
+    </div>
+
+    <div class="main">
+        <h2>Carrinho</h2>
+        <div class="grid-container">
+            <% oferts.forEach(function(ofert) { %>
+                <div class="grid-item">
+                    <div>
+                        <img width="300px"><%= ofert.image %></img> 
+                    </div>
+                    <div class="productName">
+                            <%= ofert.name %>
+                    </div>
+                    <div class="productDescription">
+                        <%= ofert.desc %>
+                    </div>
+                    <div class="productPrice">
+                        <%= ofert.preco %>
+                    </div>
+                </div>
+                <% }); %>
+        </div>
+    </div>
+
+    
+    <div class="infoCart">
+        <div style="font-weight: bold; margin-left: 165px; font-size: large; padding: 5px;">Preço total: </div>
+
+        <div style="margin-left: 165px;"><button>Finalizar</button></div>
+    </div>
+</body>
+</html>

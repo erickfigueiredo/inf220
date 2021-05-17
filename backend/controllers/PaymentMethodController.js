@@ -1,4 +1,5 @@
 const PaymentMethod = require('../models/PaymentMethod');
+const User = require('../models/User');
 
 class PaymentMethodController {
     static async index(req, res) {
@@ -21,6 +22,7 @@ class PaymentMethodController {
         const { name, type, number, valid_date, id_user } = req.body;
 
         const user = await User.findOne(id_user);
+        console.log(user)
         if (!user.success)
             return res.status(400).send({ success: false, message: 'Usuário inexistente!' });
 
@@ -34,7 +36,8 @@ class PaymentMethodController {
         if (isNaN(parseInt(id)))
             return res.status(400).send({ success: false, message: 'Id inválido!' })
 
-        const payment = await Payment.findOne(id);
+        console.log(id)
+        const payment = await PaymentMethod.findOne(id);
 
         if (payment.success && payment.payment.is_deleted || !payment.success)
             return res.status(400).send({ success: false, message: 'Cartão não existe!' });

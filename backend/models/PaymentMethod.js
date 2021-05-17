@@ -6,12 +6,11 @@ class PaymentMethodController {
         try {
             const payment = await knex.select('*')
                 .from('tb_payment_method')
-                .where({ id, 'is_deleted': false });
-
-            return payment[0] ? { success: true, discount: payment[0] } : { success: false, message: 'Não foi possível recuperar o cartão / Cartão inexistente!' };
+                .where({ 'is_deleted': false });
+            return payment[0] ? { success: true, payment: payment[0] } : { success: false, message: 'Não foi possível recuperar o pagamento / Pagamento inexistente!' };
         } catch (error) {
             Message.warning(error);
-            return { success: false, message: 'Houve um erro ao recuperar o cartão!' };
+            return { success: false, message: 'Houve um erro ao recuperar o pagamento!' };
         }
     }
 
@@ -20,7 +19,7 @@ class PaymentMethodController {
             const payment = await knex.select('*')
                 .from('tb_payment_method')
                 .where({ 'is_deleted': false, id_user: id })
-
+            console.log(payment)
             return payment[0] ? { success: true, payment } : { success: false, message: 'Não foi possível recuperar o cartão / Cartão inexistentes!' };
         } catch (error) {
             Message.warning(error);

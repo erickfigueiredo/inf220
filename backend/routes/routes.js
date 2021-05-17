@@ -64,7 +64,7 @@ router.put('/order', OrderController.update);
 router.get('/paymentmethod/all/:id_client', PaymentMethodController.index);
 router.get('/paymentmethod/:id', PaymentMethodController.show);
 router.post('/paymentmethod', PaymentMethodController.create);
-router.delete('/paymentmethod',PaymentMethodController.delete);
+router.delete('/paymentmethod/:id',PaymentMethodController.delete);
 
 // Product routes
 router.get('/product/all/:id_market', ProductController.index);
@@ -80,14 +80,14 @@ router.get('/vehicle/:id', VehicleController.show);
 router.post('/vehicle', VehicleController.create);
 
 // Wallet routes
-route.get('/wallet/all', WalletController.index);
-route.get('/wallet/:id_wallet', WalletController.show);
-route.put('/wallet', WalletController.update);
+router.get('/wallet/all', WalletController.index);
+router.get('/wallet/:id_wallet', WalletController.show);
+router.put('/wallet', WalletController.update);
 
 // Wallet Withdraw routes
-route.get('/withdraw/all', WalletWithdrawController.index);
-route.get('/withdraw/:id_withdraw', WalletWithdrawController.show);
-route.post('/withdraw', WalletWithdrawController.create);
+router.get('/withdraw/all', WalletWithdrawController.index);
+router.get('/withdraw/:id_withdraw', WalletWithdrawController.show);
+router.post('/withdraw', WalletWithdrawController.create);
 
 // Erro 404
 router.get('/bermuda_triangle', (req, res) => {
