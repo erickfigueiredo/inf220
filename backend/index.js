@@ -17,7 +17,7 @@ app.use(helmet());
 app.use(morgan('dev'));
 
 app.set('view engine', 'ejs');
-app.use('/static', express.static('../public'));
+app.use('/static', express.static('public'));
 
 app.get('/login', function(req, res) {
     res.render('pages/login');
