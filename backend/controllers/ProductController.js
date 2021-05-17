@@ -35,8 +35,31 @@ class ProductController {
         } else return res.status(404).send({ success: false, message: 'Id de mercado inexistente!' });
     }
 
-    static async search(req, res) {
+    static async indexAll(req, res) {
 
+        const product = await Product.findAll();
+        return product.success ? res.send(product) : res.status(400).send(product);
+    }
+    
+    static async search(req, res) {
+        const { category, min_price, max_price } = req.query;
+        let { search } = req.query.search;
+
+        search = search.replace(/[+]/gi, ' ');
+        search = search.replace(/[`~!@#$%^&*()_+|\-=?;:'",.<>\{\}\[\]\\\/]/gi, '');
+
+        const filter = {};
+
+        if (search) {
+            filter.search = search;
+
+            if (min_price && isNaN(parseInt(min_price)) && min_price >= 0) filter.minPrice = min_price;
+            if (max_price && isNaN(parseInt(max_price)) && max_price > 0) filter.maxPrice = max_price;
+            if (category) filter.category = category;
+        }
+
+        const result = await Product.searchProduct(filter);
+        return result.success ? res.send(result) : res.status(400).send(result);
     }
 
     static async create(req, res) {
@@ -97,7 +120,7 @@ class ProductController {
         if (existProduct.success) {
             const result = await Product.delete(id);
             console.log(result)
-            return result.success ? res.send({success: true, message: 'Produto apagado!'}) : res.status(400).send(result);
+            return result.success ? res.send({ success: true, message: 'Produto apagado!' }) : res.status(400).send(result);
         } else return res.status(404).send({ success: false, message: 'Produto inexistente!' });
     }
 }

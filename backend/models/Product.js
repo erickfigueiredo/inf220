@@ -12,21 +12,30 @@ class Product {
         }
     }
 
-    static async findAllMarketProducts(id_market, page) {
+    static async findAll() {
         try {
-            const product = await knex.select('*')
-                .from('tb_product')
-                .where({ id_market })
-                .paginate({ perPage: 20, currentPage: page });
-
-            return product.data[0] ? { success: true, product } : { success: false, message: 'Não foi possível recuperar o produto / Produto inexistente!' };
+            const product = await knex.select('*').from('tb_product').where({is_deleted: false});
+            return product[0] ? { success: true, product } : { success: false, message: 'Não foi possível recuperar o produto / Produto inexistente!' };
         } catch (error) {
             Message.warning(error);
             return { success: false, message: 'Houve um erro ao recuperar o produto!' };
         }
     }
 
-    static async searchProduct(filter, page) {
+    static async findAllMarketProducts(id_market) {
+        try {
+            const product = await knex.select('*')
+                .from('tb_product')
+                .where({ id_market, is_deleted: false});
+
+            return product[0] ? { success: true, product } : { success: false, message: 'Não foi possível recuperar o produto / Produto inexistente!' };
+        } catch (error) {
+            Message.warning(error);
+            return { success: false, message: 'Houve um erro ao recuperar o produto!' };
+        }
+    }
+
+    static async searchProduct(filter) {
         try {
             const product = await knex('tb_product')
                 .join('tb_category', { 'tb_category.id': 'tb_product.id_category' })

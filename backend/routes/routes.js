@@ -68,7 +68,8 @@ router.post('/paymentmethod', PaymentMethodController.create);
 router.delete('/paymentmethod/:id',PaymentMethodController.delete);
 
 // Product routes
-router.get('/product/all/:id_market', ProductController.index);
+router.get('/product/all/', ProductController.indexAll);
+router.get('/product/all/mkt/:id_market', ProductController.index);
 router.get('/product/:id', ProductController.show);
 router.post('/product/search', ProductController.search);
 router.post('/product', ProductController.create);

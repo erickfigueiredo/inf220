@@ -70,16 +70,19 @@ class ClientController {
         const existClient = Client.findBy({ email });
         if (existClient.success) {
             bcrypt.compare(password, existClient.password, (err, res) => {
-                if(err) return res.status(400).send({success: false, message: 'E-mail ou senha não conferem!'});
-                
+                if (err) return res.status(400).send({ success: false, message: 'E-mail ou senha não conferem!' });
+
                 return res.send(
                     {
-                        id: existClient.id,
-                        name: existClient.name,
-                        email: existClient.email,
-                        type: existClient.type,
-                        idAddress: existClient.id_address,
-                        idWallet: existClient.id_wallet
+                        success: true,
+                        client: {
+                            id: existClient.id,
+                            name: existClient.name,
+                            email: existClient.email,
+                            type: existClient.type,
+                            idAddress: existClient.id_address,
+                            idWallet: existClient.id_wallet
+                        }
                     }
                 )
             });
