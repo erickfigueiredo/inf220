@@ -4,12 +4,12 @@ const Market = require('../models/Market');
 
 class AddressController {
     static async index(req, res) {
-        
+
         const id_user = req.params.id_user;
 
         if (isNaN(parseInt(id_user)))
             return res.status(400).send({ success: false, message: 'Id inválido' });
-            
+
 
         let page = req.query.page;
 
@@ -22,16 +22,16 @@ class AddressController {
     static async show(req, res) {
         const id = req.params.id;
 
-        if (isNaN(parseInt(id))) 
+        if (isNaN(parseInt(id)))
             return res.status(400).send({ success: false, message: 'Id inválido' });
-            
+
 
         const address = await Address.findOne(id);
         return address.success ? res.send(address) : res.status(404).send(address);
     }
 
     static async create(req, res) {
-        const { id, alias, street, neigh, complement, num, zipcode, city, state, country, latitude, longitude, type } = req.body;
+        const { id_user, alias, street, neigh, complement, num, zipcode, city, state, country, latitude, longitude, type } = req.body;
 
         const data = {
             alias,
@@ -44,24 +44,26 @@ class AddressController {
             state,
             country,
             latitude,
-            longitude
+            longitude,
+            id_user,
+            type
         }
 
         let user;
-        if(type == 'M'){
-            user = await Market.findOne(id);
-            if(!user.success) return res.status(400).send({success: false, message: 'Id inválido!'});
-        }else{
-            user = await User.findOne(id);
-            if(!user.success) return res.status(400).send({success: false, message: 'Id inválido!'});
+        if (type == 'M') {
+            user = await Market.findOne(id_user);
+            if (!user.success) return res.status(400).send({ success: false, message: 'Id inválido!' });
+        } else {
+            user = await User.findOne(id_user);
+            if (!user.success) return res.status(400).send({ success: false, message: 'Id inválido!' });
         }
 
         if (type == 'M') {
             if (user.id_address)
-                return res.status(409).send({ success: false, message: 'Mercado já possui um endereço cadastrado!' }); 
+                return res.status(409).send({ success: false, message: 'Mercado já possui um endereço cadastrado!' });
         } else {
-            const existAlias = await Address.findByUserAlias(id, alias);
-            if (existAlias.address && Object.keys(existAlias.address).length) 
+            const existAlias = await Address.findByUserAlias(id_user, alias);
+            if (existAlias.address && Object.keys(existAlias.address).length)
                 return res.status(409).send({ success: false, message: 'Apelido já cadastrado!' });
         }
 
@@ -70,12 +72,6 @@ class AddressController {
     }
 
     static async update(req, res) {
-        const schema = AddressSchema.updateValidate();
-        const { error } = schema.validate(req.body);
-
-        if (error) 
-            return res.status(400).send({ success: false, message: error.details[0].message });
-    
 
         const { id, alias, street, neigh, complement, num, zipcode, city, state, country, latitude, longitude } = req.body;
 
@@ -95,13 +91,13 @@ class AddressController {
         };
 
         const address = await Address.findOne(form.id);
-        
+
         if (address.success && Object.keys(address.address).length) {
             const result = await Address.update(form);
             return result.success ? res.send(result) : res.status(400).send(result);
-        }else {
-            return res.status(404).send({success: false, message: 'Não foi possível encontrar o endereço!'});
-        } 
+        } else {
+            return res.status(404).send({ success: false, message: 'Não foi possível encontrar o endereço!' });
+        }
     }
 
     static async delete(req, res) {
@@ -109,10 +105,10 @@ class AddressController {
 
         if (isNaN(parseInt(id)))
             return res.status(400).send({ success: false, message: 'Id inválido' });
-            
+
 
         const address = await Address.findOne(id);
-        if ((!address.success || (address.success && !Object.keys(address.address).length)) || (address.success && Object.keys(address.address).length && address.address.is_deleted)) 
+        if ((!address.success || (address.success && !Object.keys(address.address).length)) || (address.success && Object.keys(address.address).length && address.address.is_deleted))
             return res.status(404).send({ success: false, message: 'Endereço inexistente' });
 
 
