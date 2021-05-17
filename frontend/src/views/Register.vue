@@ -1,11 +1,10 @@
 <template>
   <div
-    class="flex justify-center items-center sm:h-full md:h-screen bg-gray-800 px-6"
+    class="flex justify-center items-center sm:h-full md:h-screen bg-gray-300 px-6"
   >
     <div class="p-6 max-w-2xl w-full bg-white shadow-md rounded-md my-10">
       <div class="flex justify-center items-center mb-10">
-        <img class="h-8 w-8 mr-1" src="/iStones-Logo.svg" alt="iStones" />
-        <span class="text-red-600 font-semibold text-2xl">Stones</span>
+        <span class="text-blue-600 font-semibold text-2xl">El comprador</span>
       </div>
       <form class="mt-4" @submit.prevent="register">
         <div v-show="firstStep">
@@ -24,7 +23,7 @@
                 placeholder="Ex: João"
                 required
                 v-model="name"
-                class="text-sm sm:text-sm w-full border rounded text-gray-800 placeholder-gray-500 focus:border-red-600 focus:outline-none py-2 px-4"
+                class="text-sm sm:text-sm w-full border rounded text-gray-800 placeholder-gray-500 focus:border-blue-600 focus:outline-none py-2 px-4"
               />
             </div>
             <div class="w-full md:w-1/2 my-4 md:my-0">
@@ -41,7 +40,7 @@
                 placeholder="Ex: Silva"
                 required
                 v-model="surname"
-                class="text-sm sm:text-sm w-full border rounded text-gray-800 placeholder-gray-500 focus:border-red-600 focus:outline-none py-2 px-4"
+                class="text-sm sm:text-sm w-full border rounded text-gray-800 placeholder-gray-500 focus:border-blue-600 focus:outline-none py-2 px-4"
               />
             </div>
           </div>
@@ -59,7 +58,7 @@
                 type="date"
                 required
                 v-model="birthdate"
-                class="text-sm sm:text-sm w-full border rounded text-gray-800 placeholder-gray-500 focus:border-red-600 focus:outline-none py-2 px-4"
+                class="text-sm sm:text-sm w-full border rounded text-gray-800 placeholder-gray-500 focus:border-blue-600 focus:outline-none py-2 px-4"
               />
             </div>
             <div class="w-full md:w-1/3 my-4 md:my-0">
@@ -79,7 +78,7 @@
                 @keyup="telMasc"
                 required
                 v-model="tel"
-                class="text-sm sm:text-sm w-full border rounded text-gray-800 placeholder-gray-500 focus:border-red-600 focus:outline-none py-2 px-4"
+                class="text-sm sm:text-sm w-full border rounded text-gray-800 placeholder-gray-500 focus:border-blue-600 focus:outline-none py-2 px-4"
               />
             </div>
             <div class="w-full md:w-1/3 my-4 md:my-0">
@@ -94,7 +93,7 @@
                 v-model="selected"
                 name="type"
                 required
-                class="text-sm sm:text-sm w-full border rounded text-gray-800 placeholder-gray-500 focus:border-red-600 focus:outline-none py-2 px-4"
+                class="text-sm sm:text-sm w-full border rounded text-gray-800 placeholder-gray-500 focus:border-blue-600 focus:outline-none py-2 px-4"
               >
                 <option value="client" selected>Cliente</option>
                 <option value="salesman">Vendedor</option>
@@ -117,7 +116,7 @@
               placeholder="email@exemplo.com"
               :required="!firstStep"
               v-model="email"
-              class="text-sm sm:text-sm w-full border rounded text-gray-800 placeholder-gray-500 focus:border-red-600 focus:outline-none py-2 px-4"
+              class="text-sm sm:text-sm w-full border rounded text-gray-800 placeholder-gray-500 focus:border-blue-600 focus:outline-none py-2 px-4"
             />
           </div>
           <div class="flex-none md:flex md:space-x-4 md:my-4">
@@ -141,7 +140,7 @@
                 :required="!firstStep && cnpj == undefined"
                 @keydown="cpfMasc()"
                 v-model="cpf"
-                class="text-sm sm:text-sm w-full border rounded text-gray-800 placeholder-gray-500 focus:border-red-600 focus:outline-none py-2 px-4"
+                class="text-sm sm:text-sm w-full border rounded text-gray-800 placeholder-gray-500 focus:border-blue-600 focus:outline-none py-2 px-4"
               />
             </div>
             <div v-else class="w-full md:w-1/2 my-4 md:my-0">
@@ -158,7 +157,7 @@
                 placeholder="Ex: Marmoraria do João"
                 :required="!firstStep"
                 v-model="businessName"
-                class="text-sm sm:text-sm w-full border rounded text-gray-800 placeholder-gray-500 focus:border-red-600 focus:outline-none py-2 px-4"
+                class="text-sm sm:text-sm w-full border rounded text-gray-800 placeholder-gray-500 focus:border-blue-600 focus:outline-none py-2 px-4"
               />
             </div>
             <div class="w-full md:w-1/2 my-4 md:my-0">
@@ -178,7 +177,7 @@
                 :required="!firstStep && cpf == undefined"
                 @keydown="cnpjMasc()"
                 v-model="cnpj"
-                class="text-sm sm:text-sm w-full border rounded text-gray-800 placeholder-gray-500 focus:border-red-600 focus:outline-none py-2 px-4"
+                class="text-sm sm:text-sm w-full border rounded text-gray-800 placeholder-gray-500 focus:border-blue-600 focus:outline-none py-2 px-4"
               />
             </div>
           </div>
@@ -199,7 +198,7 @@
                 minlength="8"
                 @keyup="comparePassword"
                 v-model="password"
-                class="text-sm sm:text-sm w-full border rounded text-gray-800 placeholder-gray-500 focus:border-red-600 focus:outline-none py-2 px-4"
+                class="text-sm sm:text-sm w-full border rounded text-gray-800 placeholder-gray-500 focus:border-blue-600 focus:outline-none py-2 px-4"
               />
             </div>
             <div class="w-full md:w-1/2 my-4 md:my-0">
@@ -217,12 +216,12 @@
                 :required="!firstStep"
                 v-model="confPassword"
                 @keyup="comparePassword"
-                class="text-sm sm:text-sm w-full border rounded text-gray-800 placeholder-gray-500 focus:border-red-600 focus:outline-none py-2 px-4"
+                class="text-sm sm:text-sm w-full border rounded text-gray-800 placeholder-gray-500 focus:border-blue-600 focus:outline-none py-2 px-4"
               />
             </div>
           </div>
           <div :hidden="passwordsValid">
-            <small class="text-red-500 block justify-self-center text-center"
+            <small class="text-blue-500 block justify-self-center text-center"
               >As senhas não coincidem!</small
             >
           </div>
@@ -230,7 +229,7 @@
             <button
               type="submit"
               id="but"
-              class="inline-flex justify-center items-center transition duration-150 py-2 px-4 bg-red-600 hover:bg-red-800 text-white font-bold border-b-4 border-red-800 focus:outline-none rounded w-full"
+              class="inline-flex justify-center items-center transition duration-150 py-2 px-4 bg-blue-600 hover:bg-blue-800 text-white font-bold border-b-4 border-blue-800 focus:outline-none rounded w-full"
             >
               <svg
                 class="h-5 w-5 mr-2 text-white animate-spin"
@@ -279,7 +278,7 @@
       <div class="flex justify-center items-center mt-4">
         <div>
           <router-link
-            class="block text-sm fontme text-gray-500 hover:text-red-700 hover:underline"
+            class="block text-sm fontme text-gray-500 hover:text-blue-700 hover:underline"
             to="/login"
             >Fazer Login</router-link
           >
