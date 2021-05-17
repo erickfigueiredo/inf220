@@ -23,9 +23,9 @@ class Order {
             if (type == 'C') complement = 'id_client';
             else complement = 'id_deliveryman';
 
-            const list = await knex.raw('SELECT FROM tb_order WHERE tb_order.'+complement+' = ' + id);
+            const order = await knex.raw('SELECT FROM tb_order WHERE tb_order.'+complement+' = ' + id);
 
-            return list[0] ? { success: true, list } : { success: false, message: 'Falha ao recuperar a lista de compras em que o usuário esta presente!' };
+            return order[0] ? { success: true, order } : { success: false, message: 'Falha ao recuperar a lista de compras em que o usuário esta presente!' };
         } catch (error) {
             Message.warning(error);
             return { success: false, messagem: 'Houve um erro ao recuperar as compras desse usuário!' };
@@ -34,9 +34,9 @@ class Order {
 
     static async rankByMostNumOrder() {
         try {
-            const rank = await knex.raw('select tb_user.id, tb_user.name, COUNT(tb_order.id_client) as qtd_orders from tb_user join tb_order on tb_user.id = tb_order.id_client group by tb_user.id order by qtd_orders limit 10');
+            const order = await knex.raw('select tb_user.id, tb_user.name, COUNT(tb_order.id_client) as qtd_orders from tb_user join tb_order on tb_user.id = tb_order.id_client group by tb_user.id order by qtd_orders limit 10');
 
-            return rank[0] ? { success: true, rank } : { success: false, message: 'Não foi possível recuperar o ranking de consumidores!' };
+            return order[0] ? { success: true, order } : { success: false, message: 'Não foi possível recuperar o ranking de consumidores!' };
         } catch (error) {
             Message.warning(error);
             return { success: false, message: 'Houve um erro ao recuperar o ranking de compras!' }

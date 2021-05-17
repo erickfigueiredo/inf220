@@ -8,7 +8,7 @@ const multerConfig = (dir, fileProps) => {
         dest: path.resolve(__dirname, '..', '..', 'frontend', 'public', dir),
         storage: multer.diskStorage({
             destination(req, file, callback) {
-                callback(null, path.resolve(__dirname, '..', '..', 'upload', dir));
+                callback(null, path.resolve(__dirname, '..', '..','frontend', 'public', dir));
             },
             filename(req, file, callback) {
                 const ext = file.mimetype.split('/');
