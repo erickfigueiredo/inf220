@@ -67,6 +67,10 @@ router.get('/paymentmethod/:id', PaymentMethodController.show);
 router.post('/paymentmethod', PaymentMethodController.create);
 router.delete('/paymentmethod/:id',PaymentMethodController.delete);
 
+// Order routes
+router.get('/order/rank_clients', OrderController.rankClients);
+router.get('/order/list_by/:id_user', OrderController.listOrders);
+
 // Product routes
 router.get('/product/all/', ProductController.indexAll);
 router.get('/product/all/mkt/:id_market', ProductController.index);
@@ -92,8 +96,6 @@ router.put('/wallet/increment', WalletController.incrementTotal);
 router.get('/withdraw/all/:id_user', WalletWithdrawController.index);
 router.get('/withdraw/:id_withdraw', WalletWithdrawController.show);
 router.post('/withdraw', WalletWithdrawController.create);
-
-//router.post('/login', Client.login);
 
 // Erro 404
 router.get('/bermuda_triangle', (req, res) => {

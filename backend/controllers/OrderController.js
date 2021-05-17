@@ -1,7 +1,8 @@
 const Order = require('../models/Order');
 const OrderProduct = require('../models/OrderProduct');
 const Product = require('../models/Product');
-const Deliveryman = require('../models/User')
+const Deliveryman = require('../models/User');
+const User = require('../models/User');
 
 class OrderController {
     static async index(req, res) {
@@ -72,6 +73,26 @@ class OrderController {
             order.order.order_products = orderProducts.order_products;  //Adiciona a ordem todos esses dados
             res.send(order);
         } else res.status(404).send(order)
+    }
+
+    static async rankClients(req, res) {
+        const result = await Order.rankByMostNumOrder();
+
+        result.success ? res.send(result) : res.status(400).send(result);
+    }
+
+    static async listOrders(req, res) {
+        const id = req.params.id_user;
+
+        const existUser = await User.findOne(id);
+
+        if(existUser.success) {
+            result = await Order.listOrders(id, existUser.user.type);
+
+            return result.success ? res.send(result) : res.status(400).send(result);
+        } 
+
+        return res.send({success: false, message: 'Usuário inexistente!'});
     }
 
     static async create(req, res) {

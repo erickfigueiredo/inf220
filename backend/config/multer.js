@@ -5,7 +5,7 @@ const multer = require('multer');
 
 const multerConfig = (dir, fileProps) => {
     return {
-        dest: path.resolve(__dirname, '..', '..', 'upload', dir),
+        dest: path.resolve(__dirname, '..', '..', 'frontend', 'public', dir),
         storage: multer.diskStorage({
             destination(req, file, callback) {
                 callback(null, path.resolve(__dirname, '..', '..', 'upload', dir));

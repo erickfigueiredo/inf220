@@ -72,6 +72,8 @@ class ProductController {
 
             if (!req.file)
                 return res.send({ success: false, message: 'É necessário submeter um arquivo!' });
+            
+            console.log(req.file)
 
             req.body = JSON.parse(req.body.data);
 
@@ -89,7 +91,7 @@ class ProductController {
                 return res.status(404).send({ success: false, message: 'Categoria inexistente!' });
             }
 
-            req.body.uri = req.file.path;
+            req.body.uri = req.file.key;
             const result = await Product.create(req.body);
 
             if (!result.success) {

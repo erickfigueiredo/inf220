@@ -3,7 +3,7 @@ const Message = require('../utils/Message');
 
 class Order {
 
-    async findOne(id) {
+    static async findOne(id) {
         try {
             const order = await knex.select('*')
                 .from('tb_order')
@@ -16,7 +16,34 @@ class Order {
         }
     }
 
-    async findAll(id_client, page) {
+    static async listOrders(id, type) {
+        try {
+            let complement;
+
+            if (type == 'C') complement = 'id_client';
+            else complement = 'id_deliveryman';
+
+            const list = await knex.raw('SELECT FROM tb_order WHERE tb_order.'+complement+' = ' + id);
+
+            return list[0] ? { success: true, list } : { success: false, message: 'Falha ao recuperar a lista de compras em que o usuário esta presente!' };
+        } catch (error) {
+            Message.warning(error);
+            return { success: false, messagem: 'Houve um erro ao recuperar as compras desse usuário!' };
+        }
+    }
+
+    static async rankByMostNumOrder() {
+        try {
+            const rank = await knex.raw('select tb_user.id, tb_user.name, COUNT(tb_order.id_client) as qtd_orders from tb_user join tb_order on tb_user.id = tb_order.id_client group by tb_user.id order by qtd_orders limit 10');
+
+            return rank[0] ? { success: true, rank } : { success: false, message: 'Não foi possível recuperar o ranking de consumidores!' };
+        } catch (error) {
+            Message.warning(error);
+            return { success: false, message: 'Houve um erro ao recuperar o ranking de compras!' }
+        }
+    }
+
+    static async findAll(id_client, page) {
         try {
             const order = await knex.select('*')
                 .from('tb_order')
@@ -34,7 +61,7 @@ class Order {
         }
     }
 
-    async create(data, id_products, quantity, description) {
+    static async create(data, id_products, quantity, description) {
         try {
             return await knex.transaction(async trx => {
 
@@ -81,7 +108,7 @@ class Order {
         }
     }
 
-    async update(data, id) {
+    static async update(data, id) {
         try {
             await knex.update(data)
                 .table('tb_order')
@@ -93,7 +120,7 @@ class Order {
         }
     }
 
-    async delete(id) {
+    static async delete(id) {
         try {
             await knex.update({ is_deleted: true })
                 .table('tb_order')
@@ -107,4 +134,4 @@ class Order {
     }
 }
 
-module.exports = new Order();
+module.exports = Order;
