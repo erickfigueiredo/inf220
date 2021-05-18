@@ -59,6 +59,13 @@ class OrderController {
         result.success ? res.send(result) : res.status(400).send(result);
     }
 
+    static async rankProducts(req, res) {
+        const id_category = req.params.id_category;
+        const result = await Order.rankByQuantityProductCategory(id_category);
+
+        result.success ? res.send(result) : res.status(400).send(result);
+    }
+
     static async listOrders(req, res) {
         const id = req.params.id_user;
 

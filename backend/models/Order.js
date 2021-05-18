@@ -57,6 +57,19 @@ class Order {
         }
     }
 
+    static async rankByQuantityProductCategory(id_category) {
+        try {
+            const order = await knex.raw('select p.title, m.business_name, SUM (op.quantity) as num_orders  from tb_product as p join tb_category as c on p.id_category = c.id ' + 
+            'join tb_order_product as op on p.id = op.id_product join tb_market as m on p.id_market = m.id where c.id = '+id_category+' group by p.id, m.id ' +
+            'order by num_orders desc limit 10;');
+
+            return order.rows[0] ? { success: true, order: order.rows } : { success: false, message: 'Não foi possível recuperar o ranking de consumidores!' };
+        } catch (error) {
+            Message.warning(error);
+            return { success: false, message: 'Houve um erro ao recuperar o ranking de compras!' }
+        }
+    }
+
     static async create(data, id_products, quantity, description) {
         try {
             return await knex.transaction(async trx => {

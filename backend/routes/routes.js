@@ -72,6 +72,7 @@ router.delete('/paymentmethod/:id',PaymentMethodController.delete);
 // Order routes
 router.get('/order/all/:id_user', OrderController.index);// Compra detalhada
 router.get('/rank_clients', OrderController.rankClients);
+router.get('/rank_products/:id_category', OrderController.rankProducts);
 router.get('/order/list_by/:id_user', OrderController.listOrders); // Compras
 router.get('/order/:id', OrderController.show);
 router.post('/order', OrderController.create);
