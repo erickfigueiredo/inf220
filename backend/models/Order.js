@@ -106,6 +106,17 @@ class Order {
 
                     await trx('tb_order_product').insert(data);
                 }
+                
+                console.log(data)
+
+                const deliveryman = await trx('tb_user').select('id_wallet').where({'id': data.id_deliveryman})
+                let wallet = await trx('tb_wallet').select('total').where({'id': deliveryman[0].id_wallet});
+                await trx('tb_wallet').update({total: parseFloat(wallet[0].total) + parseFloat(data.shipping) }).where({id: deliveryman[0].id_wallet})
+                console.log(wallet[0])
+                const market = await trx('tb_market').select('id_wallet').where({'id': data.id_market})
+                wallet = await trx('tb_wallet').select('total').where({'id': market[0].id_wallet});
+                await trx('tb_wallet').update({total: parseFloat(wallet[0].total) + parseFloat(data.order_total) - parseFloat(data.shipping) }).where({id: market[0].id_wallet})
+                console.log(wallet[0])
                 return { success: true, order: order[0] };
             });
         } catch(error) {
