@@ -181,7 +181,6 @@ import Cart from "../services/Cart";
 export default {
   props: {
     product: Object,
-    stock: Boolean,
   },
   data() {
     return {
@@ -196,6 +195,7 @@ export default {
       imgs: [],
 
       status: true,
+      stock: true
     };
   },
   components: {

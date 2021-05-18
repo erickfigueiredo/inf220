@@ -7,12 +7,13 @@
         </div>
       </div>
       <div class="px-6 py-4 text-left">
-        <span class="bg-gray-800 text-white text-xs px-2 rounded-full uppercase font-semibold tracking-wide"> Tipo {{product.quality}} </span>
+        <span class="bg-gray-800 text-white text-xs px-2 rounded-full uppercase font-semibold tracking-wide"> {{product.category}} </span>
         <div class="truncate mt-1">
           <span @click="$router.push({path: '/produto/' + product.id})" class="font-semibold text-md leading-tight hover:underline cursor-pointer">{{ product.title }}</span>
         </div>
         <div class="mt-1">
-          R$<span class="text-3xl">{{ product.price }}</span>
+          <small v-if="product.value" style="text-decoration: line-through" class="block ">R$ {{product.price}}</small>
+          R$<span class="text-3xl">{{ price }}</span>
           <span class="text-gray-600 text-sm"> x{{ product.quantity }}</span>
         </div>
       </div>
@@ -45,6 +46,11 @@ export default {
   methods: {
     redirectToSearch(search) {
       this.$router.push("/busca?search=" + search);
+    }
+  },
+  computed: {
+    price(){
+      return this.product.value ? this.product.price - this.product.value : this.product.price
     }
   }
 };
