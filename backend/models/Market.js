@@ -36,7 +36,7 @@ class Market {
 
     static async findOne(id) {
         try {
-            const market = await knex.select('id', 'business_name', 'cnpj', 'email', 'phone')
+            const market = await knex.select('*')
                 .from('tb_market')
                 .where({ id, 'is_deleted': false });
             console.log(market)

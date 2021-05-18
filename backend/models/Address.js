@@ -34,6 +34,19 @@ class Address {
         }
     }
 
+    static async findByUser(id_user){
+        try {
+            const address = await knex.select('*')
+                .from('tb_address')
+                .where({ id_user, "is_deleted": false });
+
+            return address[0] ? { success: true, address: address[0] } : { success: false, message: 'Não foi possível recuperar o endereço / Endereço inexistente!' };
+        } catch (error) {
+            Message.warning(error);
+            return { success: false, message: 'Houve um erro ao recuperar o endereço!' };
+        }
+    }
+
     static async findByUserAlias(id_user, alias) {
         try {
             const address = await knex.select('id')

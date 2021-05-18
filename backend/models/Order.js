@@ -57,42 +57,46 @@ class Order {
         }
     }
 
-
     static async create(data, id_products, quantity, description) {
         try {
             return await knex.transaction(async trx => {
-
+                let totalOrder = 0;
                 let products = [];
                 let discounts = [];
-                let total_order = 0;
 
-                for (let i = 0; i < id_products.length; i++) {
-                    let product = await trx('tb_product').select('*').where({ id: id_products[i] });
-                    let discount = await trx('tb_discount').select("*").where({ id: product[0].id_discount });
+                for(let i = 0; i < id_products.length; i++) {
+                    const product = await trx('tb_product').select('*').where({'is_active': true, id: id_products[i]});
 
-                    if (product[0].quantity > quantity[i]) throw new Error('Quantidade indisponível do produto desejado!');
+                    let discount = null;
+                    if(product[0].id_discount)
+                        discount = await trx('tb_discount').select('*').where({id: product[0].id_discount});
 
+                    if(product[0].quantity < quantity[i]) return {success: false, message: `Quantidade de ${product[0].title} indisponível!`};
+                    
                     products.push(product[0]);
-                    discounts.push(discount[0] || {});
 
+                    if(discount) discounts.push(discount[0]);
+                    else  discounts.push({value: 0});
+                    
                     let value = product[0].price * quantity[i];
-                    discount[0].value ? value *= discount[0].value : undefined;
-                    total_order += value;
+
+                    if(discount) value -= discount[0].value * quantity[i];
+                    
+                    totalOrder += value;
                 }
 
                 data.status = 'P';
-                data.order_total = total_order;
+                data.order_total = totalOrder;
 
                 const order = await trx('tb_order').insert(data).returning('*');
                 const id_order = order[0].id;
 
                 for (let i = 0; i < id_products.length; i++) {
                     await trx('tb_product').update({ "quantity": products[i].quantity - quantity[i] }).where({ id: id_products[i] });
-                    let discount = await trx('tb_discount').select("*").where({ id: id_products[i].id_discount });
 
-                    let data = {
+                    const data = {
                         price: products[i].price,
-                        discount: discount[0] * products[i].price,
+                        discount: discounts[0].value,
                         quantity: quantity[i],
                         description,
                         id_product: id_products[i],
@@ -102,8 +106,8 @@ class Order {
                     await trx('tb_order_product').insert(data);
                 }
                 return { success: true, order: order[0] };
-            })
-        } catch (error) {
+            });
+        } catch(error) {
             Message.warning(error);
             return { success: false, message: 'Erro ao efetuar a compra!' };
         }

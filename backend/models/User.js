@@ -118,7 +118,7 @@ class User {
                 case 1: return res.send({ success: true, deliveryman: available[0].id });
                 default:
                     const index = Math.random() * (available.length - 1, 0);
-                    return res.send({ success: true, deliveryman: available[index].id });
+                    return { success: true, deliveryman: available[index].id };
             }
         } catch (e) {
             Message.warning(e);
