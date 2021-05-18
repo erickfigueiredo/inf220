@@ -45,7 +45,7 @@
             </div>
           </div>
           <div class="flex-none md:flex md:space-x-4 md:my-4">
-            <div class="w-full md:w-1/3 my-4 md:my-0">
+            <div class="w-full md:w-1/2 my-4 md:my-0">
               <label
                 class="block text-gray-600 text-sm font-bold mb-2"
                 for="birthdate"
@@ -61,7 +61,7 @@
                 class="text-sm sm:text-sm w-full border rounded text-gray-800 placeholder-gray-500 focus:border-blue-600 focus:outline-none py-2 px-4"
               />
             </div>
-            <div class="w-full md:w-1/3 my-4 md:my-0">
+            <div class="w-full md:w-1/2 my-4 md:my-0">
               <label
                 class="block text-gray-600 text-sm font-bold mb-2"
                 for="tel"
@@ -77,27 +77,9 @@
                 placeholder="(XX) XXXXX-XXXX"
                 @keyup="telMasc"
                 required
-                v-model="tel"
+                v-model="phone"
                 class="text-sm sm:text-sm w-full border rounded text-gray-800 placeholder-gray-500 focus:border-blue-600 focus:outline-none py-2 px-4"
               />
-            </div>
-            <div class="w-full md:w-1/3 my-4 md:my-0">
-              <label
-                class="block text-gray-600 text-sm font-bold mb-2"
-                for="birthdate"
-              >
-                Eu sou
-              </label>
-              <select
-                id="type"
-                v-model="selected"
-                name="type"
-                required
-                class="text-sm sm:text-sm w-full border rounded text-gray-800 placeholder-gray-500 focus:border-blue-600 focus:outline-none py-2 px-4"
-              >
-                <option value="client" selected>Cliente</option>
-                <option value="salesman">Vendedor</option>
-              </select>
             </div>
           </div>
         </div>
@@ -122,7 +104,7 @@
           <div class="flex-none md:flex md:space-x-4 md:my-4">
             <div
               v-if="selected == 'client'"
-              class="w-full md:w-1/2 my-4 md:my-0"
+              class="w-full md:full my-4 md:my-0"
             >
               <label
                 class="block text-gray-600 text-sm font-bold mb-2"
@@ -157,26 +139,6 @@
                 placeholder="Ex: Marmoraria do João"
                 :required="!firstStep"
                 v-model="businessName"
-                class="text-sm sm:text-sm w-full border rounded text-gray-800 placeholder-gray-500 focus:border-blue-600 focus:outline-none py-2 px-4"
-              />
-            </div>
-            <div class="w-full md:w-1/2 my-4 md:my-0">
-              <label
-                class="block text-gray-600 text-sm font-bold mb-2"
-                for="cnpj"
-              >
-                CNPJ
-              </label>
-              <input
-                id="cnpj"
-                name="cnpj"
-                type="text"
-                maxlength="18"
-                minlength="18"
-                placeholder="XX.XXX.XXX/XXXX-XX"
-                :required="!firstStep && cpf == undefined"
-                @keydown="cnpjMasc()"
-                v-model="cnpj"
                 class="text-sm sm:text-sm w-full border rounded text-gray-800 placeholder-gray-500 focus:border-blue-600 focus:outline-none py-2 px-4"
               />
             </div>
@@ -304,7 +266,7 @@ export default {
       surname: "",
       birthdate: "",
       email: "",
-      tel: "",
+      phone: "",
       selected: "client",
       cpf: "",
       cnpj: "",
@@ -333,7 +295,7 @@ export default {
         this.name.length &&
         this.surname.length &&
         this.birthdate.length &&
-        this.tel.length
+        this.phone.length
       );
     },
   },
@@ -389,27 +351,29 @@ export default {
         surname: this.surname,
         birthdate: this.birthdate,
         email: this.email,
-        tel: this.tel.replace(/\D/g, ""),
-        cnpj: this.cnpj ? this.cnpj.replace(/\D/g, "") : undefined,
+        phone: this.phone.replace(/\D/g, ""),
+        cpf: this.cpf ? this.cpf.replace(/\D/g, "") : undefined,
         password: this.password,
       };
-      if (this.selected == "client") {
-        data["cpf"] = this.cpf ? this.cpf.replace(/\D/g, "") : undefined;
-        let result = await Client.create(data);
-        if (result.success) {
-          this.type = "success";
-          this.message = "Cadastrado com sucesso!";
-          this.title = "Sucesso!";
+
+      data["cpf"] = this.cpf ? this.cpf.replace(/\D/g, "") : undefined;
+      let result = await Client.create(data);
+      if (result.success) {
+        this.type = "success";
+        this.message = "Cadastrado com sucesso!";
+        this.title = "Sucesso!";
+        setInterval(() => {
           this.$router.push({
-            path: "/confirme",
-            query: { id: result.client.id_user },
-          });
-        } else {
-          this.type = "error";
-          this.message = result.message;
-          this.title = "Erro!";
-        }
+          path: "/login",
+        });
+        })
+        
+      } else {
+        this.type = "error";
+        this.message = result.message;
+        this.title = "Erro!";
       }
+
       this.loading = false;
       document.getElementById("but").disabled = false;
       setTimeout(() => {
