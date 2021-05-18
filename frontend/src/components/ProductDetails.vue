@@ -28,16 +28,19 @@
             <div class="text-gray-500">
               <div class="flex-none lg:flex lg:flex-row-reverse my-2">
                 <div class="w-full lg:w-1/4 lg:text-right">
-                  <span
-                    class="mr-1 bg-white text-gray-700 text-xs px-2 rounded-full uppercase font-bold tracking-wide"
-                  >
-                    {{ product.name }}
-                  </span>
+                  <router-link :to="'/busca?search=' + product.category">
+                    <span
+                      class="mr-1 bg-white text-gray-700 text-xs px-2 rounded-full uppercase font-bold tracking-wide"
+                    >
+                      {{ product.category }}
+                    </span>
+                  </router-link>
                 </div>
                 <div class="w-full lg:w-3/4">
-                  <p>
+                <small v-if="product.value" style="text-decoration: line-through" class="block mb-0 pt-0">R$ {{product.price}}</small>
+                  <p class="mt-0 pt-0">
                     R$
-                    <span class="text-white text-3xl">{{ product.price }}</span
+                    <span class="text-white text-3xl mt-0 pt-0">{{ price }}</span
                     ><span class="text-xs">
                       por unidade ({{ product.unt }})</span
                     >
@@ -195,7 +198,7 @@ export default {
       imgs: [],
 
       status: true,
-      stock: true
+      stock: true,
     };
   },
   components: {
@@ -214,9 +217,9 @@ export default {
         ? JSON.parse(window.localStorage.getItem("cart"))
         : [];
 
-      cart.push({ ...this.product, cart_quantity: this.quantity });
+      cart.push({ ...this.product, cart_quantity: this.quantity, price: this.price });
       window.localStorage.setItem("cart", JSON.stringify(cart));
-      this.setMessage('Sucesso!', 'success', 'Adicionado ao carrinho!', 3000);
+      this.setMessage("Sucesso!", "success", "Adicionado ao carrinho!", 3000);
       this.loading = false;
     },
     setMessage(title, type, message, milisseconds) {
@@ -241,6 +244,11 @@ export default {
     this.imgs.push("../gallery/" + this.product.uri);
     this.loading = false;
   },
+  computed: {
+    price(){
+      return this.product.value ? this.product.price - this.product.value : this.product.price
+    }
+  }
 };
 </script>
 

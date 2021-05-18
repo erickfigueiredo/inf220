@@ -58,8 +58,8 @@ class Product {
     static async searchProduct(filter) {
         try {
             const product = await knex('tb_product')
+                .leftJoin('tb_product_discount', { 'tb_product_discount.id': 'tb_product.id_discount' })
                 .join('tb_category', { 'tb_category.id': 'tb_product.id_category' })
-                .leftJoin('tb_product_discount', { 'tb_product.id': 'tb_product.id_discount' })
                 .join('tb_market', { 'tb_market.id': 'tb_product.id_market' })
                 .select(
                     'tb_product.id',
@@ -70,7 +70,7 @@ class Product {
                     'tb_product.brand',
                     'tb_category.name as category',
                     'tb_market.business_name as market',
-                    'tb_product_discount.value as discount'
+                    'tb_product_discount.value'
                 )
                 .where(function () {
                     this.whereRaw('unaccent(:productTitle:) ilike unaccent(:search) or ' +
@@ -78,7 +78,7 @@ class Product {
                         'unaccent(:productDesc:) ilike unaccent(:search) or ' +
                         'unaccent(:marketName:) ilike unaccent(:search)', {
                         productTitle: 'tb_product.title',
-                        productDesc: 'tb_product.description',
+                        productDesc: 'tb_product.desc',
                         categoryName: 'tb_category.name',
                         marketName: 'tb_market.business_name',
                         search: '%' + filter.search + '%'

@@ -7,7 +7,9 @@
         </div>
       </div>
       <div class="px-6 py-4 text-left">
-        <span class="bg-gray-800 text-white text-xs px-2 rounded-full uppercase font-semibold tracking-wide"> {{product.category}} </span>
+        <router-link :to="'/busca?search=' + product.category">
+          <span class="bg-gray-800 text-white text-xs px-2 rounded-full uppercase font-semibold tracking-wide"> {{product.category}} </span>
+        </router-link>
         <div class="truncate mt-1">
           <span @click="$router.push({path: '/produto/' + product.id})" class="font-semibold text-md leading-tight hover:underline cursor-pointer">{{ product.title }}</span>
         </div>
