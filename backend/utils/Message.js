@@ -18,7 +18,7 @@ class Message {
     }
 
     static release(msg) {
-        console.log(c.red.bold.bgWhite(msg));
+        console.log(c.blue.bold.bgWhite(msg));
     }
 };
 
