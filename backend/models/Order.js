@@ -37,9 +37,9 @@ class Order {
             if (type == 'C') complement = 'id_client';
             else complement = 'id_deliveryman';
 
-            const order = await knex.raw('SELECT FROM tb_order WHERE tb_order.' + complement + ' = ' + id);
-
-            return order[0] ? { success: true, order } : { success: false, message: 'Falha ao recuperar a lista de compras em que o usuário esta presente!' };
+            const order = await knex.raw('SELECT * FROM tb_order WHERE tb_order.' + complement + ' = ' + id);
+            console.log(order.rows)
+            return order.rows[0] ? { success: true, order: order.rows } : { success: false, message: 'Falha ao recuperar a lista de compras em que o usuário esta presente!' };
         } catch (error) {
             Message.warning(error);
             return { success: false, messagem: 'Houve um erro ao recuperar as compras desse usuário!' };
