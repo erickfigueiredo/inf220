@@ -5,15 +5,15 @@
       <div class="flex justify-start">
         <img
           class="h-40 w-3/12 xl:w-2/12 object-cover cursor-pointer"
-          @click="openProduct(product.id_product)"
-          :src="product.url_image"
+          @click="openProduct(product.id)"
+          :src="'gallery/'+product.uri"
           alt="img"
         />
         <div class="px-6 py-4 text-left w-9/12">
           <div class="truncate mt-1">
             <span
               class="font-semibold text-md leading-tight hover:underline cursor-pointer"
-              @click="openProduct(product.id_product)"
+              @click="openProduct(product.id)"
             >
               {{ product.title }}
             </span>
@@ -32,7 +32,7 @@
               <br /><small>
                 <button
                   type="button"
-                  @click="removeItemFromCart(product.id_product)"
+                  @click="removeItemFromCart(product.id)"
                   class="text-gray-500 hover:text-blue-600 hover:underline pl-2"
                 >
                   Remover
@@ -42,11 +42,6 @@
           </div>
 
           <br />
-          <router-link
-            :to="{path: '/loja/'+product.id_salesman}"
-            class="cursor-pointer float-left pt-0 mt-0 text-gray-500 text-sm transition duration-300 hover:text-blue-600 uppercase font-semibold tracking-wide"
-            ><i class="fas fa-store"></i> {{ product.business_name }}</router-link
-          >
         </div>
       </div>
     </div>
@@ -70,7 +65,6 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["removeItem", "updateQuantity"]),
     setMessage(title, type, message, miliseconds) {
       console.log(type)
       this.message = message;
@@ -88,32 +82,15 @@ export default {
       this.$router.push({ name: "ProductGeneral", params: { id_product } });
     },
     async removeItemFromCart(id_product) {
-      const result = await this.removeItem({
-        id_product,
-        id_item: this.product.id_item ? this.product.id_item : undefined,
-      });
+
     },
     async updateQuantityToBuy() {
-      if (this.quantity > this.product.product_quantity || this.quantity < 1) {
-        this.setMessage("Erro!", "error", "Quantidade inválida!", 3000);
-        this.quantity = this.product.cart_quantity;
-        return;
-      }
-      const result = await this.updateQuantity({
-        id_item: this.product.id_item ? this.product.id_item : undefined,
-        id_product: this.product.id_product,
-        cart_quantity: this.quantity,
-      });
-      if (result.success)
-        this.setMessage("Sucesso!", "success", result.message, 3000);
-      else {
-        this.setMessage("Erro!", "error", result.message, 3000);
-        this.quantity = parseInt(this.product.cart_quantity);
-      }
+
     },
   },
   created() {
     this.quantity = this.product.cart_quantity;
+    console.log(this.product)
   },
   components: {
     MessageCardFixed,

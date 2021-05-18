@@ -9,8 +9,8 @@
             <Slide v-for="(img, index) in imgs" :key="index">
               <img
                 :src="img"
-                 @click="showImg(0)"
-                :class="{'imgGray': !stock}"
+                @click="showImg(0)"
+                :class="{ imgGray: !stock }"
                 class="cursor-pointer h-image-card object-cover w-full rounded-t-lg lg:rounded-none lg:rounded-l-lg"
               />
             </Slide>
@@ -31,14 +31,16 @@
                   <span
                     class="mr-1 bg-white text-gray-700 text-xs px-2 rounded-full uppercase font-bold tracking-wide"
                   >
-                    {{product.name}}
+                    {{ product.name }}
                   </span>
                 </div>
                 <div class="w-full lg:w-3/4">
                   <p>
                     R$
                     <span class="text-white text-3xl">{{ product.price }}</span
-                    ><span class="text-xs"> por unidade ({{product.unt}})</span>
+                    ><span class="text-xs">
+                      por unidade ({{ product.unt }})</span
+                    >
                   </p>
                   <p class="text-xs">
                     Unidades disponíveis:
@@ -59,7 +61,9 @@
                 <p class="text-sm">
                   Validade:
                   <span class="mr-1 text-white font-bold">
-                    {{ new Date(product.validate).toLocaleString().substr(0,10) }}</span
+                    {{
+                      new Date(product.validate).toLocaleString().substr(0, 10)
+                    }}</span
                   >
                 </p>
               </div>
@@ -109,7 +113,16 @@
                 <p class="text-center">Produto sem estoque :(</p>
               </div>
               <div v-else-if="status === 'V'" class="my-2 justify-center">
-                <p class="text-center">Usuários vendedores não podem comprar, crie uma conta de cliente! <router-link class="underline hover:text-blue-600" to="/cadastrar"> Cadastrar </router-link></p>
+                <p class="text-center">
+                  Usuários vendedores não podem comprar, crie uma conta de
+                  cliente!
+                  <router-link
+                    class="underline hover:text-blue-600"
+                    to="/cadastrar"
+                  >
+                    Cadastrar
+                  </router-link>
+                </p>
               </div>
             </div>
           </div>
@@ -122,12 +135,12 @@
       </div>
     </div>
 
-          <vue-easy-lightbox
-          :visible="visible"
-          :imgs="imgs"
-          :index="0"
-          @hide="handleHide"
-      ></vue-easy-lightbox>
+    <vue-easy-lightbox
+      :visible="visible"
+      :imgs="imgs"
+      :index="0"
+      @hide="handleHide"
+    ></vue-easy-lightbox>
   </div>
 </template>
 
@@ -164,11 +177,11 @@ import "vue3-carousel/dist/carousel.css";
 import { mapActions, mapMutations } from "vuex";
 import { Carousel, Navigation, Slide } from "vue3-carousel";
 import MessageCardFixed from "./MessageCardFixed.vue";
-import Cart from '../services/Cart';
+import Cart from "../services/Cart";
 export default {
   props: {
     product: Object,
-    stock: Boolean
+    stock: Boolean,
   },
   data() {
     return {
@@ -182,7 +195,7 @@ export default {
       visible: false,
       imgs: [],
 
-      status: true
+      status: true,
     };
   },
   components: {
@@ -192,19 +205,18 @@ export default {
     MessageCardFixed,
   },
   methods: {
-
     redirectToSearch(search) {
       this.$router.push("/busca?search=" + search);
     },
-    addToCart: async function () {
+    addToCart: function () {
       this.loading = true;
-      
-      const result = await Cart.create({
-        id_user: this.$store.state.user.user.id,
-        id_product: this.$route.params.id_product,
-        quantity: this.quantity 
-      })
+      let cart = window.localStorage.getItem("cart")
+        ? JSON.parse(window.localStorage.getItem("cart"))
+        : [];
 
+      cart.push({ ...this.product, cart_quantity: this.quantity });
+      window.localStorage.setItem("cart", JSON.stringify(cart));
+      this.setMessage('Sucesso!', 'success', 'Adicionado ao carrinho!', 3000);
       this.loading = false;
     },
     setMessage(title, type, message, milisseconds) {
@@ -218,34 +230,34 @@ export default {
       return;
     },
     showImg(index) {
-        this.index = index
-        this.visible = true
+      this.index = index;
+      this.visible = true;
     },
     handleHide() {
-      this.visible = false
-    }
+      this.visible = false;
+    },
   },
   created() {
-    this.imgs.push('../gallery/'+this.product.uri);
-    this.loading = false
+    this.imgs.push("../gallery/" + this.product.uri);
+    this.loading = false;
   },
 };
 </script>
 
 <style scoped>
-  .imgGray:hover{
-    filter: none;
-    -webkit-filter: grayscale(0);
-    -webkit-transition: all 0.8s linear;
-    -moz-transition: all 0.8s linear;
-    transition: all 0.8s linear;
-  }
+.imgGray:hover {
+  filter: none;
+  -webkit-filter: grayscale(0);
+  -webkit-transition: all 0.8s linear;
+  -moz-transition: all 0.8s linear;
+  transition: all 0.8s linear;
+}
 
-  .imgGray{
-    -webkit-transition: all 0.8s linear;
-    -moz-transition: all 0.8s linear;
-    transition: all 0.8s linear;
-    filter: gray; /* IE6-9 */
-    -webkit-filter: grayscale(100%); /* Chrome 19+, Safari 6+, Safari 6+ iOS */
-  }
+.imgGray {
+  -webkit-transition: all 0.8s linear;
+  -moz-transition: all 0.8s linear;
+  transition: all 0.8s linear;
+  filter: gray; /* IE6-9 */
+  -webkit-filter: grayscale(100%); /* Chrome 19+, Safari 6+, Safari 6+ iOS */
+}
 </style>

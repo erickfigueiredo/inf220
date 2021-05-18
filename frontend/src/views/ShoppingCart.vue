@@ -2,7 +2,7 @@
   <div class="min-h-screen flex flex-col">
     <div class="flex-grow px-6 pt-8 pb-2">
       <h1 class="text-2xl lg:text-5xl leading-none mb-10 text-gray-800">
-          Carrinho de compras
+        Carrinho de compras
       </h1>
       <div v-if="!loading" class="flex-grow">
         <template v-for="item in items" :key="item.id">
@@ -39,7 +39,7 @@ import CartItem from "../components/CartItem.vue";
 import CartSum from "../components/CartSum.vue";
 import CartItemLoad from "../components/CartItemLoad.vue";
 import Product from "../services/Product";
-import Cart from '../services/Cart';
+import Cart from "../services/Cart";
 
 export default {
   components: {
@@ -54,14 +54,16 @@ export default {
       items: Array,
 
       pagination: {},
-      maxPerPage: 5
+      maxPerPage: 5,
     };
   },
   async created() {
-    if (!this.$store.state.login.login.isLogged) {
-      let items = await Cart.getAll(this.$store.user.user.id)
-      this.items = items;
-    }
-  }
+    let items = window.localStorage.getItem("cart")
+      ? JSON.parse(window.localStorage.getItem("cart"))
+      : [];
+    this.items = items;
+    console.log(items);
+    this.loading = false;
+  },
 };
 </script>
