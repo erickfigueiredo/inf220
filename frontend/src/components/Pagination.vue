@@ -7,7 +7,7 @@
         <a
           @click="curPage - 1 > 0 ? goToPage($event, curPage - 1) : undefined"
           :class="{ 'opacity-50': curPage - 1 <= 0 }"
-          class="cursor-pointer py-2 px-3 leading-tight bg-white border border-gray-200 text-gray-500 border-r-0 ml-0 rounded-l transition duration-300 hover:bg-red-600 hover:text-white"
+          class="cursor-pointer py-2 px-3 leading-tight bg-white border border-gray-200 text-gray-500 border-r-0 ml-0 rounded-l transition duration-300 hover:bg-blue-600 hover:text-white"
           ><span>Anterior</span></a
         >
         <a
@@ -18,29 +18,29 @@
         <a
           @click="goToPage($event, curPage - 2)"
           v-if="curPage - 2 > 0"
-          class="cursor-pointer py-2 px-3 leading-tight bg-white border border-gray-200 text-gray-500 border-r-0 ml-0 transition duration-300 hover:bg-red-600 hover:text-white"
+          class="cursor-pointer py-2 px-3 leading-tight bg-white border border-gray-200 text-gray-500 border-r-0 ml-0 transition duration-300 hover:bg-blue-600 hover:text-white"
           ><span>{{ curPage - 2 }}</span></a
         >
         <a
           @click="goToPage($event, curPage - 1)"
           v-if="curPage - 1 > 0"
-          class="cursor-pointer py-2 px-3 leading-tight bg-white border border-gray-200 text-gray-500 border-r-0 ml-0 transition duration-300 hover:bg-red-600 hover:text-white"
+          class="cursor-pointer py-2 px-3 leading-tight bg-white border border-gray-200 text-gray-500 border-r-0 ml-0 transition duration-300 hover:bg-blue-600 hover:text-white"
           ><span>{{ curPage - 1 }}</span></a
         >
         <a
-          class="cursor-pointer hover py-2 px-3 leading-tight bg-red-600 border border-gray-200 text-white border-r-0 ml-0 transition duration-300"
+          class="cursor-pointer hover py-2 px-3 leading-tight bg-blue-600 border border-gray-200 text-white border-r-0 ml-0 transition duration-300"
           ><span>{{ curPage }}</span></a
         >
         <a
           @click="goToPage($event, curPage + 1)"
           v-if="curPage + 1 <= numPages"
-          class="cursor-pointer py-2 px-3 leading-tight bg-white border border-gray-200 text-gray-500 border-r-0 ml-0 transition duration-300 hover:bg-red-600 hover:text-white"
+          class="cursor-pointer py-2 px-3 leading-tight bg-white border border-gray-200 text-gray-500 border-r-0 ml-0 transition duration-300 hover:bg-blue-600 hover:text-white"
           ><span>{{ curPage + 1 }}</span></a
         >
         <a
           @click="goToPage($event, curPage + 2)"
           v-if="curPage + 2 <= numPages"
-          class="cursor-pointer py-2 px-3 leading-tight bg-white border border-gray-200 text-gray-500 border-r-0 ml-0 transition duration-300 hover:bg-red-600 hover:text-white"
+          class="cursor-pointer py-2 px-3 leading-tight bg-white border border-gray-200 text-gray-500 border-r-0 ml-0 transition duration-300 hover:bg-blue-600 hover:text-white"
           ><span>{{ curPage + 2 }}</span></a
         >
         <a
@@ -53,7 +53,7 @@
             curPage + 1 <= numPages ? goToPage($event, curPage + 1) : undefined
           "
           :class="{ 'opacity-50': curPage + 1 > numPages }"
-          class="cursor-pointer py-2 px-3 leading-tight bg-white border border-gray-200 text-gray-500 rounded-r transition duration-300 hover:bg-red-600 hover:text-white"
+          class="cursor-pointer py-2 px-3 leading-tight bg-white border border-gray-200 text-gray-500 rounded-r transition duration-300 hover:bg-blue-600 hover:text-white"
           ><span>Próximo</span></a
         >
       </div>

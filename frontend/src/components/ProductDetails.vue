@@ -69,7 +69,7 @@
                 <button
                   type="button"
                   @click="addToCart()"
-                  class="inline-flex justify-center items-center py-2 px-4 border-b-4 border-red-800 text-sm leading-6 font-bold focus:outline-none rounded text-white bg-red-600 hover:bg-red-800 w-9/12 transition duration-150"
+                  class="inline-flex justify-center items-center py-2 px-4 border-b-4 border-blue-800 text-sm leading-6 font-bold focus:outline-none rounded text-white bg-blue-600 hover:bg-blue-800 w-9/12 transition duration-150"
                 >
                   <svg
                     class="h-5 w-5 mr-2 text-white animate-spin"
@@ -110,7 +110,7 @@
                 <p class="text-center">Produto sem estoque :(</p>
               </div>
               <div v-else-if="status === 'V'" class="my-2 justify-center">
-                <p class="text-center">Usuários vendedores não podem comprar, crie uma conta de cliente! <router-link class="underline hover:text-red-600" to="/cadastrar"> Cadastrar </router-link></p>
+                <p class="text-center">Usuários vendedores não podem comprar, crie uma conta de cliente! <router-link class="underline hover:text-blue-600" to="/cadastrar"> Cadastrar </router-link></p>
               </div>
             </div>
           </div>

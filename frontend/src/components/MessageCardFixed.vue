@@ -81,7 +81,7 @@ export default {
     bgColor: function () {
       if (this.type == "info") this.cls = "bg-blue-500";
       else if (this.type == "warning") this.cls = "bg-yellow-500";
-      else if (this.type == "error") this.cls = "bg-red-500";
+      else if (this.type == "error") this.cls = "bg-blue-500";
       else this.cls = "bg-green-500";
 
       return this.cls;
@@ -89,7 +89,7 @@ export default {
     fontColor: function () {
       if (this.type == "info") this.cls = "text-blue-500";
       else if (this.type == "warning") this.cls = "text-yellow-500";
-      else if (this.type == "error") this.cls = "text-red-500";
+      else if (this.type == "error") this.cls = "text-blue-500";
       else this.cls = "text-green-500";
 
       return this.cls;

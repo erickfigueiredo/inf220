@@ -18,7 +18,7 @@
             class="flex justify-center items-center transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110"
           >
             <img class="h-8 w-8 mr-1" src="/iStones-Logo.svg" alt="iStones" />
-            <span class="text-red-600 font-semibold text-2xl">Stones</span>
+            <span class="text-blue-600 font-semibold text-2xl">Stones</span>
           </div>
         </router-link>
       </div>
@@ -81,7 +81,7 @@
             <button
               type="button"
               @click="filterSearch()"
-              class="transition duration-150 py-1 px-2 bg-red-600 hover:bg-red-800 text-white font-bold border-b-4 border-red-800 focus:outline-none rounded w-full"
+              class="transition duration-150 py-1 px-2 bg-blue-600 hover:bg-blue-800 text-white font-bold border-b-4 border-blue-800 focus:outline-none rounded w-full"
             >
               Aplicar
             </button>
@@ -299,7 +299,7 @@ export default defineComponent({
   setup() {
     const { isOpen } = useSidebar();
     const activeClass = ref(
-      "bg-gray-600 bg-opacity-25 text-gray-100 border-red-600"
+      "bg-gray-600 bg-opacity-25 text-gray-100 border-blue-600"
     );
     const inactiveClass = ref(
       "border-gray-800 text-gray-500 hover:bg-gray-600 hover:border-gray-600 hover:bg-opacity-25 hover:text-gray-100"

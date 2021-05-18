@@ -1,6 +1,6 @@
 <template>
   <header
-    class="flex justify-between items-center py-4 px-6 bg-white border-b-4 border-red-600"
+    class="flex justify-between items-center py-4 px-6 bg-white border-b-4 border-blue-600"
   >
     <MessageCard :type="type" :title="title" :message="message" />
     <div class="flex items-center">
@@ -14,7 +14,7 @@
       <div class="relative mx-4 lg:mx-">
         <form action="" @submit.prevent="searching">
           <input
-            class="text-gray-700 form-input rounded-full pl-4 pr-10 focus:shadow-none focus:border-red-600 shadow-inner"
+            class="text-gray-700 form-input rounded-full pl-4 pr-10 focus:shadow-none focus:border-blue-600 shadow-inner"
             type="search"
             id="search"
             name="search"
@@ -38,7 +38,7 @@
         to="/carrinho"
         v-if="userType != 'V'"
       >
-        <span class="mx-2 lg:mx-4 text-gray-500 focus:outline-none transition duration-300 hover:text-red-600">
+        <span class="mx-2 lg:mx-4 text-gray-500 focus:outline-none transition duration-300 hover:text-blue-600">
           <i class="fas fa-truck-loading"></i>
         </span>
       </router-link>
@@ -46,7 +46,7 @@
       <div class="relative mx-2 lg:mx-4">
         <button
           @click="dropdownOpen = !dropdownOpen"
-          class="relative z-10 block h-8 w-8 rounded-full overflow-hidden shadow focus:outline-none bg-red-600 text-white transition duration-300 hover:bg-gray-500"
+          class="relative z-10 block h-8 w-8 rounded-full overflow-hidden shadow focus:outline-none bg-blue-600 text-white transition duration-300 hover:bg-gray-500"
         >
           <i class="far fa-user-circle"></i>
         </button>
@@ -68,7 +68,7 @@
             <router-link
               to="/login"
               @click="log"
-              class="block px-4 py-2 text-red-600 text-sm transition duration-300 hover:bg-red-600 hover:text-white"
+              class="block px-4 py-2 text-blue-600 text-sm transition duration-300 hover:bg-blue-600 hover:text-white"
               >Sair</router-link
             >
           </div>

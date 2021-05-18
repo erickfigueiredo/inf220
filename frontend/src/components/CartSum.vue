@@ -6,7 +6,7 @@
       </div>
       <div class="w-full md:w-2/5 text-right text-gray-600">
         <p class="text-white">R$ <span class="text-2xl md:text-3xl">{{total}}</span></p>
-        <p>à vista no boleto ou <span @click="juros = !juros" class="transition duration-300 hover:text-red-600 cursor-pointer transi">em até 12x sem juros</span></p>
+        <p>à vista no boleto ou <span @click="juros = !juros" class="transition duration-300 hover:text-blue-600 cursor-pointer transi">em até 12x sem juros</span></p>
         <div v-if="juros" class="flex-none md:flex">
           <div class="w-full md:w-1/2">
             <p>1x: R$ {{total}}</p>
@@ -30,7 +30,7 @@
     <div class="w-full mt-12">
       <button
         type="submit"
-        class="w-full transition duration-150 py-2 px-4 bg-red-600 hover:bg-red-800 text-white font-bold border-b-4 border-red-800 focus:outline-none rounded"
+        class="w-full transition duration-150 py-2 px-4 bg-blue-600 hover:bg-blue-800 text-white font-bold border-b-4 border-blue-800 focus:outline-none rounded"
       >
         Comprar    
       </button>

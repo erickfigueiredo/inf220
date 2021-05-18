@@ -6,7 +6,7 @@ class Message {
     }
 
     static info(msg) {
-        console.log(c.blue.underline(msg));
+        console.log(c.red.underline(msg));
     }
 
     static warning(msg) {
@@ -18,7 +18,7 @@ class Message {
     }
 
     static release(msg) {
-        console.log(c.blue.bold.bgWhite(msg));
+        console.log(c.red.bold.bgWhite(msg));
     }
 };
 

@@ -33,7 +33,7 @@
                 <button
                   type="button"
                   @click="removeItemFromCart(product.id_product)"
-                  class="text-gray-500 hover:text-red-600 hover:underline pl-2"
+                  class="text-gray-500 hover:text-blue-600 hover:underline pl-2"
                 >
                   Remover
                 </button>
@@ -44,7 +44,7 @@
           <br />
           <router-link
             :to="{path: '/loja/'+product.id_salesman}"
-            class="cursor-pointer float-left pt-0 mt-0 text-gray-500 text-sm transition duration-300 hover:text-red-600 uppercase font-semibold tracking-wide"
+            class="cursor-pointer float-left pt-0 mt-0 text-gray-500 text-sm transition duration-300 hover:text-blue-600 uppercase font-semibold tracking-wide"
             ><i class="fas fa-store"></i> {{ product.business_name }}</router-link
           >
         </div>
