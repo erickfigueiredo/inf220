@@ -31,7 +31,7 @@ class AddressController {
     }
 
     static async create(req, res) {
-        const { id_user, alias, street, neigh, complement, num, zipcode, city, state, country, latitude, longitude, type } = req.body;
+        const { id_user, alias, street, neigh, complement, num, zipcode, city, state, country, type } = req.body;
 
         const data = {
             alias,
@@ -43,11 +43,14 @@ class AddressController {
             city,
             state,
             country,
-            latitude,
-            longitude,
             id_user,
             type
         }
+
+        data.latitude = Math.random() * (8022001 - 100) + 100;
+        data.longitude = Math.random() * (8022001 - 100) + 100;
+
+        console.log(data.latitude)
 
         let user;
         if (type == 'M') {

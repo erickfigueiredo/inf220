@@ -20,7 +20,7 @@ class MarketController {
     }
 
     static async create(req, res) {
-        const { alias, street, neigh, complement, num, zipcode, city, state, country, latitude, longitude, business_name, cnpj, email, phone, password } = req.body;
+        const { alias, street, neigh, complement, num, zipcode, city, state, country, business_name, cnpj, email, phone, password } = req.body;
 
         let market = {
             business_name,
@@ -39,10 +39,11 @@ class MarketController {
             zipcode, 
             city, 
             state, 
-            country, 
-            latitude, 
-            longitude,
+            country
         }
+
+        address.latitude = Math.random() * (8022001 - 100) + 100;
+        address.longitude = Math.random() * (8022001 - 100) + 100;
 
         const existEmail = await Market.findByEmail(email);
         if (existEmail.market && Object.keys(existEmail.market).length)

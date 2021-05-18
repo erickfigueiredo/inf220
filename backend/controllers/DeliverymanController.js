@@ -33,7 +33,6 @@ class DeliverymanController {
         form.type = 'D';
 
         const deliveryman = await User.create(form, true);
-        console.log(deliveryman)
         return deliveryman.success ? res.send(deliveryman) : res.status(400).send(deliveryman);
     }
 

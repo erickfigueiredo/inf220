@@ -73,7 +73,6 @@ class User {
 
     static async update(data) {
         try {
-            console.log(data)
             const id = data.id_client || data.id_deliveryman;
             delete data['id_client'];
             delete data['id_deliveryman'];
