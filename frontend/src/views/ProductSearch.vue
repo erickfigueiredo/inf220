@@ -11,12 +11,6 @@
       </div>
       <ProductGridLoad v-if="loading" :isGrid="true" />
     </div>
-    <Pagination
-      v-if="!loading"
-      v-on:go-to-page="goToPage"
-      :curPage="parseInt(pagination.currentPage)"
-      :numPages="pagination.lastPage"
-    />
     <Footer />
   </div>
 </template>

@@ -11,26 +11,19 @@ const actions = {
             payload.search = state.search;
             let query = payload.search;
             console.log(state)
-            if (!payload.pagination) {
-                commit('resetSearch');
-                Object.keys(payload).map(function (key, index) {
-                    payload[key] && key != 'search' ? query = `${query}&${key}=${payload[key]}` : undefined;
-                    state[key] = payload[key];
-                });
-            } else {
-                let aux = {
-                    min_price: state.min_price,
-                    max_price: state.max_price,
-                    min_quality: state.min_quality,
-                    max_quality: state.max_quality,
-                    max_distance: state.max_distance,
-                    min_distance: state.min_distance,
-                    page: payload.page || 1
-                }
-                Object.keys(aux).map(function (key, index) {
-                    aux[key] != undefined && key != 'search' ? query = `${query}&${key}=${aux[key]}` : undefined;
-                });
+
+            let aux = {
+                min_price: state.min_price,
+                max_price: state.max_price,
+                min_quality: state.min_quality,
+                max_quality: state.max_quality,
+                max_distance: state.max_distance,
+                min_distance: state.min_distance,
             }
+            Object.keys(aux).map(function (key, index) {
+                aux[key] != undefined && key != 'search' ? query = `${query}&${key}=${aux[key]}` : undefined;
+            });
+
             console.log(query)
             console.log(payload, 'playload')
 
@@ -38,13 +31,11 @@ const actions = {
                 console.log(result)
                 if (result.success) {
                     commit("setFilters", payload);
-                    commit('setProducts', result.product.data);
-                    commit('setPagination', result.product.pagination);
+                    commit('setProducts', result.product);
                     resolve(result);
                 } else {
                     commit("setFilters", payload);
                     commit('setProducts', []);
-                    commit('setPagination', { lastPage: 1, currentPage: '1' });
                     resolve(result);
                 }
                 state.loading = false;

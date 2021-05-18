@@ -81,7 +81,7 @@ router.put('/order', OrderController.update);
 router.get('/product/all/all', ProductController.indexAll);
 router.get('/product/all/discount', ProductController.indexPromo);
 router.get('/product/all/mkt/:id_market', ProductController.index);
-router.post('/product/search', ProductController.search);
+router.get('/product/search', ProductController.search);
 router.get('/product/:id', ProductController.show);
 router.post('/product', ProductController.create);
 router.put('/product', ProductController.update);

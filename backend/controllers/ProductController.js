@@ -47,8 +47,8 @@ class ProductController {
     
     static async search(req, res) {
         const { category, min_price, max_price } = req.query;
-        let { search } = req.query.search;
-
+        let { search } = req.query;
+        console.log(search)
         search = search.replace(/[+]/gi, ' ');
         search = search.replace(/[`~!@#$%^&*()_+|\-=?;:'",.<>\{\}\[\]\\\/]/gi, '');
 
