@@ -294,10 +294,7 @@ export default defineComponent({
       filters: {
         min_price: "",
         max_price: "",
-        min_quality: "",
-        max_quality: "",
-        min_distance: "",
-        max_distance: "",
+        category: ""
       },
       type: "none",
       message: "",
@@ -305,7 +302,7 @@ export default defineComponent({
     };
   },
   methods: {
-    ...mapMutations(["setSearch, setFilters, resetSearch"]),
+    ...mapMutations(["setSearch", "setFilters", "resetSearch"]),
     ...mapActions(["search"]),
     async filterSearch() {
       let data = {};
@@ -313,6 +310,8 @@ export default defineComponent({
       Object.keys(localFilters).map(function (key, index) {
         localFilters[key] != "" ? (data[key] = localFilters[key]) : undefined;
       });
+
+      this.setFilters(data)
 
       await this.search(data);
       this.message = "Filtros Aplicados!";

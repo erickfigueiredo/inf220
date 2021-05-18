@@ -56,11 +56,13 @@ class ProductController {
 
         if (search) {
             filter.search = search;
-
-            if (min_price && isNaN(parseInt(min_price)) && min_price >= 0) filter.minPrice = min_price;
-            if (max_price && isNaN(parseInt(max_price)) && max_price > 0) filter.maxPrice = max_price;
+ 
+            if (min_price && !isNaN(parseInt(min_price)) && min_price >= 0) filter.minPrice = min_price;
+            if (max_price && !isNaN(parseInt(max_price)) && max_price > 0) filter.maxPrice = max_price;
             if (category) filter.category = category;
         }
+
+        console.log(min_price >= 0)
 
         const result = await Product.searchProduct(filter);
         return result.success ? res.send(result) : res.status(400).send(result);
