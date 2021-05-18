@@ -17,8 +17,7 @@
           <div
             class="flex justify-center items-center transition duration-500 ease-in-out transform hover:-translate-y-1 hover:scale-110"
           >
-            <img class="h-8 w-8 mr-1" src="/iStones-Logo.svg" alt="iStones" />
-            <span class="text-blue-600 font-semibold text-2xl">Stones</span>
+            <span class="text-blue-600 font-semibold text-2xl">El Comprador</span>
           </div>
         </router-link>
       </div>
@@ -48,34 +47,13 @@
                 placeholder="Máx"
               />
             </div>
-            <label class="text-gray-500 mb-1">Qualidade</label>
+            <label class="text-gray-500 mb-1">Categoria</label>
             <div class="flex">
               <input
-                v-model="filters.min_quality"
-                class="my-2 py-1 px-2 w-1/2 mr-1 rounded-md bg-gray-700 text-gray-500"
+                v-model="filters.category"
+                class="my-2 py-1 px-2 w-full mr-1 rounded-md bg-gray-700 text-gray-500"
                 type="text"
-                placeholder="Min"
-              />
-              <input
-                v-model="filters.max_quality"
-                class="my-2 py-1 px-2 w-1/2 ml-1 rounded-md bg-gray-700 text-gray-500"
-                type="text"
-                placeholder="Máx"
-              />
-            </div>
-            <label class="text-gray-500 mb-1">Distância</label>
-            <div class="flex mb-2">
-              <input
-                type="number"
-                v-model="filters.min_distance"
-                class="my-2 py-1 px-2 w-1/2 mr-1 rounded-md bg-gray-700 text-gray-500"
-                placeholder="Min"
-              />
-              <input
-                type="number"
-                v-model="filters.max_distance"
-                class="my-2 py-1 px-2 w-1/2 ml-1 rounded-md bg-gray-700 text-gray-500"
-                placeholder="Máx"
+                placeholder="Nome"
               />
             </div>
             <button
