@@ -20,8 +20,9 @@ class Order {
         try {
             const order = await knex.select('*')
                 .from('tb_order')
+                //.join('tb_order_product', 'tb_order_product.id_order', 'tb_order.id')
                 .where({ id_client })
-                .orderBy('created_at', 'DESC');
+                .orderBy('tb_order.created_at', 'DESC');
 
             return order[0] ? { success: true, order } : { success: false, message: 'Não foi possível recuperar os dados da compra / Compra inexistente' };
         } catch (error) {
@@ -38,7 +39,6 @@ class Order {
             else complement = 'id_deliveryman';
 
             const order = await knex.raw('SELECT * FROM tb_order WHERE tb_order.' + complement + ' = ' + id);
-            console.log(order.rows)
             return order.rows[0] ? { success: true, order: order.rows } : { success: false, message: 'Falha ao recuperar a lista de compras em que o usuário esta presente!' };
         } catch (error) {
             Message.warning(error);
@@ -50,7 +50,7 @@ class Order {
         try {
             const order = await knex.raw('select tb_user.id, tb_user.name, COUNT(tb_order.id_client) as qtd_orders from tb_user join tb_order on tb_user.id = tb_order.id_client group by tb_user.id order by qtd_orders limit 10');
 
-            return order[0] ? { success: true, order } : { success: false, message: 'Não foi possível recuperar o ranking de consumidores!' };
+            return order.rows[0] ? { success: true, order: order.rows } : { success: false, message: 'Não foi possível recuperar o ranking de consumidores!' };
         } catch (error) {
             Message.warning(error);
             return { success: false, message: 'Houve um erro ao recuperar o ranking de compras!' }

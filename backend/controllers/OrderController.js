@@ -15,16 +15,22 @@ class OrderController {
 
 
         const order = await Order.findAll(id_client);
+        console.log(order)
         if (order.success) {
+
             for (let i = 0; i < Object.keys(order.order).length; i++) {
-                let id_order = order.orders[i].id;
-                order.order[i].orderProduct[i].push(await OrderProduct.findAll(id_order));
+                let id_order = order.order[i].id;
+                order.order[i].order_product = [];
+                let _order_product = await OrderProduct.findAll(id_order);
+                _order_product = _order_product.order_products[0];
+                order.order[i].order_product.push(_order_product);
             }
 
             for (let i = 0; i < Object.keys(order.order).length; i++) {
-                for (let j = 0; j < Object.keys(order.order[i].orderProduct).length; j++) {
-                    let id_product = order.order[i].orderProduct[j].id_product;
-                    order.order[i].orderProduct[j].product = await Product.findOne(id_product);
+                for (let j = 0; j < Object.keys(order.order[i].order_product).length; j++) {
+                    let id_product = order.order[i].order_product[j].id_product;
+                    let prod = await Product.findOne(id_product);
+                    order.order[i].order_product[j].product = prod.product
                 }
             }
 
