@@ -68,8 +68,9 @@ class Order {
                     const product = await trx('tb_product').select('*').where({'is_active': true, id: id_products[i]});
 
                     let discount = null;
+                    console.log(product)
                     if(product[0].id_discount)
-                        discount = await trx('tb_discount').select('*').where({id: product[0].id_discount});
+                        discount = await trx('tb_product_discount').select('*').where({id: product[0].id_discount});
 
                     if(product[0].quantity < quantity[i]) return {success: false, message: `Quantidade de ${product[0].title} indisponível!`};
                     
