@@ -39,7 +39,7 @@ class Market {
             const market = await knex.select('*')
                 .from('tb_market')
                 .where({ id, 'is_deleted': false });
-            console.log(market)
+
             return market[0] ? { success: true, market: market[0] } : { success: false, message: 'Não foi possível recuperar o mercado / Mercado inexistente!' };
         } catch (error) {
             Message.warning(error);
@@ -61,16 +61,35 @@ class Market {
         }
     }
 
+    static async retrieveRecord(id) {
+        try {
+            const record = await knex.select('tb_market.id', 'tb_market.business_name', 'tb_market.cnpj', 'tb_wallet.pix_key', 'tb_wallet.total', 'tb_wallet.updated_at', 'tb_wallet.id as wallet')
+                .from('tb_market')
+                .leftJoin('tb_wallet', 'tb_wallet.id', 'tb_market.id_wallet')
+                .where('tb_market.id', id);
+
+            record[0].withdraws = await knex.select('value', 'updated_at')
+                .from('tb_wallet_withdraw')
+                .where('id_wallet', record[0].wallet)
+                .orderBy('updated_at', 'DESC');
+
+            return record[0] ? {success: true, record: record[0]} : {success: false, message: 'Falha ao obter histórico financeiro'};
+        } catch (e) {
+            Message.warning(e);
+            return { success: false, message: 'Houve um erro ao reuperar o histórico financeiro!' };
+        }
+    }
+
     static async create(data, address) {
         try {
             address.type = 'M'
             return await knex.transaction(async trx => {
                 const idWallet = await trx('tb_wallet')
-                    .insert({total: 0, pix_key: data.pix_key}).returning('id');
+                    .insert({ total: 0, pix_key: data.pix_key }).returning('id');
 
                 const idAddress = await trx('tb_address')
-                .insert(address).returning('id');
-                
+                    .insert(address).returning('id');
+
                 data.id_wallet = idWallet[0];
                 data.id_address = idAddress[0];
                 delete data.pix_key
@@ -78,7 +97,7 @@ class Market {
                     .insert(data)
                     .returning('*');
 
-                    return { success: true, market: result[0] };
+                return { success: true, market: result[0] };
             });
         } catch (error) {
             Message.warning(error);

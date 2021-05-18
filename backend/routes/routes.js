@@ -54,6 +54,7 @@ router.delete('/deliveryman/:id', DeliverymanController.delete);
 // Market routes
 router.get('/market/all', MarketController.index);
 router.get('/market/:id', MarketController.show);
+router.get('/market/record/:id', MarketController.record)
 router.post('/market', MarketController.create);
 router.put('/market', MarketController.update);
 
