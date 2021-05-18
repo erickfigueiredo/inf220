@@ -15,10 +15,14 @@ class OrderController {
 
 
         const order = await Order.findAll(id_client);
+        console.log(order)
+
         if (order.success) {
             for (let i = 0; i < Object.keys(order.order).length; i++) {
-                let id_order = order.orders[i].id;
-                order.order[i].orderProduct[i].push(await OrderProduct.findAll(id_order));
+                let id_order = order.order[i].id;
+
+                for(let j = 0; j < Object.keys(order.order[i]).length; j++)
+                    order.order[i].orderProduct[j].push(await OrderProduct.findAll(id_order));
             }
 
             for (let i = 0; i < Object.keys(order.order).length; i++) {
@@ -29,7 +33,7 @@ class OrderController {
             }
 
             return res.send(order);
-        } else return res.send({ success: false, message: 'Não há compras vinculadas ao cliente!' });
+        } else return res.status(409).send({ success: false, message: 'Não há compras vinculadas ao cliente!' });
     }
 
     static async show(req, res) {
