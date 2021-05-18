@@ -72,7 +72,7 @@ router.get('/order/rank_clients', OrderController.rankClients);
 router.get('/order/list_by/:id_user', OrderController.listOrders);
 
 // Product routes
-router.get('/product/all/', ProductController.indexAll);
+router.get('/product/all/all', ProductController.indexAll);
 router.get('/product/all/mkt/:id_market', ProductController.index);
 router.get('/product/:id', ProductController.show);
 router.post('/product/search', ProductController.search);

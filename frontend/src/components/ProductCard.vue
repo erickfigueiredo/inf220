@@ -1,7 +1,7 @@
 <template>
   <div class="my-1 px-1 w-full" :class="{ 'w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5': isGrid }">
     <div class="w-full rounded-lg bg-white overflow-hidden shadow-sm mt-6">
-      <div @click="$router.push({path: '/produto/' + product.id})" class="h-48 cursor-pointer bg-cover w-full bg-center" :style="{ backgroundImage: 'url(' + product.uri + ')' }">
+      <div @click="$router.push({path: '/produto/' + product.id})" class="h-48 cursor-pointer bg-cover w-full bg-center" :style="{ backgroundImage: 'url(' + 'localhost/galery/' + product.uri + ')' }">
         <div class="flex justify-end">
           <span v-if="isNew" class="m-2 animate-pulse bg-green-200 text-green-700 text-xs px-2 rounded-full uppercase font-bold tracking-wide">Novo</span>
         </div>
