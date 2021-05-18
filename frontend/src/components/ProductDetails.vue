@@ -6,13 +6,12 @@
         <div class="my-auto w-full lg:w-1/2 xl:w-2/3">
           <!-- Imagem -->
           <Carousel :wrap-around="false" :items-to-show="1">
-            <Slide v-for="img in product.images" :key="img.key">
+            <Slide v-for="(img, index) in imgs" :key="index">
               <img
-                :src="img.url"
+                :src="img"
                  @click="showImg(0)"
                 :class="{'imgGray': !stock}"
                 class="cursor-pointer h-image-card object-cover w-full rounded-t-lg lg:rounded-none lg:rounded-l-lg"
-                :alt="product.title"
               />
             </Slide>
             <template #addons>
@@ -165,7 +164,7 @@ import "vue3-carousel/dist/carousel.css";
 import { mapActions, mapMutations } from "vuex";
 import { Carousel, Navigation, Slide } from "vue3-carousel";
 import MessageCardFixed from "./MessageCardFixed.vue";
-
+import Cart from '../services/Cart';
 export default {
   props: {
     product: Object,
@@ -201,7 +200,7 @@ export default {
       this.loading = true;
       
       const result = await Cart.create({
-        id_user: this.$store.user.user.id,
+        id_user: this.$store.state.user.user.id,
         id_product: this.$route.params.id_product,
         quantity: this.quantity 
       })
@@ -227,7 +226,7 @@ export default {
     }
   },
   created() {
-    this.imgs.push(this.product.uri);
+    this.imgs.push('../gallery/'+this.product.uri);
     this.loading = false
   },
 };

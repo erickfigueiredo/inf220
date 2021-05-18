@@ -13,7 +13,7 @@ class Product {
 
     static async getProductsInPromo(){
         try {
-            const response = await axios.get(`${apiURL}/product/discount`);
+            const response = await axios.get(`${apiURL}/product/all/discount`);
             return response.data;
         } catch (error) {
             return error.response.data;
