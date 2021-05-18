@@ -35,7 +35,7 @@ class User {
                 .where({ type, "is_deleted": false })
                 .orderBy('id')
 
-            return user[0] ? { success: true, user: user[0] } : { success: false, message: 'Não foi possível recuperar os usuários / Não existem usuários!' };
+            return user[0] ? { success: true, user } : { success: false, message: 'Não foi possível recuperar os usuários / Não existem usuários!' };
         } catch (e) {
             Message.warning(e);
             return { success: false, message: 'Houve um erro ao recuperar os usuários!' };

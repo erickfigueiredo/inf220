@@ -24,6 +24,10 @@ class ClientController {
         if (existEmail.success)
             return res.status(409).send({ success: false, message: 'Email já cadastrado!' });
 
+        const existPhone = User.findBy({ phone: form.phone });
+        if (existPhone.success)
+            return res.status(409).send({ success: false, message: 'Telefone já cadastrado!' });
+
         const salt = bcrypt.genSaltSync(saltRounds);
         form.password = bcrypt.hashSync(form.password, salt);
 
