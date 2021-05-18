@@ -6,7 +6,7 @@
         <img
           class="h-40 w-3/12 xl:w-2/12 object-cover cursor-pointer"
           @click="openProduct(product.id)"
-          :src="'gallery/'+product.uri"
+          :src="'gallery/' + product.uri"
           alt="img"
         />
         <div class="px-6 py-4 text-left w-9/12">
@@ -21,7 +21,11 @@
           <div class="mt-3">
             R$<span class="text-3xl mt-4 pt-5">{{ product.price }}</span>
             <span class="float-right"
-              ><small class="text-gray-500">Restam {{product.quantity || product.product_quantity}}</small> <br /><input
+              ><small class="text-gray-500"
+                >Restam
+                {{ product.quantity || product.product_quantity }}</small
+              >
+              <br /><input
                 type="number"
                 @change="updateQuantityToBuy(product.id)"
                 min="1"
@@ -66,12 +70,12 @@ export default {
   },
   methods: {
     setMessage(title, type, message, miliseconds) {
-      console.log(type)
+      console.log(type);
       this.message = message;
       this.type = type;
       this.title = title;
       setTimeout(() => {
-        console.log(this.type)
+        console.log(this.type);
         this.type = "none";
       }, miliseconds);
     },
@@ -82,15 +86,26 @@ export default {
       this.$router.push({ name: "ProductGeneral", params: { id_product } });
     },
     async removeItemFromCart(id_product) {
-
+      let items = JSON.parse(window.localStorage.getItem("cart"));
+      items = items.filter((item) => item.id != id_product);
+      window.localStorage.setItem("cart", JSON.stringify(items));
+      document.location.reload();
     },
-    async updateQuantityToBuy() {
-
+    async updateQuantityToBuy(idProduct) {
+      let items = JSON.parse(window.localStorage.getItem("cart"));
+      items = items.map((item) => {
+        if (item.id == idProduct) {
+          item.cart_quantity = parseInt(this.quantity)
+        }
+        return item
+      });
+      window.localStorage.setItem("cart", JSON.stringify(items));
+      document.location.reload();
     },
   },
   created() {
     this.quantity = this.product.cart_quantity;
-    console.log(this.product)
+    console.log(this.product);
   },
   components: {
     MessageCardFixed,
