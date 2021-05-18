@@ -365,7 +365,7 @@ export default {
         setInterval(() => {
           this.$router.push({
           path: "/login",
-        });
+        },1000);
         })
         
       } else {
