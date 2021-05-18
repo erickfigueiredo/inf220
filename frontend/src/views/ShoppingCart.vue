@@ -46,7 +46,8 @@
     </div>
     <div class="w-full mt-12">
       <button
-        type="submit"
+        type="button"
+        @click="buy()"
         class="w-full transition duration-150 py-2 px-4 bg-blue-600 hover:bg-blue-800 text-white font-bold border-b-4 border-blue-800 focus:outline-none rounded"
       >
         Comprar    
@@ -69,8 +70,8 @@
 import Footer from "../components/Footer.vue";
 import CartItem from "../components/CartItem.vue";
 import CartItemLoad from "../components/CartItemLoad.vue";
-import Product from "../services/Product";
-import Cart from "../services/Cart";
+import Order from "../services/Order";
+import Product from '../services/Product';
 
 export default {
   components: {
@@ -99,5 +100,28 @@ export default {
     console.log(this.total);
     this.loading = false;
   },
+  methods: {
+    async buy(){
+      let data = {
+        id_payment_method: 1,
+        id_client: 6,
+        id_market: 4,
+        tip: 0,
+        description: 'some'
+      }
+
+      let id_products = [];
+      let quantities = [];
+
+      for(let item of this.items){
+        id_products.push(item.id)
+        quantities.push(item.cart_quantity)
+      }
+
+       const result = await Order.create({...data, id_products, quantities});
+       console.log(result)
+       if(result.success) this.$router.push('/pedido/'+result.order.id)
+    }
+  }
 };
 </script>
