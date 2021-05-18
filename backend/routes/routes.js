@@ -12,6 +12,8 @@ const ProductController = require('../controllers/ProductController');
 const VehicleController = require('../controllers/VehicleController');
 const WalletController = require('../controllers/WalletController');
 const WalletWithdrawController = require('../controllers/WalletWithdrawController');
+const DiscountController = require('../controllers/DiscountController');
+
 
 // Address routes
 router.get('/address/all/:id_user', AddressController.index);
@@ -79,10 +81,11 @@ router.put('/order', OrderController.update);
 router.get('/product/all/all', ProductController.indexAll);
 router.get('/product/all/mkt/:id_market', ProductController.index);
 router.get('/product/:id', ProductController.show);
+router.get('/product/all/discount', ProductController.indexPromo);
 router.post('/product/search', ProductController.search);
 router.post('/product', ProductController.create);
 router.put('/product', ProductController.update);
-router.delete('/product/:id', ProductController.delete);
+router.delete('/product/:id', ProductController.delete);  
 
 // Vehicle routes
 router.get('/vehicle/all/:id_deliveryman', VehicleController.index);
@@ -100,6 +103,11 @@ router.put('/wallet/increment', WalletController.incrementTotal);
 router.get('/withdraw/all/:id_user', WalletWithdrawController.index);
 router.get('/withdraw/:id_withdraw', WalletWithdrawController.show);
 router.post('/withdraw', WalletWithdrawController.create);
+
+// Wallet Withdraw routes
+router.get('/discount/all/', DiscountController.index);
+router.get('/discount/:id', DiscountController.show);
+router.post('/discount', DiscountController.create);
 
 // Erro 404
 router.get('/bermuda_triangle', (req, res) => {

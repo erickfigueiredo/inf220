@@ -3,7 +3,7 @@
     <div v-if="!loading" class="flex-grow px-6 pt-8 pb-2">
       <Label title="Destaques" :type="1" />
       <Label title="Promoções" :type="2" />
-      <Slider type="P" :data="promo" />
+      <ProductGrid v-if="promo.length" type="P" :data="promo" />
       <Label title="Outros" :type="2" />
       <ProductGrid :data="others" />
     </div>

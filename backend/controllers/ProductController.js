@@ -39,6 +39,11 @@ class ProductController {
         const product = await Product.findAll();
         return product.success ? res.send(product) : res.status(400).send(product);
     }
+
+    static async indexPromo(req, res) {
+        const products = await Product.findPromo();
+        return products.success ? res.send(products) : res.status(400).send(products);
+    }
     
     static async search(req, res) {
         const { category, min_price, max_price } = req.query;

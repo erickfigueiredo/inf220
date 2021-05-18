@@ -5,7 +5,7 @@ class Cart {
 
     static async findOne(id) {
         try {
-            const cart = await knex.select(['tb_cart.id AS id_item', 'tb_product.id AS id_product', 'tb_cart.quantity AS cart_quantity', 'tb_product.title', 'tb_product.price', 'tb_product.quantity AS product_quantity', 'tb_product.url_image', 'tb_product.key_image', 'tb_product.id_material', 'tb_product.id_discount'])
+            const cart = await knex.select(['tb_cart.id AS id_item', 'tb_product.id AS id_product', 'tb_cart.quantity AS cart_quantity', 'tb_product.title', 'tb_product.price', 'tb_product.quantity AS product_quantity', 'tb_product.uri', 'tb_product.id_category', 'tb_product.id_discount'])
                 .from('tb_cart')
                 .where({ 'tb_cart.id': id })
                 .orderBy('tb_cart.id')
@@ -21,7 +21,7 @@ class Cart {
     static async findCartByUser(id_user, page) {
         try {
             const cart = await knex('tb_cart')
-                .select(['tb_cart.id AS id_item', 'tb_product.id AS id_product', 'tb_cart.quantity AS cart_quantity', 'tb_product.title', 'tb_product.price', 'tb_product.quantity AS product_quantity', 'tb_product.url_image', 'tb_product.key_image', 'tb_product.id_material', 'tb_product.id_discount'])
+                .select(['tb_cart.id AS id_item', 'tb_product.id AS id_product', 'tb_cart.quantity AS cart_quantity', 'tb_product.title', 'tb_product.price', 'tb_product.quantity AS product_quantity', 'tb_product.uri',  'tb_product.id_category', 'tb_product.id_discount'])
                 .where({ 'tb_cart.id_user': id_user })
                 .orderBy('tb_cart.id')
                 .innerJoin('tb_product', 'tb_product.id', 'tb_cart.id_product')

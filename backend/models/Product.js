@@ -4,7 +4,7 @@ const Message = require('../utils/Message');
 class Product {
     static async findOne(id) {
         try {
-            const product = await knex.select('*').from('tb_product')
+            const product = await knex.select('tb_product.id', 'tb_product.title', 'tb_product.desc', 'tb_product.price', 'tb_product.unt', 'tb_product.brand','tb_product.validate', 'tb_product.uri', 'tb_product.quantity', 'tb_category.name').from('tb_product')
                                     .join('tb_category', 'tb_category.id', 'tb_product.id_category')
                                     .where({ 'tb_product.id': id });
             return product[0] ? { success: true, product: product[0] } : { success: false, message: 'Não foi possível recuperar o produto / Produto inexistente!' };
@@ -16,9 +16,21 @@ class Product {
 
     static async findAll() {
         try {
-            const product = await knex.select('*').from('tb_product').where({is_deleted: false});
+            const product = await knex.select('*').from('tb_product').where({'is_deleted': false});
             console.log(product)
             return product[0] ? { success: true, product } : { success: false, message: 'Não foi possível recuperar o produto / Produto inexistente!' };
+        } catch (error) {
+            Message.warning(error);
+            return { success: false, message: 'Houve um erro ao recuperar o produto!' };
+        }
+    }
+
+    static async findPromo(){
+        try {
+            const products = await knex.select('tb_product.id', 'tb_product.title', 'tb_product.desc', 'tb_product.price', 'tb_product.unt', 'tb_product.brand','tb_product.validate', 'tb_product.uri', 'tb_product.quantity').from('tb_product')
+                                        .join('tb_product_discount', 'tb_product_discount.id', 'tb_product.id_discount')
+                                        .where({'tb_product.is_deleted': false});
+            return products[0] ? { success: true, products } : { success: false, message: 'Não foi possível recuperar o produto / Produto inexistente!' };
         } catch (error) {
             Message.warning(error);
             return { success: false, message: 'Houve um erro ao recuperar o produto!' };
