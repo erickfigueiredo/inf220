@@ -15,25 +15,15 @@ class OrderController {
 
 
         const order = await Order.findAll(id_client);
-        console.log(order)
-
-        if (order.success) {
-            for (let i = 0; i < Object.keys(order.order).length; i++) {
+        let products;
+        if(order.success) {
+            for(let i = 0; i < order.order.length; i++){
                 let id_order = order.order[i].id;
-
-                for(let j = 0; j < Object.keys(order.order[i]).length; j++)
-                    order.order[i].orderProduct[j].push(await OrderProduct.findAll(id_order));
+                products = await OrderProduct.findAll(id_order)
+                order.order[i].orderProducts = products.order_products;
             }
-
-            for (let i = 0; i < Object.keys(order.order).length; i++) {
-                for (let j = 0; j < Object.keys(order.order[i].orderProduct).length; j++) {
-                    let id_product = order.order[i].orderProduct[j].id_product;
-                    order.order[i].orderProduct[j].product = await Product.findOne(id_product);
-                }
-            }
-
             return res.send(order);
-        } else return res.status(409).send({ success: false, message: 'Não há compras vinculadas ao cliente!' });
+        } else res.status(404).send(order);
     }
 
     static async show(req, res) {
@@ -105,7 +95,7 @@ class OrderController {
         const marketAddress = await Address.findOne(existMarket.market.id_address);
         const clientAddress = await Address.findByUser(existClient.user.id);
 
-        data.shipping = Math.floor(Math.abs(parseInt(marketAddress.address.zipcode) - parseInt(clientAddress.address.zipcode))/1200000 * Math.E + 7);
+        data.shipping = Math.floor(Math.abs(parseInt(marketAddress.address.zipcode) - parseInt(clientAddress.address.zipcode)) / 1200000 * Math.E + 7);
 
 
         const hasDeliveryman = await User.hasDeliverymanAvailable();
