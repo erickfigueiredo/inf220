@@ -15,11 +15,10 @@ class OrderController {
 
 
         const order = await Order.findAll(id_client);
-        let products;
         if(order.success) {
             for(let i = 0; i < order.order.length; i++){
-                let id_order = order.order[i].id;
-                products = await OrderProduct.findAll(id_order)
+                const id_order = order.order[i].id;
+                const products = await OrderProduct.findAll(id_order)
                 order.order[i].orderProducts = products.order_products;
             }
             return res.send(order);
@@ -29,10 +28,10 @@ class OrderController {
     static async show(req, res) {
         const id = req.params.id;
 
-        if (isNaN(parseInt(id))) {
-            res.status(404).send({ success: false, message: 'Id inválido' });
-            return;
-        }
+        if (isNaN(parseInt(id))) 
+            return res.status(404).send({ success: false, message: 'Id inválido' });
+            
+        
 
         const order = await Order.findOne(id); //Recupera os dados da ordem
         if (order.success) {
@@ -46,11 +45,11 @@ class OrderController {
 
             for (let i = 0; i < Object.keys(orderProducts.order_products).length; i++) {
                 let id_product = orderProducts.order_products[i].id_product;
-                orderProducts.order_products[i].product = await Product.findOne(id_product);
+                const product = await Product.findOne(id_product);
+                orderProducts.order_products[i].product = product.product;
             }
 
-            order.order.order_products = orderProducts.order_products;  //Adiciona a ordem todos esses dados
-            return res.send(order);
+            order.order.order_products = orderProducts.order_products;  
         } else return res.status(404).send(order);
     }
 
@@ -67,7 +66,6 @@ class OrderController {
 
         if (existUser.success) {
             let result = await Order.listOrders(id, existUser.user.type);
-            console.log(result)
             return result.success ? res.send(result) : res.status(400).send(result);
         }
 
@@ -117,8 +115,14 @@ class OrderController {
             is_delivered,
             status
         }
-        const result = await Order.update(data, id_order);
-        result.success ? res.send(result) : res.status(400).send(result);
+
+        const existOrder = await Order.findOne(id_order);
+        if(existOrder.success) {
+
+            const result = await Order.update(data, id_order);
+            result.success ? res.send(result) : res.status(400).send(result);
+        }
+        return res.status(404).send(existOrder);
     }
 }
 

@@ -115,11 +115,11 @@ class Order {
 
     static async update(data, id) {
         try {
-            await knex.update(data)
+            const result = await knex.update(data)
                 .table('tb_order')
-                .where({ id });
+                .where({ id, 'is_delivered': false, 'status': 'P'}).returning('*');
 
-            return { success: true, message: 'Compra atualizada!' };
+            return result[0] ? { success: true, order: result[0] }: { success: false, message: 'Falha ao alterar o status da compra!' };
         } catch (error) {
             Message.warning(error);
             return { success: false, message: 'Compra não atualizada!' };
