@@ -38,15 +38,6 @@ class Product {
         }
     }
 
-    static async mostSalesByCategory(id_market, category) {
-        try {
-
-        } catch(error) {
-            Message.warning(error);
-            return { success: false, message: 'Houve um erro ao recuperar os produtos!' };
-        }
-    }
-
     static async searchProduct(filter) {
         try {
             const product = await knex('tb_product')

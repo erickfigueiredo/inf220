@@ -7,12 +7,26 @@ class Order {
         try {
             const order = await knex.select('*')
                 .from('tb_order')
-                .where({ id, "is_deleted": false });
+                .where({ id });
 
             return order[0] ? { success: true, order: order[0] } : { success: false, message: 'Não foi possível recuperar os dados da compra / Compra inexistente' };
         } catch (error) {
             Message.warning(error);
             return { success: false, messagem: 'Houve um erro ao recuperar os dados da compra!' };
+        }
+    }
+
+    static async findAll(id_client) {
+        try {
+            const order = await knex.select('*')
+                .from('tb_order')
+                .where({ id_client })
+                .orderBy('created_at', 'DESC');
+
+            return order[0] ? { success: true, order } : { success: false, message: 'Não foi possível recuperar os dados da compra / Compra inexistente' };
+        } catch (error) {
+            Message.warning(error);
+            return { success: false, message: 'Houve um erro ao recuperar a compra!' };
         }
     }
 
@@ -23,7 +37,7 @@ class Order {
             if (type == 'C') complement = 'id_client';
             else complement = 'id_deliveryman';
 
-            const order = await knex.raw('SELECT FROM tb_order WHERE tb_order.'+complement+' = ' + id);
+            const order = await knex.raw('SELECT FROM tb_order WHERE tb_order.' + complement + ' = ' + id);
 
             return order[0] ? { success: true, order } : { success: false, message: 'Falha ao recuperar a lista de compras em que o usuário esta presente!' };
         } catch (error) {
@@ -43,23 +57,6 @@ class Order {
         }
     }
 
-    static async findAll(id_client, page) {
-        try {
-            const order = await knex.select('*')
-                .from('tb_order')
-                .where({ id_client, "is_deleted": false })
-                .orderBy('created_at', 'DESC')
-                .paginate({
-                    perPage: 20,
-                    currentPage: page
-                });
-
-            return order.data[0] ? { success: true, order } : { success: false, message: 'Não foi possível recuperar os dados da compra / Compra inexistente' };
-        } catch (error) {
-            Message.warning(error);
-            return { success: false, message: 'Houve um erro ao recuperar a compra!' };
-        }
-    }
 
     static async create(data, id_products, quantity, description) {
         try {
@@ -70,9 +67,11 @@ class Order {
                 let total_order = 0;
 
                 for (let i = 0; i < id_products.length; i++) {
-                    let product = await trx('tb_product').select('*');
-                    let discount = await trx('tb_discount').select("*");
-                    if (product[0].quantity > quantity[i]) throw new Error('Quantidade maior que a disponível');
+                    let product = await trx('tb_product').select('*').where({ id: id_products[i] });
+                    let discount = await trx('tb_discount').select("*").where({ id: product[0].id_discount });
+
+                    if (product[0].quantity > quantity[i]) throw new Error('Quantidade indisponível do produto desejado!');
+
                     products.push(product[0]);
                     discounts.push(discount[0] || {});
 
@@ -84,11 +83,12 @@ class Order {
                 data.status = 'P';
                 data.order_total = total_order;
 
-                let order = await trx('tb_order').insert(data).returning('*');
+                const order = await trx('tb_order').insert(data).returning('*');
                 const id_order = order[0].id;
+
                 for (let i = 0; i < id_products.length; i++) {
                     await trx('tb_product').update({ "quantity": products[i].quantity - quantity[i] }).where({ id: id_products[i] });
-                    let discount = await trx('tb_discount').sleect("*");
+                    let discount = await trx('tb_discount').select("*").where({ id: id_products[i].id_discount });
 
                     let data = {
                         price: products[i].price,
@@ -96,15 +96,16 @@ class Order {
                         quantity: quantity[i],
                         description,
                         id_product: id_products[i],
-                        id_order //TODO
+                        id_order
                     }
-                    let product_order = await trx('tb_order_product').insert(data);
+
+                    await trx('tb_order_product').insert(data);
                 }
                 return { success: true, order: order[0] };
             })
         } catch (error) {
             Message.warning(error);
-            return { success: false, message: 'Compra não criada!' };
+            return { success: false, message: 'Erro ao efetuar a compra!' };
         }
     }
 
@@ -112,24 +113,12 @@ class Order {
         try {
             await knex.update(data)
                 .table('tb_order')
-                .where({ id, "is_deleted": false });
+                .where({ id });
+
             return { success: true, message: 'Compra atualizada!' };
         } catch (error) {
             Message.warning(error);
             return { success: false, message: 'Compra não atualizada!' };
-        }
-    }
-
-    static async delete(id) {
-        try {
-            await knex.update({ is_deleted: true })
-                .table('tb_order')
-                .where({ id, "is_deleted": false });
-
-            return { success: true, message: 'Compra deletada!' }
-        } catch (error) {
-            Message.warning(error);
-            return { success: false, message: 'Compra não deletada' };
         }
     }
 }

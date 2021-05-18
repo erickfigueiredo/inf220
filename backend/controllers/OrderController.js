@@ -5,41 +5,30 @@ const Deliveryman = require('../models/User');
 const User = require('../models/User');
 
 class OrderController {
+
     static async index(req, res) {
         const id_client = req.params.id_client;
 
-        if (isNaN(parseInt(id_client))) {
-            res.status(400).send({ success: false, message: 'Id inválido' });
-            return;
-        }
+        if (isNaN(parseInt(id_client)))
+            return res.status(400).send({ success: false, message: 'Id inválido' });
 
-        let order = await Order.findAll(id_client); 
-        if (order.success) {
-            let orderProducts = [];
-
-            for (let i = 0; i < Object.keys(order.orders).length; i++) { //Para cada ordem recupera os
-                const id_order = order.orders[i].id;                     //os registros do ordem_product
-                orderProducts.push(await OrderProduct.findAll(id_order));
+        
+        const order = await Order.findAll(id_client);
+        if(order.success) {
+            for(let i = 0; i < Object.keys(order.order).length; i++) {
+                let id_order = order.orders[i].id;                    
+                order.order[i].orderProduct[i].push(await OrderProduct.findAll(id_order));
             }
 
-            orderProducts = orderProducts[0];
-            if (!orderProducts || !Object.keys(orderProducts).length) {
-                res.status(404).send({ success: false, message: 'Falha ao recuperar ordem!' });
-                return;
-            }
-
-            for (let i = 0; i < Object.keys(orderProducts).length; i++) {  //Para cada ordem_product
-                if (!orderProducts.order_products[i]) {                    //recupera o produto 
-                    res.status(404).send({ success: false, message: 'Falha ao recuperar ordem!' });
-                    return;
+            for (let i = 0; i < Object.keys(order.order).length; i++) {
+                for (let j = 0; j < Object.keys(order.order[i].orderProduct).length; j++) {
+                    let id_product = order.order[i].orderProduct[j].id_product;
+                    order.order[i].orderProduct[j].product = await Product.findOne(id_product);
                 }
-                const id_product = orderProducts.order_products[i].id_product;
-                orderProducts.order_products[i].product = id_product; //TODO retrieve product
             }
 
-            order.orders[0].order_products = orderProducts.order_products;  //Adiciona a ordem todos esses dados
-            res.send(order);
-        } else res.status(404).send(order)
+            return res.send(order);
+        }else return res.send({success: false, message: 'Não há compras vinculadas ao cliente!'});
     }
 
     static async show(req, res) {
@@ -50,29 +39,24 @@ class OrderController {
             return;
         }
 
-        let order = await Order.findOne(id); //Recupera os dados da ordem
+        const order = await Order.findOne(id); //Recupera os dados da ordem
         if (order.success) {
 
             const id_order = order.order.id;
-            let orderProducts = await OrderProduct.findAll(id_order);
+            const orderProducts = await OrderProduct.findAll(id_order);
 
-            if (!orderProducts.success) {
-                res.status(404).send({ success: false, message: 'Falha ao recuperar compra!' });
-                return;
-            }
+            if (!orderProducts.success) 
+                return res.status(404).send(orderProducts);
+                
 
             for (let i = 0; i < Object.keys(orderProducts.order_products).length; i++) {
-                if (!orderProducts.order_products[i]) {                    //recupera o produto 
-                    res.status(404).send({ success: false, message: 'Falha ao recuperar compra!' });
-                    return;
-                }
-                const id_product = orderProducts.order_products[i].id_product;
-                orderProducts.order_products[i].product = id_product; //TODO retrieve product
+                let id_product = orderProducts.order_products[i].id_product;
+                orderProducts.order_products[i].product = await Product.findOne(id_product); 
             }
 
             order.order.order_products = orderProducts.order_products;  //Adiciona a ordem todos esses dados
-            res.send(order);
-        } else res.status(404).send(order)
+            return res.send(order);
+        } else return res.status(404).send(order);
     }
 
     static async rankClients(req, res) {
@@ -86,45 +70,50 @@ class OrderController {
 
         const existUser = await User.findOne(id);
 
-        if(existUser.success) {
+        if (existUser.success) {
             result = await Order.listOrders(id, existUser.user.type);
 
             return result.success ? res.send(result) : res.status(400).send(result);
-        } 
+        }
 
-        return res.send({success: false, message: 'Usuário inexistente!'});
+        return res.send({ success: false, message: 'Usuário inexistente!' });
     }
 
     static async create(req, res) {
-        const {id_product, id_client, id_market, quantity, tip, id_payment_method, description} = req.body
+        const { id_products, id_client, id_market, quantities, tip, id_payment_method, description } = req.body
 
         let data = {
-            id_product,
             id_client,
             id_market,
-            tip, 
+            tip,
             id_payment_method
         }
 
-        const client = await Client.findOne(id_client);
-        const market = await Market.findOne(id_market);
+        const existClient = await Client.findOne(id_client);
+        if(!existClient.success) 
+            res.status(404).send(existClient);
+
+        const existMarket = await Market.findOne(id_market);
+        if(!existMarket.success) 
+            res.status(404).send(existMarket);
+
         const marketAddress = await Address.findOne(market.market.id_address);
         const clientAddress = await Address.findOne(client.client.id_address);
 
         data.delivery = Math.abs(marketAddress.address.zipcode - clientAddress.address.zipcode) * Math.E + 7;
 
-        data.id_deliveryman = await Deliveryman.getAvaliabletoOrder();
-        
-        const result = await Order.create(data, id_product, quantity, description);
+        data.id_deliveryman = await Deliveryman.getAvailableToOrder();
+
+        const result = await Order.create(data, id_products, quantities, description);
 
         result.success ? res.send(result) : res.status(400).send(result);
     }
 
     static async update(req, res) {
 
-        const {id_order, is_delivery, status} = req.body
+        const { id_order, is_delivered, status } = req.body
         const data = {
-            is_delivery,
+            is_delivered,
             status
         }
         const result = await Order.update(data, id_order);
