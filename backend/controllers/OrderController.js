@@ -35,7 +35,7 @@ class OrderController {
             }
 
             return res.send(order);
-        } else return res.send({ success: false, message: 'Não há compras vinculadas ao cliente!' });
+        } else return res.status(409).send({ success: false, message: 'Não há compras vinculadas ao cliente!' });
     }
 
     static async show(req, res) {
