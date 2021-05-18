@@ -123,6 +123,18 @@ class OrderController {
         return result.success ? res.send(result) : res.status(400).send(result);
     }
 
+    static async calcDelivery(req, res){
+        const {id_market, id_client} = req.params;
+
+        const market = await Market.findOne(id_market);
+        const client = await User.findOne(id_client);
+
+        if(!client.success || !market.success) return res.status(400).send({status: false, message: 'Ids invalidos!'})
+        
+        
+
+    }
+
     static async update(req, res) {
 
         const { id_order, is_delivered, status } = req.body
