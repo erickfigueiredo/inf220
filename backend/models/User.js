@@ -111,8 +111,8 @@ class User {
 
             const available = await knex.select('id')
                 .from('tb_user')
-                .where({ type: 'D' }).andWhere('id', 'not in', subquery);
-
+                .where({ type: 'D' }).andWhere('id', 'not in', subquery.id_deliveryman);
+            
             switch (available.length) {
                 case 0: return res.send({ success: false, message: 'Não há entregadores disponíveis!' });
                 case 1: return res.send({ success: true, deliveryman: available[0].id });

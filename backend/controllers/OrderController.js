@@ -72,8 +72,8 @@ class OrderController {
         const existUser = await User.findOne(id);
 
         if (existUser.success) {
-            result = await Order.listOrders(id, existUser.user.type);
-
+            let result = await Order.listOrders(id, existUser.user.type);
+            console.log(result)
             return result.success ? res.send(result) : res.status(400).send(result);
         }
 
