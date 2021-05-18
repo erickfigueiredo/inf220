@@ -23,7 +23,7 @@
             <span class="float-right"
               ><small class="text-gray-500">Restam {{product.quantity || product.product_quantity}}</small> <br /><input
                 type="number"
-                @change="updateQuantityToBuy()"
+                @change="updateQuantityToBuy(product.id)"
                 min="1"
                 step="1"
                 v-model="quantity"
