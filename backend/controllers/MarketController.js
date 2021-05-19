@@ -19,6 +19,20 @@ class MarketController {
         return market.success ? res.send(market) : res.status(404).send(market);
     }
 
+    static async record(req, res) {
+        const id = req.params.id;
+
+        if (isNaN(parseInt(id)))
+            return res.status(400).send({ success: false, message: 'Id inválido!' });
+
+        const existMarket = await Market.findOne(id);
+        if (!existMarket.success)
+            return res.status(404).send({ sucess: false, message: 'Mercado inexistente!' });
+
+        const result = await Market.retrieveRecord(id);
+        return result.success ? res.send(result) : res.status(400).send(result);
+    }
+
     static async create(req, res) {
         const { alias, street, neigh, complement, num, zipcode, city, state, country, business_name, cnpj, email, phone, password } = req.body;
 
@@ -31,14 +45,14 @@ class MarketController {
         }
 
         let address = {
-            alias, 
-            street, 
-            neigh, 
-            complement, 
-            num, 
-            zipcode, 
-            city, 
-            state, 
+            alias,
+            street,
+            neigh,
+            complement,
+            num,
+            zipcode,
+            city,
+            state,
             country
         }
 
@@ -73,7 +87,6 @@ class MarketController {
         };
 
         const market = await Market.findOne(form.id_market);
-        console.log(market)
         if (market.success && Object.keys(market.market).length) {
 
             const toUpdate = {};

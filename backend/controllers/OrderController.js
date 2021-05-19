@@ -1,5 +1,6 @@
 const Order = require('../models/Order');
 const OrderProduct = require('../models/OrderProduct');
+const Category = require('../models/Category');
 const Product = require('../models/Product');
 const User = require('../models/User');
 const Market = require('../models/Market');
@@ -61,9 +62,16 @@ class OrderController {
 
     static async rankProducts(req, res) {
         const id_category = req.params.id_category;
-        const result = await Order.rankByQuantityProductCategory(id_category);
 
-        result.success ? res.send(result) : res.status(400).send(result);
+        if(isNaN(parseInt(id_category)))
+            return res.status(400).send({success: false, message: 'Id inválido'});
+        
+        const existCategory = await Category.findOne(id_category);
+        if(!existCategory.success)
+            res.status(404).send({success: false, message: 'Categoria inexistente!'});
+
+        const result = await Order.rankByQuantityProductCategory(id_category);
+        return result.success ? res.send(result) : res.status(400).send(result);
     }
 
     static async listOrders(req, res) {
