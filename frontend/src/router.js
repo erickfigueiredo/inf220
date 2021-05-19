@@ -9,6 +9,8 @@ import ShoppingCart from './views/ShoppingCart.vue';
 import ProductSearch from './views/ProductSearch.vue';
 import ProductGeneral from './views/ProductGeneral.vue';
 
+import Order from './views/Order.vue';
+
 import NotFound from './views/NotFound.vue';
 
 // Não pertencem à aplicação final
@@ -51,6 +53,11 @@ const routes = [{
         path: '/carrinho',
         name: 'ShoppingCart',
         component: ShoppingCart,
+    },
+    {
+        path: '/pedido/:id_pedido',
+        name: 'Pedido',
+        component: Order,
     },
     {
         path: '/dashboard',

@@ -19,6 +19,14 @@
           <div class="bg-gray-800 mt-12 p-6 rounded-lg">
     <div class="flex-none md:flex">
       <div class="w-full md:w-3/5">
+        <p class="font-semibold text-2xl md:text-3xl text-white">Frete:</p>
+      </div>
+      <div class="w-full md:w-2/5 text-right text-gray-600">
+        <p class="text-white">R$ <span class="text-2xl md:text-3xl">{{frete}}</span></p>
+      </div>
+    </div>
+    <div class="flex-none md:flex">
+      <div class="w-full md:w-3/5">
         <p class="font-semibold text-2xl md:text-3xl text-white">Total:</p>
       </div>
       <div class="w-full md:w-2/5 text-right text-gray-600">
@@ -86,6 +94,7 @@ export default {
       juros: false,
 
       total: 10,
+      frete: 'carregando...'
     };
   },
   async created() {
@@ -97,7 +106,11 @@ export default {
     for (const item of items) {
       this.total += item.cart_quantity * parseFloat(item.price);
     }
-    console.log(this.total);
+
+    const frete = await Order.getFrete(6, 4);
+    frete.success ? this.frete = frete.frete : this.$router.push('/')
+
+    this.total += frete.frete
     this.loading = false;
   },
   methods: {
