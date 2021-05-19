@@ -48,7 +48,7 @@ class Order {
 
     static async rankByMostNumOrder() {
         try {
-            const order = await knex.raw('select tb_user.id, tb_user.name, COUNT(tb_order.id_client) as qtd_orders from tb_user join tb_order on tb_user.id = tb_order.id_client group by tb_user.id order by qtd_orders limit 10');
+            const order = await knex.raw('select tb_user.id, tb_user.name, COUNT(tb_order.id_client) as qtd_orders from tb_user join tb_order on tb_user.id = tb_order.id_client group by tb_user.id order by qtd_orders DESC limit 10');
 
             return order.rows[0] ? { success: true, order: order.rows } : { success: false, message: 'Não foi possível recuperar o ranking de consumidores!' };
         } catch (error) {
