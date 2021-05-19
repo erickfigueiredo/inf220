@@ -87,9 +87,11 @@ class Product {
                 .andWhere(function () {
                     if (filter.minPrice) this.andWhere('tb_product.price', '>=', filter.minPrice);
                     if (filter.maxPrice) this.andWhere('tb_product.price', '<=', filter.maxPrice);
-                    if (filter.category) this.andWhere('unaccent(:categoryName:) ilike unaccent(:filterCat)',
+                })
+                .andWhere(function (){
+                    if (filter.category) this.whereRaw('unaccent(:categoryName:) ilike unaccent(:filterCat)',
                         {
-                            categoryName: 'category',
+                            categoryName: 'tb_category.name',
                             filterCat: '%' + filter.category + '%'
                         })
                 })
@@ -102,6 +104,7 @@ class Product {
             return product[0] ? { success: true, product } : { success: false, message: 'Não foi possível recuperar os produtos da pesquisa / Não existem produtos relacionados à pesquisa!' }
 
         } catch (error) {
+            console.log(error)
             Message.warning(error);
             return { success: false, message: 'Houve um erro ao recuperar o produto da pesquisa!' };
         }
