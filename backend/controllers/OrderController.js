@@ -118,12 +118,20 @@ class OrderController {
     static async calcDelivery(req, res){
         const {id_market, id_client} = req.params;
 
-        const market = await Market.findOne(id_market);
-        const client = await User.findOne(id_client);
+        const existClient = await User.findOne(id_client);
+        if (!existClient.success)
+            return res.status(404).send(existClient);
 
-        if(!client.success || !market.success) return res.status(400).send({status: false, message: 'Ids invalidos!'})
+        const existMarket = await Market.findOne(id_market);
+        if (!existMarket.success)
+            return res.status(404).send(existMarket);
+
+        const marketAddress = await Address.findOne(existMarket.market.id_address);
+        const clientAddress = await Address.findByUser(existClient.user.id);
+
+        const shipping = Math.floor(Math.abs(parseInt(marketAddress.address.zipcode) - parseInt(clientAddress.address.zipcode)) / 1200000 * Math.E + 7);
         
-        
+        res.send({success: true, frete: shipping});
 
     }
 

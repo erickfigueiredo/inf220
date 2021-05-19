@@ -6,7 +6,7 @@
         <img
           class="h-40 w-3/12 xl:w-2/12 object-cover cursor-pointer"
           @click="openProduct(product.id)"
-          :src="'gallery/' + product.uri"
+          :src="product.cart_quantity ? 'gallery/' + product.uri :  '../gallery/' + product.uri"
           alt="img"
         />
         <div class="px-6 py-4 text-left w-9/12">
@@ -20,7 +20,7 @@
           </div>
           <div class="mt-3">
             R$<span class="text-3xl mt-4 pt-5">{{ product.price }}</span>
-            <span class="float-right"
+            <span v-if="product.cart_quantity" class="float-right"
               ><small class="text-gray-500"
                 >Restam
                 {{ product.quantity || product.product_quantity }}</small
@@ -43,6 +43,9 @@
                 </button>
               </small></span
             >
+            <span class="float-right" v-else>
+              Quantidade: {{product.quantity}}
+            </span>
           </div>
 
           <br />

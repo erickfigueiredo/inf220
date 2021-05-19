@@ -75,6 +75,7 @@ router.get('/rank_clients', OrderController.rankClients);
 router.get('/rank_products/:id_category', OrderController.rankProducts);
 router.get('/order/list_by/:id_user', OrderController.listOrders); // Compras
 router.get('/order/:id', OrderController.show);
+router.get('/order/frete/:id_client/:id_market', OrderController.calcDelivery);
 router.post('/order', OrderController.create);
 router.put('/order', OrderController.update);
 
