@@ -68,7 +68,7 @@ class OrderController {
         
         const existCategory = await Category.findOne(id_category);
         if(!existCategory.success)
-            res.status(404).send({success: false, message: 'Categoria inexistente!'});
+            return res.status(404).send({success: false, message: 'Categoria inexistente!'});
 
         const result = await Order.rankByQuantityProductCategory(id_category);
         return result.success ? res.send(result) : res.status(400).send(result);
