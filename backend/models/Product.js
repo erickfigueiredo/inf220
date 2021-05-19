@@ -87,7 +87,7 @@ class Product {
                 .andWhere(function () {
                     if (filter.minPrice) this.andWhere('tb_product.price', '>=', filter.minPrice);
                     if (filter.maxPrice) this.andWhere('tb_product.price', '<=', filter.maxPrice);
-                    if (filter.category) this.andWhere('unaccent( tb_category.name) ilike unaccent(' + filter.search + ')')
+                    if (filter.category) this.andWhere('unaccent( category) ilike unaccent(' + filter.search + ')')
                 })
                 .andWhere({
                     'tb_product.is_deleted': false,
